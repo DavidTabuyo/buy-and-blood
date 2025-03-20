@@ -1,12 +1,12 @@
 <template>
     <div class="fixed w-full top-0 z-50 shadow-md">
         <div>
-    <Menubar :model="items" class="px-4 lg:px-8">
-        <template #start>
-            <h1 class="text-lg font-bold">Mi Sitio</h1>
-        </template>
-    </Menubar>
-</div>
+            <Menubar :model="items" class="px-4 lg:px-8">
+                <template #start>
+                    <h1 class="text-lg font-bold">Mi Sitio</h1>
+                </template>
+            </Menubar>
+        </div>
     </div>
 </template>
 
