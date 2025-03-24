@@ -1,7 +1,9 @@
 <template>
     <div>
         <h1>Bienvenido a la Página de Inicio</h1>
-        <MainComponent></MainComponent>
+        <div style="margin-top: 100px;">
+            <MainComponent></MainComponent>
+        </div>
     </div>
 </template>
 
