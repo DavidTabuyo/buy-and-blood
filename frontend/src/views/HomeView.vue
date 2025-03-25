@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Bienvenido a la Página de Inicio</h1>
-        <div style="margin-top: 100px;">
+        <div class="mt-24">
             <MainComponent></MainComponent>
         </div>
     </div>
