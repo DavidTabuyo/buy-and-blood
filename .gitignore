@@ -1,5 +1,7 @@
 .env
-__pycache__
+*__pycache__
 frontend/package-lock.json
-frontend/nodemodules
 node_modules/.package-lock.json
+package-lock.json
+frontend/node_modules
+sw2/
