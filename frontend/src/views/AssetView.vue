@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full">
+    <div class="flex w-full)]">
         <!-- Datos del activo -->
         <div class="w-2/3">
             <div>Fidelity S&P 500 Index Fund EUR P Acc</div>
@@ -7,10 +7,7 @@
                 <div>234,23$</div>
                 <div>^0,23%</div>
             </div>
-            <div>
-                <iframe :src="`https://s.tradingview.com/widgetembed/?symbol=MIL-VUAA&interval=D&theme=light`"
-                    width="100%" height="500" frameborder="0" allowfullscreen></iframe>
-            </div>
+            <TradingViewChart />
         </div>
 
         <!-- Compra venta -->
@@ -25,14 +22,11 @@
                 <Button>Comprar</Button>
                 <Button>Vender</Button>
             </div>
-            <div>
-                <FloatLabel variant="on">
-                    <InputNumber v-model="value" inputId="on_label" mode="currency" currency="USD" locale="en-US" />
-                    <label for="on-label">Introduce cantidad...</label>
-                </FloatLabel>
-            </div>
+            <FloatLabel variant="on">
+                <InputNumber v-model="value" inputId="on_label" mode="currency" currency="USD" locale="en-US" />
+                <label for="on-label">Introduce cantidad...</label>
+            </FloatLabel>
             <Button>Confirmar</Button>
-            <div></div>
         </div>
     </div>
 </template>
@@ -42,6 +36,7 @@ import { ref } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
+import TradingViewChart from '@/components/asset/TradingViewChart.vue';
 
 const value = ref(null);
 </script>
