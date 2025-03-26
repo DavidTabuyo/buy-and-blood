@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h1>Bienvenido a la Página de Inicio</h1>
-        <div class="mt-24">
-            <MainComponent></MainComponent>
-            <DayPlanComponent></DayPlanComponent>
+        <div class="flex">
+            <MainComponent class="w-2/3" />
+            <DayPlanComponent class="w-1/3" />
         </div>
     </div>
 </template>
+
 
 <script setup>
 
