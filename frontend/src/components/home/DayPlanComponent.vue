@@ -1,93 +1,60 @@
 <template>
   <div class="card flex justify-center">
-    <Chart
-      type="doughnut"
-      :data="chartData"
-      :options="chartOptions"
-      :plugins="[centerTextPlugin, dataLabelsPlugin]"
-      class="w-full md:w-[30rem]"
-    />
+    <Chart type="doughnut" :data="chartData" :options="chartOptions" class="w-full md:w-[30rem]" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import Chart from 'primevue/chart';
-import dataLabelsPlugin from 'chartjs-plugin-datalabels';
-
-// Plugin personalizado para texto en el centro
-const centerTextPlugin = {
-  id: 'centerText',
-  afterDatasetsDraw(chart) {
-    const { ctx, chartArea: { top, bottom, left, right } } = chart;
-    const options = chart.config.options.plugins.centerText || {};
-    if (!options.text) return;
-
-    const centerX = (left + right) / 2;
-    const centerY = (top + bottom) / 2;
-
-    ctx.save();
-    ctx.fillStyle = options.color || '#fff';
-    ctx.font = options.font || 'bold 20px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(options.text, centerX, centerY);
-    ctx.restore();
-  }
-};
-
-const chartData = ref(null);
-const chartOptions = ref(null);
 
 onMounted(() => {
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
 });
 
-function setChartData() {
+const chartData = ref();
+const chartOptions = ref(null);
+
+const setChartData = () => {
+  const documentStyle = getComputedStyle(document.body);
+
   return {
-    labels: ['China', 'Emerging', 'MSCI World'],
+    labels: ['A', 'B', 'C'],
     datasets: [
       {
-        data: [20, 30, 50],
-        backgroundColor: ['#0099cc', '#ff9900', '#999999'],
-        borderColor: '#fff',
-        borderWidth: 2
+        data: [540, 325, 702],
+        backgroundColor: [
+          '#f4b2cc', // Rosa pastel
+          '#c89eff', // Lila pastel
+          '#add8e6', // Verde pastel
+          '#fff1b8', // Amarillo pastel
+          '#add8e6'  // Azul pastel
+        ], hoverBackgroundColor: [
+          '#f7c1d5', // Rosa pastel hover (más suave)
+          '#d0a8ff', // Lila pastel hover (más suave)
+          '#c4e6f1', // Verde pastel hover (más suave)
+          '#fff7d1', // Amarillo pastel hover (más suave)
+          '#c4e6f1'  // Azul pastel hover (más suave)
+        ]
       }
     ]
   };
-}
+};
 
-function setChartOptions() {
+const setChartOptions = () => {
+  const documentStyle = getComputedStyle(document.documentElement);
+  const textColor = documentStyle.getPropertyValue('--p-text-color');
+
   return {
-    // Reduce el valor para hacer el hueco más pequeño
-    cutout: '40%',
     plugins: {
-      title: {
-        display: true,
-        text: 'Plan del día',
-        color: '#fff',
-        font: { size: 18 }
-      },
-      legend: { 
-        display: false 
-      },
-      centerText: {
-        text: '▲ 0.4%',
-        color: '#fff',
-        font: 'bold 30px sans-serif'
-      },
-      datalabels: {
-        color: '#fff',
-        font: { size: 16, weight: 'bold' },
-        textAlign: 'center',
-        // Poner el porcentaje debajo del nombre
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-          return `${label}\n${value}%`;
+      legend: {
+        labels: {
+          cutout: '60%',
+          color: textColor
         }
       }
     }
   };
-}
+};
 </script>

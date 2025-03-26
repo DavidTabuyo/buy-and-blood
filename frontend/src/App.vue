@@ -3,12 +3,15 @@ import NavBar from '@/components/NavBar.vue';
 </script>
 
 <template>
-  <div>
+  <div class="bg-slate-50">
+    <div>
     <NavBar></NavBar>
   </div>
   <div class="pt-24 px-16 bg-slate-50 ">
       <router-view></router-view>
   </div>
+  </div>
+
 </template>
 
 <style scoped>
