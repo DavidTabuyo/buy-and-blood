@@ -671,7 +671,10 @@ const MyPreset = definePreset(Aura, {
 
 app.use(PrimeVue, {
     theme: {
-        preset: MyPreset
+        preset: MyPreset,
+        options: {
+            darkModeSelector: 'light',
+        }
     }
 });
 app.mount('#app')

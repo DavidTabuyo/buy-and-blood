@@ -1,9 +1,4 @@
 <template>
-  <div>
-    <h1>
-      Plan del día
-    </h1>
-  </div>
   <div class="card flex justify-center">
     <Chart
       type="doughnut"
