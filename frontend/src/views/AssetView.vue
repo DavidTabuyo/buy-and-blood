@@ -5,7 +5,7 @@
             <div>Fidelity S&P 500 Index Fund EUR P Acc</div>
             <div class="flex">
                 <div>234,23$</div>
-                <div>^0,23%</div>
+                <PercentageChange :value="changeValue" />
             </div>
             <TradingViewChart />
         </div>
@@ -16,7 +16,7 @@
             <div>$12.234,34</div>
             <div class="flex">
                 <div>+$4233.23</div>
-                <div>^23,23%</div>
+                <PercentageChange :value="changeValue" />
             </div>
             <div class="flex">
                 <Button>Comprar</Button>
@@ -37,6 +37,8 @@ import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
 import TradingViewChart from '@/components/asset/TradingViewChart.vue';
+import PercentageChange from '@/components/utils/PercentageChange.vue';
 
 const value = ref(null);
+const changeValue = ref(-0.39876974);
 </script>
