@@ -7,7 +7,9 @@
                 <div>234,23$</div>
                 <PercentageChange :value="changeValue" />
             </div>
-            <TradingViewChart />
+            <div>
+                <TradingViewChart />
+            </div>
         </div>
 
         <!-- Compra venta -->
