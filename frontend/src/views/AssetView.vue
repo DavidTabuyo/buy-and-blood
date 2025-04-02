@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-full)]">
+    <div class="flex w-full gap-8">
         <!-- Datos del activo -->
         <div class="w-2/3">
             <div>Fidelity S&P 500 Index Fund EUR P Acc</div>
@@ -11,23 +11,29 @@
         </div>
 
         <!-- Compra venta -->
-        <div class="w-1/3">
-            <div>Mi Total:</div>
-            <div>$12.234,34</div>
-            <div class="flex">
+        <div class="w-1/3 flex flex-col items-center space-y-4 p-4">
+            <div class="text-center">Mi Total:</div>
+            <div class="text-center">$12.234,34</div>
+            <div class="flex justify-center items-center gap-2">
                 <div>+$4233.23</div>
                 <PercentageChange :value="changeValue" />
             </div>
-            <div class="flex">
+            <div class="flex justify-center gap-2">
                 <Button>Comprar</Button>
                 <Button>Vender</Button>
             </div>
-            <FloatLabel variant="on">
-                <InputNumber v-model="value" inputId="on_label" mode="currency" currency="USD" locale="en-US" />
-                <label for="on-label">Introduce cantidad...</label>
+            <FloatLabel variant="on" class="w-full flex flex-col items-center">
+                <div class="w-full flex justify-center">
+                    <InputNumber class="w-full text-center" v-model="value" inputId="on_label" mode="currency"
+                        currency="USD" locale="en-US" />
+                </div>
+                <label for="on-label" class="text-center">Introduce cantidad...</label>
             </FloatLabel>
-            <Button>Confirmar</Button>
+            <div>
+                <Button>Confirmar</Button>
+            </div>
         </div>
+
     </div>
 </template>
 
