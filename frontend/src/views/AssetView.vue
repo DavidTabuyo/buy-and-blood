@@ -11,7 +11,7 @@
         </div>
 
         <!-- Compra venta -->
-        <div class="w-1/3 flex flex-col items-center space-y-4 p-4">
+        <div class="w-1/3 flex flex-col items-center space-y-4 p-4 bg-white shadow-lg rounded-xl">
             <div class="text-center">Mi Total:</div>
             <div class="text-center">$12.234,34</div>
             <div class="flex justify-center items-center gap-2">
