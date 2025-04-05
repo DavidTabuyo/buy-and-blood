@@ -3,16 +3,19 @@ import NavBar from '@/components/NavBar.vue';
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col h-screen">
+    <!-- Barra de navegación -->
     <div>
-    <NavBar></NavBar>
-  </div>
-  <div class="h-full pt-24 px-16 pb-16">
-      <router-view></router-view>
-  </div>
-  </div>
+      <NavBar></NavBar>
+    </div>
 
+    <!-- Contenido principal -->
+    <div class="flex-1 overflow-hidden pt-24 px-16 pb-16">
+      <router-view class="h-full"></router-view>
+    </div>
+  </div>
 </template>
+
 
 <style scoped>
 .logo {

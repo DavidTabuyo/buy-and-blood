@@ -1,14 +1,14 @@
 <template>
     <div class="flex w-full gap-8">
         <!-- Datos del activo -->
-        <div class="w-2/3">
+        <div class="w-2/3 flex flex-col h-full">
             <div>Fidelity S&P 500 Index Fund EUR P Acc</div>
             <div class="flex">
                 <div>234,23$</div>
                 <PercentageChange :value="changeValue" />
             </div>
-            <div>
-                <TradingViewChart />
+            <div class="flex-1">
+                <TradingViewChart class="h-full" />
             </div>
         </div>
 
