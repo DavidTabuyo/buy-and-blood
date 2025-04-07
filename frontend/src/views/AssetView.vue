@@ -4,7 +4,7 @@
         <div class="w-2/3 flex flex-col h-full">
             <div class="text-3xl text-gray-500">Fidelity S&P 500 Index Fund EUR P Acc</div>
             <div class="flex items-center gap-2 mt-2 mb-3">
-                <DolarValue :value="assetValue" class="text-3xl font-bold"/>
+                <DolarValue :value="assetValue" class="text-3xl font-bold" />
                 <PercentageChange :value="percentageChange" class="text-xl" />
             </div>
             <div class="flex-1">
@@ -23,14 +23,12 @@
                 </div>
             </div>
             <div class="w-full flex flex-col items-center gap-4">
-                <div class="flex justify-center gap-2">
-                    <ButtonGroup class="flex">
-                        <Button label="Comprar" class="flex-1" :class="getButtonClass('opcion1')"
-                            @click="selectOption('opcion1')" />
-                        <Button label="Vender" class="flex-1" :class="getButtonClass('opcion2')"
-                            @click="selectOption('opcion2')" />
-                    </ButtonGroup>
-                </div>
+                <ButtonGroup class="flex justify-center">
+                    <Button label="Comprar" class="flex-1" :class="getButtonClass('opcion1')"
+                        @click="selectOption('opcion1')" />
+                    <Button label="Vender" class="flex-1" :class="getButtonClass('opcion2')"
+                        @click="selectOption('opcion2')" />
+                </ButtonGroup>
                 <FloatLabel variant="on" class="w-full flex flex-col items-center">
                     <div class="w-full flex justify-center">
                         <InputNumber class="w-full text-center" v-model="value" @input="value = $event.value"
