@@ -7,7 +7,7 @@
                 <FloatLabel variant="on" class="w-full">
                     <IconField>
                         <InputIcon class="pi pi-search" />
-                        <InputText id="in_label" v-model="value2" autocomplete="off" variant="filled" class="w-full" />
+                        <InputText id="in_label" v-model="search" autocomplete="off" variant="filled" class="w-full" />
                     </IconField>
                     <label for="in_label">Buscar activo</label>
                 </FloatLabel>
@@ -25,28 +25,19 @@
         <div class="flex justify-center bg-white shadow-lg rounded-xl p-2">
             <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">
                 <div class="flex flex-wrap gap-4 justify-center pt-8 pb-8">
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl">
-                    <MiniAsset></MiniAsset>
+                    <div v-for="asset in assets" :key="asset.pk"
+                        class="w-48 min-w-48 h-48 border border-black rounded-xl cursor-pointer" @click="clickAsset">
+                        <MiniAsset :asset="asset" />
                     </div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
                 </div>
+
             </ScrollPanel>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import IconField from 'primevue/iconfield';
@@ -54,10 +45,14 @@ import InputIcon from 'primevue/inputicon';
 import ScrollPanel from 'primevue/scrollpanel';
 import Button from 'primevue/button';
 import ButtonGroup from 'primevue/buttongroup';
-
 import MiniAsset from '@/components/home/MiniAsset.vue'
+import jsonData from '@/dummy.json'
+import { useRouter } from 'vue-router'
 
 const selected = ref('opcion1'); // Opción por defecto seleccionada
+const search = ref('');
+const assets = ref([]);
+const router = useRouter()
 
 const selectOption = (option) => {
     selected.value = option;
@@ -70,4 +65,15 @@ const getButtonClass = (option) => {
         'p-button-outlined': selected.value !== option // Color por defecto
     };
 };
+
+onMounted(() => {
+    assets.value = jsonData.filter(item => item.model === 'app.asset')
+
+})
+
+const clickAsset  = () => {
+    router.push('/sp500')
+
+}
+
 </script>

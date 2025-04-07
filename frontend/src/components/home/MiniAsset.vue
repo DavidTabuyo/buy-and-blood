@@ -1,41 +1,71 @@
 <template>
-        <div class="flex justify-between">
-            <div>Bitcoin</div>
-        </div>
-        <p>{{ price }}$</p>
-        <p :class="numberColor">{{ arrow }}{{ change }}%</p>
-        <div>GRAFICO</div>
-</template>
+    <div class="flex justify-between px-4 pt-2">
+      <h1 class="text-2xl text-gray-500" v-if="asset && asset.fields">
+        {{ asset.fields.symbol }}
+      </h1>
+    </div>
+    <div class="px-4">
+      <h1 v-if="asset && asset.fields" class="text-2xl">${{ asset.fields.price }}</h1>
+    </div>
+    <div class="px-4"  v-if="asset && asset.fields">
+        <PercentageChange :value="asset.fields.day_variation"></PercentageChange>
+    </div>
+    <div >
+      <Chart type="line" :data="chartData" :options="chartOptions"  />
+    </div>
+  </template>
+  
+  <script setup>
+  import { ref, defineProps, watch } from 'vue';
+  import Chart from 'primevue/chart';
+  import PercentageChange from '@/components/utils/PercentageChange.vue'
 
-<script setup>
-import { ref, defineProps, onMounted, watch } from 'vue';
-
-// const props = defineProps({
-//     number: Number
-// });
-
-const info = {
-    price: 126327.2334,
-    change: -0.023,
-    graphValues: [10, 20, 30, 20, 10, 30, 20]
-}
-const price = ref('');
-const numberColor = ref('');
-const arrow = ref('');
-const change = ref('');
-
-onMounted(() => {
-    price.value = info.price;
-    numberColor.value = (info.change >= 0 ? 'text-green-500' : 'text-red-500');
-    arrow.value = (info.change >= 0 ? '▲' : '▼');
-    change.value = info.change;
-})
-
-// watch(props, (newProps) => {
-//     price.value = newProps.price;
-//     numberColor.value = (newProps.change >= 0 ? 'text-green-500' : 'text-red-500');
-//     arrow.value = (newProps.change >= 0 ? '▲' : '▼');
-//     change.value = newProps.change;
-// }, { deep: true });
-
-</script>
+  const props = defineProps({
+    asset: Object
+  });
+  const asset = ref(null);
+  
+  watch(
+    () => props.asset,
+    (newAsset) => {
+      asset.value = newAsset;
+      console.log(asset.value);
+    },
+    { deep: true, immediate: true }
+  );
+  
+  const chartData = ref({
+    labels: ["", "", "", "", "", "", ""],
+    datasets: [
+      {
+        data: [10, 20, 15, 25, 30, 22, 18],
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        fill: true,
+        tension: 0.4
+      }
+    ]
+  });
+  
+  const chartOptions = ref({
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    scales: {
+      x: {
+        ticks: { display: false },
+        grid: { display: false },
+        border: { display: false }
+      },
+      y: {
+        ticks: { display: false },
+        grid: { display: false },
+        border: { display: false }
+      }
+    }
+  });
+  </script>
+  
