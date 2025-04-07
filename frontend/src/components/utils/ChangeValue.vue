@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch, onMounted } from 'vue'
+import { ref, defineProps, watch } from 'vue'
 
 const str = ref("");
 
