@@ -1,0 +1,185 @@
+[
+    {
+      "model": "app.asset",
+      "pk": 1,
+      "fields": {
+        "symbol": "AAPL",
+        "name": "Apple Inc.",
+        "type": "stock",
+        "price": 150.25,
+        "last_prices": [148.50, 149.00, 149.75, 150.00, 150.25, 150.50, 150.75],
+        "day_variation": 0.02
+      }
+    },
+    {
+      "model": "app.asset",
+      "pk": 2,
+      "fields": {
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "type": "crypto",
+        "price": 45000.75,
+        "last_prices": [44000, 44500, 44750, 45000, 45250, 45500, 45750],
+        "day_variation": -0.015
+      }
+    },
+    {
+      "model": "app.asset",
+      "pk": 3,
+      "fields": {
+        "symbol": "TSLA",
+        "name": "Tesla Inc.",
+        "type": "stock",
+        "price": 720.50,
+        "last_prices": [700, 710, 715, 720, 725, 730, 735],
+        "day_variation": 0.03
+      }
+    },
+    {
+      "model": "app.asset",
+      "pk": 4,
+      "fields": {
+        "symbol": "ETH",
+        "name": "Ethereum",
+        "type": "crypto",
+        "price": 3000.10,
+        "last_prices": [2950, 2960, 2970, 2980, 2990, 3000, 3010],
+        "day_variation": -0.01
+      }
+    },
+    {
+      "model": "app.plan",
+      "pk": 1,
+      "fields": {
+        "name": "Basic Plan"
+      }
+    },
+    {
+      "model": "app.plan",
+      "pk": 2,
+      "fields": {
+        "name": "Premium Plan"
+      }
+    },
+    {
+      "model": "app.plan",
+      "pk": 3,
+      "fields": {
+        "name": "Enterprise Plan"
+      }
+    },
+    {
+      "model": "app.user",
+      "pk": 1,
+      "fields": {
+        "username": "john_doe",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-03-11T12:00:00Z",
+        "auth_provider": "google",
+        "plan": 1
+      }
+    },
+    {
+      "model": "app.user",
+      "pk": 2,
+      "fields": {
+        "username": "jane_smith",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-03-11T12:30:00Z",
+        "auth_provider": "facebook",
+        "plan": 2
+      }
+    },
+    {
+      "model": "app.holding",
+      "pk": 1,
+      "fields": {
+        "mean_price": "150.25",
+        "amount": "10.5",
+        "asset": 1,
+        "user": 1
+      }
+    },
+    {
+      "model": "app.holding",
+      "pk": 2,
+      "fields": {
+        "mean_price": "45000.75",
+        "amount": "0.25",
+        "asset": 2,
+        "user": 2
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 1,
+      "fields": {
+        "percentage": "50.00",
+        "asset": 1,
+        "plan": 1
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 2,
+      "fields": {
+        "percentage": "50.00",
+        "asset": 2,
+        "plan": 1
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 3,
+      "fields": {
+        "percentage": "30.00",
+        "asset": 3,
+        "plan": 2
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 4,
+      "fields": {
+        "percentage": "70.00",
+        "asset": 4,
+        "plan": 2
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 5,
+      "fields": {
+        "percentage": "40.00",
+        "asset": 1,
+        "plan": 3
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 6,
+      "fields": {
+        "percentage": "30.00",
+        "asset": 3,
+        "plan": 3
+      }
+    },
+    {
+      "model": "app.planasset",
+      "pk": 7,
+      "fields": {
+        "percentage": "30.00",
+        "asset": 4,
+        "plan": 3
+      }
+    }
+  ]
+  
