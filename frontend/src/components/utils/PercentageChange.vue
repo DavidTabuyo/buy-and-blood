@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch, onMounted } from 'vue'
+import { ref, defineProps, watch } from 'vue'
 
 const color = ref("");
 const str = ref("");
@@ -14,7 +14,7 @@ const props = defineProps({
     value: Number
 });
 
-watch(props, (newValue) => {
+watch(props, () => {
     str.value = '';
     if (props.value === 0) {
         str.value += '-';
