@@ -2,12 +2,10 @@
     <div class="flex w-full gap-8">
         <!-- Datos del activo -->
         <div class="w-2/3 flex flex-col h-full">
-            <div>Fidelity S&P 500 Index Fund EUR P Acc</div>
-            <div class="flex">
-                <div>
-                    <DolarValue :value="assetValue" />
-                </div>
-                <PercentageChange :value="percentageChange" />
+            <div class="text-3xl text-gray-500">Fidelity S&P 500 Index Fund EUR P Acc</div>
+            <div class="flex items-center gap-2 mt-2 mb-3">
+                <DolarValue :value="assetValue" class="text-3xl font-bold"/>
+                <PercentageChange :value="percentageChange" class="text-xl" />
             </div>
             <div class="flex-1">
                 <TradingViewChart class="h-full" />
@@ -17,12 +15,10 @@
         <!-- Compra venta -->
         <div class="w-1/3 flex flex-col justify-between items-center space-y-4 p-4 bg-white shadow-lg rounded-xl">
             <div>
-                <div class="text-center">Mi Total:</div>
-                <div class="text-center">
-                    <DolarValue :value="myTotal" />
-                </div>
+                <div class="text-center text-3xl mb-4 text-gray-500">Mi Total:</div>
+                <DolarValue :value="myTotal" class="text-center text-4xl font-bold" />
                 <div class="flex justify-center items-center gap-2">
-                    <ChangeValue :value="changeValue" />
+                    <ChangeValue :value="changeValue" class="text-2xl" />
                     <PercentageChange :value="percentageChange" />
                 </div>
             </div>
@@ -42,6 +38,9 @@
                     </div>
                     <label for="on-label" class="text-center">Introduce cantidad...</label>
                 </FloatLabel>
+            </div>
+            <div class="w-full flex flex-col">
+
                 <Button class="w-full" :disabled="!value || value <= 0">Confirmar</Button>
             </div>
         </div>
@@ -63,7 +62,7 @@ import ButtonGroup from 'primevue/buttongroup';
 const value = ref(null);
 const assetValue = ref(260.34);
 const percentageChange = ref(-0.39876974);
-const changeValue = ref(0);
+const changeValue = ref(8234.345);
 const myTotal = ref(123342.45563);
 
 const selected = ref('opcion1'); // Opción por defecto seleccionada

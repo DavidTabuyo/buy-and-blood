@@ -1,6 +1,6 @@
 <template>
     <div class="tradingview-widget-container" style="height:100%; width:100%">
-        <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px); width:100%"></div>
+        <div class="tradingview-widget-container__widget" style="height:100%; width:100%"></div>
     </div>
 </template>
 
@@ -20,6 +20,7 @@ onMounted(() => {
         theme: "light",
         style: "2",
         locale: "es",
+        hide_legend: true,
         allow_symbol_change: false,
         hide_volume: true,
         support_host: "https://www.tradingview.com"
