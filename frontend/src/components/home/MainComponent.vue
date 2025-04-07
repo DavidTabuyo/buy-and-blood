@@ -25,7 +25,9 @@
         <div class="flex justify-center bg-white shadow-lg rounded-xl p-2">
             <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">
                 <div class="flex flex-wrap gap-4 justify-center pt-8 pb-8">
-                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
+                    <div class="w-64 min-w-64 h-64 border border-black rounded-xl">
+                    <MiniAsset></MiniAsset>
+                    </div>
                     <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
                     <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
                     <div class="w-64 min-w-64 h-64 border border-black rounded-xl"></div>
@@ -52,6 +54,8 @@ import InputIcon from 'primevue/inputicon';
 import ScrollPanel from 'primevue/scrollpanel';
 import Button from 'primevue/button';
 import ButtonGroup from 'primevue/buttongroup';
+
+import MiniAsset from '@/components/home/MiniAsset.vue'
 
 const selected = ref('opcion1'); // Opción por defecto seleccionada
 

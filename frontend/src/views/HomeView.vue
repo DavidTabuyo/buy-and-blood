@@ -5,7 +5,7 @@
             <div class="bg-white shadow-lg rounded-xl w-1/3 ">
                 <div class="pt-8 flex flex-col items-center">
                     <Tag severity="secondary" value="Plan del día" rounded style="font-size: 40px;"></Tag>
-                    <DayPlanComponent class="mt-10" />
+                    <DayPlanComponent  />
                 </div>
 
             </div>
@@ -18,7 +18,7 @@
 
 import { ref } from 'vue';
 import MainComponent from '@/components/home/MainComponent.vue';
-import DayPlanComponent from '@/components/home/DayPlanComponent.vue';
+import DayPlanComponent from '@/components/utils/DayPlanComponent.vue';
 import Tag from 'primevue/tag';
 const value = ref(null);
 </script>
