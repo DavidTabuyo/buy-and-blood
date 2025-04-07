@@ -37,12 +37,12 @@
                 </div>
                 <FloatLabel variant="on" class="w-full flex flex-col items-center">
                     <div class="w-full flex justify-center">
-                        <InputNumber class="w-full text-center" v-model="value" inputId="on_label" mode="currency"
-                            currency="USD" locale="en-US" />
+                        <InputNumber class="w-full text-center" v-model="value" @input="value = $event.value"
+                            inputId="on_label" mode="currency" currency="USD" locale="en-US" />
                     </div>
                     <label for="on-label" class="text-center">Introduce cantidad...</label>
                 </FloatLabel>
-                <Button class="w-full">Confirmar</Button>
+                <Button class="w-full" :disabled="!value || value <= 0">Confirmar</Button>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -61,7 +61,7 @@ import DolarValue from '@/components/utils/DolarValue.vue';
 import ButtonGroup from 'primevue/buttongroup';
 
 const value = ref(null);
-const assetValue = ref(260.34)
+const assetValue = ref(260.34);
 const percentageChange = ref(-0.39876974);
 const changeValue = ref(0);
 const myTotal = ref(123342.45563);
