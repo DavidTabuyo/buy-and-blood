@@ -2,13 +2,13 @@
     <div class="flex w-full gap-8">
         <!-- Datos del activo -->
         <div class="w-2/3 flex flex-col h-full">
-            <div class="text-3xl text-gray-500">Fidelity S&P 500 Index Fund EUR P Acc</div>
+            <div class="text-3xl text-gray-500">Vanguard S&P 500 ETF</div>
             <div class="flex items-center gap-2 mt-2 mb-3">
                 <DolarValue :value="assetValue" class="text-3xl font-bold" />
                 <PercentageChange :value="percentageChange" class="text-xl" />
             </div>
             <div class="flex-1">
-                <TradingViewChart class="h-full" />
+                <TradingViewChart class="h-full" ticker="VOO"/>
             </div>
         </div>
 
