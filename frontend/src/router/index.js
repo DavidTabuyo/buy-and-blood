@@ -9,7 +9,7 @@ const routes = [
   { path: "/", component: HomeView },        // Ruta de Inicio
   { path: "/about", component: AboutView },  // Ruta de Acerca de
   { path: "/contact", component: ContactView }, // Ruta de Contacto
-  { path: "/sp500", component: AssetView } // Ruta de Contacto
+  { path: "/asset/:ticker", component: AssetView } // Ruta de Asset
 ];
 
 const router = createRouter({

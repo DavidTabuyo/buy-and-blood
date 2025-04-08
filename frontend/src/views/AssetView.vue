@@ -30,7 +30,7 @@
                         @click="selectOption('opcion2')" />
                 </ButtonGroup>
                 <FloatLabel variant="on" class="w-full flex flex-col items-center">
-                    <div class="w-full flex justify-center">
+                    <div class="flex justify-center">
                         <InputNumber class="w-full text-center" v-model="value" @input="value = $event.value"
                             inputId="on_label" mode="currency" currency="USD" locale="en-US" />
                     </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -56,6 +56,12 @@ import PercentageChange from '@/components/utils/PercentageChange.vue';
 import ChangeValue from '@/components/utils/ChangeValue.vue';
 import DolarValue from '@/components/utils/DolarValue.vue';
 import ButtonGroup from 'primevue/buttongroup';
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const ticker = route.params.ticker
+
+console.log(ticker);
 
 const value = ref(null);
 const assetValue = ref(260.34);
