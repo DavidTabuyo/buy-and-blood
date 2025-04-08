@@ -1,8 +1,14 @@
 <template>
   <div class="card flex justify-center">
-    <Chart type="doughnut" :data="chartData" :options="chartOptions" class="w-full md:w-[30rem]" />
+    <Chart
+      type="doughnut"
+      :data="chartData"
+      :options="chartOptions"
+      class="w-full max-w-[30rem] h-auto"
+    />
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from "vue";
