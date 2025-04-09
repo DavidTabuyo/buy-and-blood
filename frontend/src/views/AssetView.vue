@@ -8,7 +8,7 @@
                 <PercentageChange :value="percentageChange" class="text-xl" />
             </div>
             <div class="flex-1">
-                <TradingViewChart class="h-full" ticker="VOO"/>
+                <TradingViewChart class="h-full" ticker="VOO" />
             </div>
         </div>
 
@@ -29,6 +29,12 @@
                     <Button label="Vender" class="flex-1" :class="getButtonClass('opcion2')"
                         @click="selectOption('opcion2')" />
                 </ButtonGroup>
+                <div class="flex gap-2 items-centeri text-gray-500">
+                    <div>Disponible:</div>
+                    <div>
+                        <DolarValue :value="12" class="text-xl" />
+                    </div>
+                </div>
                 <FloatLabel variant="on" class="w-full flex flex-col items-center">
                     <div class="flex justify-center">
                         <InputNumber class="w-full text-center" v-model="value" @input="value = $event.value"
