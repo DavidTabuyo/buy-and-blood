@@ -53,6 +53,7 @@
 </template>
 
 <script setup>
+import apiClient from '../axios.js';
 import { ref } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
