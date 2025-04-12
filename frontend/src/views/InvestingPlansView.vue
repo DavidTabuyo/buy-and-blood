@@ -1,5 +1,5 @@
 <template>
     <div>
-        <h1>Sobre Nosotros</h1>
+        <h1>VISTA GREGORI A CURRAR</h1>
     </div>
 </template>
