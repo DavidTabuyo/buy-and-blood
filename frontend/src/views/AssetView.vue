@@ -2,13 +2,13 @@
     <div class="flex w-full gap-8">
         <!-- Datos del activo -->
         <div class="w-2/3 flex flex-col h-full">
-            <div class="text-3xl text-gray-500">Vanguard S&P 500 ETF</div>
+            <div class="text-3xl text-gray-500">{{ assetData.longName }}</div>
             <div class="flex items-center gap-2 mt-2 mb-3">
-                <DolarValue :value="assetValue" class="text-3xl font-bold" />
-                <PercentageChange :value="percentageChange" class="text-xl" />
+                <DolarValue :value="assetData.regularMarketPrice" class="text-3xl font-bold" />
+                <PercentageChange :value="assetData.regularMarketChangePercent" class="text-xl" />
             </div>
             <div class="flex-1">
-                <TradingViewChart class="h-full" ticker="VOO" />
+                <TradingViewChart class="h-full" :ticker="assetData.symbol" />
             </div>
         </div>
 
@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import apiClient from '../axios.js';
+import axios from '../axios.js';
 import { ref } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
@@ -68,14 +68,27 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const ticker = route.params.ticker
 
-console.log(ticker);
+const assetData = ref(null)
+
+axios.get(`asset/${ticker}/`)
+    .then((response) => {
+        console.log('ok')
+        assetData.value = response.data
+    })
+    .catch((error) => {
+        console.log('nook')
+        console.error('Error al obtener datos:', error)
+        assetData.value = { error: 'No se pudo obtener el asset' }
+    })
+
 
 const value = ref(null);
-const assetValue = ref(260.34);
 const percentageChange = ref(-0.39876974);
 const changeValue = ref(8234.345);
 const myTotal = ref(123342.45563);
 
+
+// Para el boton de comprar/vender
 const selected = ref('opcion1'); // Opción por defecto seleccionada
 
 const selectOption = (option) => {
