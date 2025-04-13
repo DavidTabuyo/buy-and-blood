@@ -54,7 +54,7 @@
 
 <script setup>
 import axios from '../axios.js';
-import { ref, onBeforeMount, onBeforeUnmount} from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -87,6 +87,9 @@ const fetchAssetData = () => {
 let intervalId = null
 
 onBeforeMount(() => {
+    // Limpia cualquier intervalo anterior
+    if (intervalId) clearInterval(intervalId)
+
     // Llama de inmediato
     fetchAssetData()
 
