@@ -54,7 +54,7 @@
 
 <script setup>
 import axios from '../axios.js';
-import { ref } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount} from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -70,16 +70,35 @@ const ticker = route.params.ticker
 
 const assetData = ref(null)
 
-axios.get(`asset/${ticker}/`)
-    .then((response) => {
-        console.log('ok')
-        assetData.value = response.data
-    })
-    .catch((error) => {
-        console.log('nook')
-        console.error('Error al obtener datos:', error)
-        assetData.value = { error: 'No se pudo obtener el asset' }
-    })
+const fetchAssetData = () => {
+    axios.get(`asset/${ticker}/`)
+        .then((response) => {
+            console.log('ok')
+            assetData.value = response.data
+        })
+        .catch((error) => {
+            console.log('nook')
+            console.error('Error al obtener datos:', error)
+            assetData.value = { error: 'No se pudo obtener el asset' }
+        })
+}
+
+
+let intervalId = null
+
+onBeforeMount(() => {
+    // Llama de inmediato
+    fetchAssetData()
+
+    // Luego cada 3 segundos
+    intervalId = setInterval(() => {
+        fetchAssetData()
+    }, 5000)
+})
+
+onBeforeUnmount(() => {
+    if (intervalId) clearInterval(intervalId)
+})
 
 
 const value = ref(null);

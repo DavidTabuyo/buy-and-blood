@@ -18,7 +18,7 @@ def asset_detail(request, ticker):
         "regularMarketChangePercent"
     ]
     
-    filtered_info = {clave: asset.info[clave] for clave in important_fields}
+    filtered_info = {clave: asset.info.get(clave) for clave in important_fields}
 
     for k, v in filtered_info.items():
         print(f'{k}: {v}')
