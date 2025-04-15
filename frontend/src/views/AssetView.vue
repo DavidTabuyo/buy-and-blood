@@ -2,13 +2,13 @@
     <div class="flex w-full gap-8">
         <!-- Datos del activo -->
         <div class="w-2/3 flex flex-col h-full">
-            <div class="text-3xl text-gray-500">Fidelity S&P 500 Index Fund EUR P Acc</div>
+            <div class="text-3xl text-gray-500">{{ assetData.longName }}</div>
             <div class="flex items-center gap-2 mt-2 mb-3">
-                <DolarValue :value="assetValue" class="text-3xl font-bold"/>
-                <PercentageChange :value="percentageChange" class="text-xl" />
+                <DolarValue :value="assetData.regularMarketPrice" class="text-3xl font-bold" />
+                <PercentageChange :value="assetData.regularMarketChangePercent" class="text-xl" />
             </div>
             <div class="flex-1">
-                <TradingViewChart class="h-full" />
+                <TradingViewChart class="h-full" :ticker="assetData.symbol" />
             </div>
         </div>
 
@@ -23,16 +23,20 @@
                 </div>
             </div>
             <div class="w-full flex flex-col items-center gap-4">
-                <div class="flex justify-center gap-2">
-                    <ButtonGroup class="flex">
-                        <Button label="Comprar" class="flex-1" :class="getButtonClass('opcion1')"
-                            @click="selectOption('opcion1')" />
-                        <Button label="Vender" class="flex-1" :class="getButtonClass('opcion2')"
-                            @click="selectOption('opcion2')" />
-                    </ButtonGroup>
+                <ButtonGroup class="flex justify-center">
+                    <Button label="Comprar" class="flex-1" :class="getButtonClass('opcion1')"
+                        @click="selectOption('opcion1')" />
+                    <Button label="Vender" class="flex-1" :class="getButtonClass('opcion2')"
+                        @click="selectOption('opcion2')" />
+                </ButtonGroup>
+                <div class="flex gap-2 items-centeri text-gray-500">
+                    <div>Disponible:</div>
+                    <div>
+                        <DolarValue :value="12" class="text-xl" />
+                    </div>
                 </div>
                 <FloatLabel variant="on" class="w-full flex flex-col items-center">
-                    <div class="w-full flex justify-center">
+                    <div class="flex justify-center">
                         <InputNumber class="w-full text-center" v-model="value" @input="value = $event.value"
                             inputId="on_label" mode="currency" currency="USD" locale="en-US" />
                     </div>
@@ -49,7 +53,8 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import axios from '../axios.js';
+import { ref, onBeforeMount, onBeforeUnmount } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -58,13 +63,54 @@ import PercentageChange from '@/components/utils/PercentageChange.vue';
 import ChangeValue from '@/components/utils/ChangeValue.vue';
 import DolarValue from '@/components/utils/DolarValue.vue';
 import ButtonGroup from 'primevue/buttongroup';
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const ticker = route.params.ticker
+
+const assetData = ref(null)
+
+const fetchAssetData = () => {
+    axios.get(`asset/${ticker}/`)
+        .then((response) => {
+            console.log('ok')
+            assetData.value = response.data
+        })
+        .catch((error) => {
+            console.log('nook')
+            console.error('Error al obtener datos:', error)
+            assetData.value = { error: 'No se pudo obtener el asset' }
+        })
+}
+
+
+let intervalId = null
+
+onBeforeMount(() => {
+    // Limpia cualquier intervalo anterior
+    if (intervalId) clearInterval(intervalId)
+
+    // Llama de inmediato
+    fetchAssetData()
+
+    // Luego cada 3 segundos
+    intervalId = setInterval(() => {
+        fetchAssetData()
+    }, 5000)
+})
+
+onBeforeUnmount(() => {
+    if (intervalId) clearInterval(intervalId)
+})
+
 
 const value = ref(null);
-const assetValue = ref(260.34);
 const percentageChange = ref(-0.39876974);
 const changeValue = ref(8234.345);
 const myTotal = ref(123342.45563);
 
+
+// Para el boton de comprar/vender
 const selected = ref('opcion1'); // Opción por defecto seleccionada
 
 const selectOption = (option) => {
