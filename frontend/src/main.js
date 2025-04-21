@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { definePreset } from '@primeuix/themes';
+import AnimateOnScroll from 'primevue/animateonscroll';
 
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
@@ -11,6 +12,7 @@ const app = createApp(App);
 
 app.use(router);
 
+app.directive('animateonscroll', AnimateOnScroll);
 
 const MyPreset = definePreset(Aura, {
     primitive: {
