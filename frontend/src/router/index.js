@@ -3,8 +3,6 @@ import HomeView from "../views/HomeView.vue";
 import InvestingPlansView from "../views/InvestingPlansView.vue";
 import AssetView from "../views/AssetView.vue"
 import ContactView from "../views/ContactView.vue"
-import 'primeicons/primeicons.css';
-
 const routes = [
   { path: "/", component: HomeView },        // Ruta de Inicio
   { path: "/investing-plans", component: InvestingPlansView },  // Ruta de Acerca de
