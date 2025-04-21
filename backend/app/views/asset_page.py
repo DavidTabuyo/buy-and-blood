@@ -24,3 +24,11 @@ def asset_detail(request, ticker):
         print(f'{k}: {v}')
 
     return Response(filtered_info)
+
+@api_view(['GET'])
+def asset_list(request):
+    ...
+    
+@api_view(['GET'])
+def asset_mini_detail(request, id):
+    ...
