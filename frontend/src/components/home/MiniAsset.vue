@@ -1,19 +1,25 @@
 <template>
-    <div class="flex justify-between px-4 pt-2">
+  <div class="flex flex-col h-full">
+    <div class="flex justify-between px-4 pt-4">
       <h1 class="text-2xl text-gray-500" v-if="asset && asset.fields">
         {{ asset.fields.symbol }}
       </h1>
     </div>
+
     <div class="px-4">
       <h1 v-if="asset && asset.fields" class="text-2xl">${{ asset.fields.price }}</h1>
     </div>
-    <div class="px-4"  v-if="asset && asset.fields">
-        <PercentageChange :value="asset.fields.day_variation"></PercentageChange>
+
+    <div class="px-4" v-if="asset && asset.fields">
+      <PercentageChange :value="asset.fields.day_variation" />
     </div>
-    <div >
-      <Chart type="line" :data="chartData" :options="chartOptions"  />
+
+    <div class="flex-grow p-4">
+      <Chart type="line" :data="chartData" :options="chartOptions" class="w-full h-full" />
     </div>
-  </template>
+  </div>
+</template>
+
   
   <script setup>
   import { ref, defineProps, watch } from 'vue';
