@@ -15,9 +15,9 @@
             <!-- SelectButton con menos espacio -->
             <div class="flex-[1]">
                 <ButtonGroup>
-                    <Button label="Todas" :class="getButtonClass('opcion1')" @click="selectOption('opcion1')" />
-                    <Button label="Fondos" :class="getButtonClass('opcion2')" @click="selectOption('opcion2')" />
-                    <Button label="Cryptos" :class="getButtonClass('opcion3')" @click="selectOption('opcion3')" />
+                    <Button label="Todas" :class="getButtonClass(0)" @click="selectOption(0)" />
+                    <Button label="Fondos" :class="getButtonClass(1)" @click="selectOption(1)" />
+                    <Button label="Cryptos" :class="getButtonClass(2)" @click="selectOption(2)" />
                 </ButtonGroup>
             </div>
         </div>
@@ -49,10 +49,10 @@ import ScrollPanel from 'primevue/scrollpanel';
 import Button from 'primevue/button';
 import ButtonGroup from 'primevue/buttongroup';
 import MiniAsset from '@/components/home/MiniAsset.vue'
-import jsonData from '@/dummy.json'
 import { useRouter } from 'vue-router'
+import axios from '@/axios.js';
 
-const selected = ref('opcion1'); // Opción por defecto seleccionada
+const selected = ref(0); // Opción por defecto seleccionada
 const search = ref('');
 const assets = ref([]);
 const router = useRouter()
@@ -69,14 +69,23 @@ const getButtonClass = (option) => {
     };
 };
 
-onMounted(() => {
-    assets.value = jsonData.filter(item => item.model === 'app.asset')
-
-})
-
 const clickAsset = () => {
     router.push('/sp500')
 
 }
+
+onMounted(()=> {
+    //get all ids from backend
+    axios.get(`asset/list`)
+        .then((response) => {
+            if(response.data) {
+                assets.value = response.data;
+            };
+        })
+        .catch((error) => {
+            console.error('Error al obtener datos:', error)
+
+        })
+});
 
 </script>

@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import yfinance as yf
+from app.models import Asset  
 
 
 @api_view(['GET'])
@@ -27,7 +28,9 @@ def asset_detail(request, ticker):
 
 @api_view(['GET'])
 def asset_list(request):
-    ...
+    #DEVOLVER TIKER EN VEZ DE ID
+    asset_ids = list(Asset.objects.values_list('id', flat=True))
+    return Response(asset_ids)
     
 @api_view(['GET'])
 def asset_mini_detail(request, id):
