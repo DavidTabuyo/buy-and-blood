@@ -24,15 +24,18 @@
 
         <div class="flex justify-center bg-white shadow-lg rounded-xl p-2">
             <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">
-                <div class="flex flex-wrap gap-4 justify-center pt-8 pb-8">
+                <div class="grid gap-4 justify-center pt-8 pb-8 px-4"
+                    style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); max-width: 1024px; margin: 0 auto;">
                     <div v-for="asset in assets" :key="asset.pk"
-                        class="w-48 min-w-48 h-48 border border-black rounded-xl cursor-pointer" @click="clickAsset">
+                        class="aspect-square bg-slate-200 shadow-lg rounded-xl cursor-pointer transform transition-transform duration-200 hover:scale-105"
+                        @click="clickAsset">
                         <MiniAsset :asset="asset" />
                     </div>
                 </div>
-
             </ScrollPanel>
         </div>
+
+
     </div>
 </template>
 
@@ -71,7 +74,7 @@ onMounted(() => {
 
 })
 
-const clickAsset  = () => {
+const clickAsset = () => {
     router.push('/sp500')
 
 }
