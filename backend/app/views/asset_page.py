@@ -51,4 +51,5 @@ def asset_list(request):
     
 @api_view(['GET'])
 def asset_mini_detail(request, id):
-    ...
+    print("XZZZZZZ")
+    return Response()

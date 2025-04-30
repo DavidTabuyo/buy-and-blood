@@ -83,7 +83,6 @@ const fetchAssets = () => {
     .then((response) => {
         if (response.data) {
             assets.value = response.data;
-            console.log(assets.value);
         }
     })
     .catch((error) => {
