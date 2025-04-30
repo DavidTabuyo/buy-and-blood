@@ -15,9 +15,9 @@
             <!-- SelectButton con menos espacio -->
             <div class="flex-[1]">
                 <ButtonGroup>
-                    <Button label="Todas" :class="getButtonClass(0)" @click="selectOption(0)" />
-                    <Button label="Fondos" :class="getButtonClass(1)" @click="selectOption(1)" />
-                    <Button label="Cryptos" :class="getButtonClass(2)" @click="selectOption(2)" />
+                    <Button label="Todas" :class="getButtonClass('')" @click="selectOption('')" />
+                    <Button label="Fondos" :class="getButtonClass('stock')" @click="selectOption('stock')" />
+                    <Button label="Cryptos" :class="getButtonClass('crypto')" @click="selectOption('crypto')" />
                 </ButtonGroup>
             </div>
         </div>
@@ -28,19 +28,17 @@
                     style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); max-width: 1024px; margin: 0 auto;">
                     <div v-for="asset in assets" :key="asset.pk"
                         class="aspect-square bg-slate-200 shadow-lg rounded-xl cursor-pointer transform transition-transform duration-200 hover:scale-105"
-                        @click="clickAsset">
-                        <MiniAsset :asset="asset" />
+                        @click="clickAsset(asset)">
+                        <MiniAsset :assetId="asset" />
                     </div>
                 </div>
             </ScrollPanel>
         </div>
-
-
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import IconField from 'primevue/iconfield';
@@ -52,13 +50,14 @@ import MiniAsset from '@/components/home/MiniAsset.vue'
 import { useRouter } from 'vue-router'
 import axios from '@/axios.js';
 
-const selected = ref(0); // Opción por defecto seleccionada
+const selected = ref(''); // Opción por defecto seleccionada
 const search = ref('');
 const assets = ref([]);
 const router = useRouter()
 
 const selectOption = (option) => {
     selected.value = option;
+    fetchAssets(); // Llamar a la función de búsqueda cuando se cambia la opción seleccionada
 };
 
 // Función para asignar clases dinámicamente
@@ -69,23 +68,35 @@ const getButtonClass = (option) => {
     };
 };
 
-const clickAsset = () => {
-    router.push('/sp500')
-
+const clickAsset = (asset_id) => {
+    router.push(`/asset/${asset_id}`)
 }
 
-onMounted(()=> {
-    //get all ids from backend
-    axios.get(`asset/list`)
-        .then((response) => {
-            if(response.data) {
-                assets.value = response.data;
-            };
-        })
-        .catch((error) => {
-            console.error('Error al obtener datos:', error)
+// Función para obtener activos según los filtros
+const fetchAssets = () => {
+    axios.get('asset/list', {
+        params: {
+            type: selected.value,
+            search: search.value
+        }
+    })
+    .then((response) => {
+        if (response.data) {
+            assets.value = response.data;
+            console.log(assets.value);
+        }
+    })
+    .catch((error) => {
+        console.error('Error al obtener datos:', error);
+    });
+}
 
-        })
+onMounted(() => {
+    // Llamar a la función fetchAssets cuando el componente se monta
+    fetchAssets();
 });
 
+watch(search, () => {
+fetchAssets();
+});
 </script>
