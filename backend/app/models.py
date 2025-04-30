@@ -6,13 +6,16 @@ class User(AbstractUser):
     plan = models.ForeignKey('Plan', on_delete=models.SET_NULL, null=True, blank=True)
 
 class Asset(models.Model):
-    symbol = models.CharField(max_length=50, unique=True)
+    symbolYF = models.CharField(max_length=50, unique=True, default='QQQ')
+    symbolTv = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=255, unique=True)
     TYPE_CHOICES = [
         ('stock', 'Stock'),
         ('crypto', 'Crypto'),
+        ('currency', 'Currency'),
     ]
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
