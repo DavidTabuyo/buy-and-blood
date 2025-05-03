@@ -1,3 +1,4 @@
+import random
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import yfinance as yf
@@ -8,7 +9,7 @@ from app.models import Asset
 def asset_detail(request, id):
 
     asset = Asset.objects.get(id=id)
-    asset = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+    asset = yf.Ticker(asset.symbol_yf)  # Assuming 'ticker' is a field in your model
 
 
     important_fields = [
@@ -59,7 +60,7 @@ def asset_mini_detail(request, id):
     asset = Asset.objects.get(id=id)
     
     # Use yfinance to get the asset data
-    ticker = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+    ticker = yf.Ticker(asset.symbol_yf)  # Assuming 'ticker' is a field in your model
     
     # Get the historical data for the last 24 hours with an hourly interval
     hist = ticker.history(period="1d", interval="1h")
@@ -80,10 +81,20 @@ def asset_mini_detail(request, id):
     #     'percentage_change': percentage_change,
     #     'last_values': last_values,
     # })
+    base = random.uniform(5, 15)
+    last_values = [round(base + random.uniform(-2, 2), 2) for _ in range(7)]
+
+    # El precio actual será el último valor de la serie
+    price = round(last_values[-1], 2)
+
+    # Calcular el porcentaje de cambio respecto al primer valor
+    percentage_change = round(((price - last_values[0]) / last_values[0]) * 100, 2)
+
     return Response({
         'name': "BTC",
         'type': "CURRENCY",
-        'price': 10.10,
-        'percentage_change': 0.54,
-        'last_values': [9.5, 10.8, 12.2, 13, 13.5, 11, 10.5],
+        'price': price,
+        'percentage_change': percentage_change,
+        'last_values': last_values,
+        'type': "crypto"
     })
