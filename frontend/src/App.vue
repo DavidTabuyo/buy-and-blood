@@ -9,6 +9,15 @@
     <div class="flex-1  pt-24 px-16 pb-16">
       <router-view class="h-full"></router-view>
     </div>
+
+    <div>
+      <Dialog header="Sesión expirada" :visible="ui.showAuthDialog" modal closable @hide="ui.closeAuthDialog">
+        <p>Tu sesión ha expirado. ¿Quieres volver a iniciar sesión?</p>
+        <template #footer>
+          <Button label="Login" @click="goToLogin" />
+        </template>
+      </Dialog>
+    </div>
   </div>
 </template>
 
@@ -17,9 +26,12 @@ import NavBar from '@/components/NavBar.vue';
 import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-
+import Dialog from 'primevue/dialog';
 import { storeToRefs } from 'pinia'
+import { useUiStore } from '@/stores/ui'
+import Button from 'primevue/button'
 
+const ui = useUiStore()
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
@@ -44,7 +56,10 @@ watch(
     }
   },
   { immediate: true }
-)
+);
+function goHome() {
+  ui.closeAuthDialog()
+}
 
 </script>
 
