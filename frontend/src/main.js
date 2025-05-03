@@ -16,7 +16,7 @@ pinia.use(piniaPersist)
 app.use(pinia)
 app.use(router);
 app.directive('animateonscroll', AnimateOnScroll);
-
+import '@/axios'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
