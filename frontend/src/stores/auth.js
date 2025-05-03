@@ -5,7 +5,7 @@ import axios from 'axios'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isLoggedIn: false,
-    user: null
+    user_data: null
   }),
 
   actions: {
@@ -13,10 +13,10 @@ export const useAuthStore = defineStore('auth', {
       try {
         const { data } = await axios.get('/auth/me/')
         this.isLoggedIn = true
-        this.user       = data
+        this.user_data = data
       } catch {
         this.isLoggedIn = false
-        this.user       = null
+        this.user_data = null
       }
     },
     redirectToGoogle() {
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
     async logout() {
       await axios.post('/auth/logout/')
       this.isLoggedIn = false
-      this.user       = null
+      this.user_data = null
     }
   }
 })
