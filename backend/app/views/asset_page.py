@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def asset_detail(request, id):
 
     asset = Asset.objects.get(id=id)

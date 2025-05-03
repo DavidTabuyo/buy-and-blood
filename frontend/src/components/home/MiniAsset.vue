@@ -78,7 +78,7 @@ const chartOptions = ref({
 // Función para cargar los datos del asset por ID
 const loadData = () => {
   // Utilizamos `props.assetId` para hacer la solicitud GET
-  axios.get(`asset/mini/${props.assetId}`)
+  axios.get(`asset/mini/${props.assetId}/`)
     .then((response) => {
       if (response.data) {
         console.log(response.data);

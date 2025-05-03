@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async checkSession() {
       try {
-        const { data } = await axios.get('/auth/me/')
+        const { data } = await axios.get('/check/auth/')
         this.isLoggedIn = true
         this.user_data = data
       } catch {
