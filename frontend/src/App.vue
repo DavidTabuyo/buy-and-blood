@@ -1,7 +1,3 @@
-<script setup>
-import NavBar from '@/components/NavBar.vue';
-</script>
-
 <template>
   <div class="flex flex-col h-screen">
     <!-- Barra de navegación -->
@@ -16,6 +12,38 @@ import NavBar from '@/components/NavBar.vue';
   </div>
 </template>
 
+<script setup>
+import NavBar from '@/components/NavBar.vue';
+import { onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const route = useRoute()
+const router = useRouter()
+const auth = useAuthStore()
+
+onMounted(async () => {
+  await auth.checkSession()
+});
+
+// 2) Observa cambios en el query param `logged_in`
+watch(
+  () => route.query.logged_in,
+  async (val) => {
+    if (val === '1') {
+      // llegó de Google; refresca la sesión y marca isLoggedIn=true si todo OK
+      await auth.checkSession()
+
+      // 3) Limpia la URL
+      const q = { ...route.query }
+      delete q.logged_in
+      router.replace({ query: q })
+    }
+  },
+  { immediate: true }
+)
+
+</script>
 
 <style scoped>
 .logo {

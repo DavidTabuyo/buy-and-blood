@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
@@ -48,11 +48,15 @@ const items = ref([
     }
 ])
 
-mounted() {
-  const url = new URL(window.location.href);
+onMounted(() => {
+  const url = new URL(window.location.href)
   if (url.searchParams.get('logged_in') === '1') {
-    // MANEJAMOS
+    // Aquí llamas a tu store para marcar isLoggedIn
+    console.log('¡Usuario autenticado!')
+    // Opcional: limpia el parámetro de la URL
+    url.searchParams.delete('logged_in')
+    window.history.replaceState(null, '', url.toString())
   }
-}
+})
 
 </script>
