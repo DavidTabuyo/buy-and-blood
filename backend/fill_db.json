@@ -1,234 +1,239 @@
 [
-  {
+    {
       "model": "app.plan",
       "pk": 1,
       "fields": {
-          "name": "Plan Conservador"
+        "name": "Plan Conservador",
+        "description": ""
       }
-  },
-  {
+    },
+    {
       "model": "app.plan",
       "pk": 2,
       "fields": {
-          "name": "Plan Agresivo"
+        "name": "Plan Agresivo",
+        "description": ""
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 1,
       "fields": {
-          "symbolYF": "AAPL",
-          "symbolTv": "AAPL",
-          "name": "Apple Inc.",
-          "type": "stock"
+        "symbol_yf": "AAPL",
+        "symbol_tv": "AAPL",
+        "name": "Apple Inc.",
+        "type": "stock"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 2,
       "fields": {
-          "symbolYF": "GOOGL",
-          "symbolTv": "GOOG",
-          "name": "Alphabet Inc.",
-          "type": "stock"
+        "symbol_yf": "GOOGL",
+        "symbol_tv": "GOOG",
+        "name": "Alphabet Inc.",
+        "type": "stock"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 3,
       "fields": {
-          "symbolYF": "TSLA",
-          "symbolTv": "TSLA",
-          "name": "Tesla Inc.",
-          "type": "stock"
+        "symbol_yf": "TSLA",
+        "symbol_tv": "TSLA",
+        "name": "Tesla Inc.",
+        "type": "stock"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 4,
       "fields": {
-          "symbolYF": "AMZN",
-          "symbolTv": "AMZN",
-          "name": "Amazon.com, Inc.",
-          "type": "stock"
+        "symbol_yf": "AMZN",
+        "symbol_tv": "AMZN",
+        "name": "Amazon.com, Inc.",
+        "type": "stock"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 5,
       "fields": {
-          "symbolYF": "MSFT",
-          "symbolTv": "MSFT",
-          "name": "Microsoft Corporation",
-          "type": "stock"
+        "symbol_yf": "MSFT",
+        "symbol_tv": "MSFT",
+        "name": "Microsoft Corporation",
+        "type": "stock"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 6,
       "fields": {
-          "symbolYF": "BTC-USD",
-          "symbolTv": "BTCUSD",
-          "name": "Bitcoin",
-          "type": "crypto"
+        "symbol_yf": "BTC-USD",
+        "symbol_tv": "BTCUSD",
+        "name": "Bitcoin",
+        "type": "crypto"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 7,
       "fields": {
-          "symbolYF": "ETH-USD",
-          "symbolTv": "ETHUSD",
-          "name": "Ethereum",
-          "type": "crypto"
+        "symbol_yf": "ETH-USD",
+        "symbol_tv": "ETHUSD",
+        "name": "Ethereum",
+        "type": "crypto"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 8,
       "fields": {
-          "symbolYF": "XRP-USD",
-          "symbolTv": "XRPUSD",
-          "name": "Ripple",
-          "type": "crypto"
+        "symbol_yf": "XRP-USD",
+        "symbol_tv": "XRPUSD",
+        "name": "Ripple",
+        "type": "crypto"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 9,
       "fields": {
-          "symbolYF": "USD=X",
-          "symbolTv": "USDX",
-          "name": "US Dollar",
-          "type": "currency"
+        "symbol_yf": "USD=X",
+        "symbol_tv": "USDX",
+        "name": "US Dollar",
+        "type": "currency"
       }
-  },
-  {
+    },
+    {
       "model": "app.asset",
       "pk": 10,
       "fields": {
-          "symbolYF": "EURUSD=X",
-          "symbolTv": "EURUSD",
-          "name": "Euro to US Dollar",
-          "type": "currency"
+        "symbol_yf": "EURUSD=X",
+        "symbol_tv": "EURUSD",
+        "name": "Euro to US Dollar",
+        "type": "currency"
       }
-  },
-  {
+    },
+    {
       "model": "app.user",
       "pk": 1,
       "fields": {
-          "password": "pbkdf2_sha256$320000$dummyhash$Zt2q...",
-          "last_login": null,
-          "is_superuser": false,
-          "username": "jdoe",
-          "first_name": "John",
-          "last_name": "Doe",
-          "email": "jdoe@example.com",
-          "is_staff": false,
-          "is_active": true,
-          "date_joined": "2025-04-22T10:00:00Z",
-          "auth_provider": "email",
-          "plan": 1,
-          "groups": [],
-          "user_permissions": []
+        "password": "pbkdf2_sha256$320000$dummyhash$Zt2q...",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "jdoe",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "jdoe@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-22T10:00:00Z",
+        "auth_provider": "email",
+        "plan": 1,
+        "groups": [],
+        "user_permissions": []
       }
-  },
-  {
+    },
+    {
       "model": "app.user",
       "pk": 2,
       "fields": {
-          "password": "pbkdf2_sha256$320000$dummyhash$abc123...",
-          "last_login": null,
-          "is_superuser": false,
-          "username": "alice",
-          "first_name": "Alice",
-          "last_name": "Smith",
-          "email": "alice@example.com",
-          "is_staff": false,
-          "is_active": true,
-          "date_joined": "2025-04-21T12:00:00Z",
-          "auth_provider": "google",
-          "plan": 2,
-          "groups": [],
-          "user_permissions": []
+        "password": "pbkdf2_sha256$320000$dummyhash$abc123...",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "alice",
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "email": "alice@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-21T12:00:00Z",
+        "auth_provider": "google",
+        "plan": 2,
+        "groups": [],
+        "user_permissions": []
       }
-  },
-  {
+    },
+    {
       "model": "app.holding",
       "pk": 1,
       "fields": {
-          "user": 1,
-          "asset": 1,
-          "mean_price": "150.00",
-          "amount": "10"
+        "user": 1,
+        "asset": 1,
+        "mean_price": "150.00",
+        "amount": "10"
       }
-  },
-  {
+    },
+    {
       "model": "app.holding",
       "pk": 2,
       "fields": {
-          "user": 2,
-          "asset": 2,
-          "mean_price": "30000.00",
-          "amount": "0.5"
+        "user": 2,
+        "asset": 2,
+        "mean_price": "30000.00",
+        "amount": "0.5"
       }
-  },
-  {
+    },
+    {
       "model": "app.transaction",
       "pk": 1,
       "fields": {
-          "user": 1,
-          "asset": 1,
-          "price": "145.00",
-          "amount": "5",
-          "datetime": "2025-04-20T10:30:00Z"
+        "user": 1,
+        "src_asset": 9,
+        "dest_asset": 1,
+        "price": "145.00",
+        "amount": "5",
+        "datetime": "2025-04-20T10:30:00Z"
       }
-  },
-  {
+    },
+    {
       "model": "app.transaction",
       "pk": 2,
       "fields": {
-          "user": 2,
-          "asset": 2,
-          "price": "29000.00",
-          "amount": "0.25",
-          "datetime": "2025-04-19T09:00:00Z"
+        "user": 2,
+        "src_asset": 9,
+        "dest_asset": 2,
+        "price": "29000.00",
+        "amount": "-0.25",
+        "datetime": "2025-04-19T09:00:00Z"
       }
-  },
-  {
+    },
+    {
       "model": "app.planasset",
       "pk": 1,
       "fields": {
-          "plan": 1,
-          "asset": 1,
-          "percentage": "60.00"
+        "plan": 1,
+        "asset": 1,
+        "percentage": "60.00"
       }
-  },
-  {
+    },
+    {
       "model": "app.planasset",
       "pk": 2,
       "fields": {
-          "plan": 1,
-          "asset": 3,
-          "percentage": "40.00"
+        "plan": 1,
+        "asset": 3,
+        "percentage": "40.00"
       }
-  },
-  {
+    },
+    {
       "model": "app.planasset",
       "pk": 3,
       "fields": {
-          "plan": 2,
-          "asset": 2,
-          "percentage": "70.00"
+        "plan": 2,
+        "asset": 2,
+        "percentage": "70.00"
       }
-  },
-  {
+    },
+    {
       "model": "app.planasset",
       "pk": 4,
       "fields": {
-          "plan": 2,
-          "asset": 3,
-          "percentage": "30.00"
+        "plan": 2,
+        "asset": 3,
+        "percentage": "30.00"
       }
-  }
-]
+    }
+  ]
+  

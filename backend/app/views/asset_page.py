@@ -9,7 +9,7 @@ from app.models import Asset
 def asset_detail(request, id):
 
     asset = Asset.objects.get(id=id)
-    asset = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+    asset = yf.Ticker(asset.symbol_yf)  # Assuming 'ticker' is a field in your model
 
 
     important_fields = [
@@ -60,7 +60,7 @@ def asset_mini_detail(request, id):
     asset = Asset.objects.get(id=id)
     
     # Use yfinance to get the asset data
-    ticker = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+    ticker = yf.Ticker(asset.symbol_yf)  # Assuming 'ticker' is a field in your model
     
     # Get the historical data for the last 24 hours with an hourly interval
     hist = ticker.history(period="1d", interval="1h")

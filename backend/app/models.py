@@ -6,8 +6,8 @@ class User(AbstractUser):
     plan = models.ForeignKey('Plan', on_delete=models.SET_NULL, null=True, blank=True)
 
 class Asset(models.Model):
-    symbolYF = models.CharField(max_length=50, unique=True, default='QQQ')
-    symbolTv = models.CharField(max_length=50, unique=True)
+    symbol_yf = models.CharField(max_length=50, unique=True, default='QQQ')
+    symbol_tv = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=255, unique=True)
     TYPE_CHOICES = [
         ('stock', 'Stock'),
@@ -19,10 +19,20 @@ class Asset(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
+    src_asset = models.ForeignKey(
+        Asset,
+        on_delete=models.CASCADE,
+        related_name='origin_transactions'   
+    )
+    dest_asset = models.ForeignKey(
+        Asset,
+        on_delete=models.CASCADE,
+        related_name='destination_transactions'  
+    )
     price = models.DecimalField(max_digits=20, decimal_places=8)
-    amount = models.DecimalField(max_digits=20, decimal_places=8)
+    amount = models.DecimalField(max_digits=20, decimal_places=8) 
     datetime = models.DateTimeField(auto_now_add=True)
+    
 
 class Holding(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -32,7 +42,7 @@ class Holding(models.Model):
 
 class Plan(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(default="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.")
+    description = models.TextField()
 
 class PlanAsset(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
