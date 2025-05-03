@@ -1,6 +1,6 @@
 <template>
-    <div class="card flex flex-col justify-center">
-        <!-- Contenedor para InputText y SelectButton en una fila -->
+<div class="card flex flex-col justify-start">
+    <!-- Contenedor para InputText y SelectButton en una fila -->
         <div class="flex space-x-4 mb-4">
             <!-- FloatLabel con más espacio -->
             <div class="flex-[3]">
