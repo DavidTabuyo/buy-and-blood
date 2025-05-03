@@ -73,10 +73,17 @@ def asset_mini_detail(request, id):
     last_values = hist['Close'][-5:].tolist()  # Last 5 closing prices
 
     # Return the response with the data obtained
+    # return Response({
+    #     'name': asset.name,
+    #     'type': asset.type,
+    #     'price': end_price,
+    #     'percentage_change': percentage_change,
+    #     'last_values': last_values,
+    # })
     return Response({
-        'name': asset.name,
-        'type': asset.type,
-        'price': end_price,
-        'percentage_change': percentage_change,
-        'last_values': last_values,
+        'name': "BTC",
+        'type': "CURRENCY",
+        'price': 10.10,
+        'percentage_change': 0.54,
+        'last_values': [9.5, 10.8, 12.2, 13, 13.5, 11, 10.5],
     })

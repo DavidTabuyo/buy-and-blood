@@ -74,6 +74,7 @@ const loadData = () => {
   axios.get(`asset/mini/${props.assetId}`)
     .then((response) => {
       if (response.data) {
+        console.log(response.data);
         asset.value = response.data;  // Asignamos los datos recibidos a `asset`
       }
     })
