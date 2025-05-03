@@ -6,7 +6,7 @@ import yfinance as yf
 
 
 @api_view(['GET'])
-def asset_list(request):
+def best_plan(request):
     # Select a random plan
     plan = Plan.objects.order_by('?').first()
     if not plan:
@@ -73,5 +73,5 @@ def asset_list(request):
         'name':              plan.name,
     }
 
-    return Response(response_data)
+    return JsonResponse(response_data)
 
