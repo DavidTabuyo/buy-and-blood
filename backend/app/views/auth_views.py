@@ -60,7 +60,7 @@ def google_callback(request):
         settings.GOOGLE_CLIENT_ID
     )
 
-    # 5. Crear o recuperar el usuario (tu modelo personalizado)
+    # 5. Crear o recuperar el usuario 
     email = idinfo.get('email')
     name  = idinfo.get('name', '')
     user, _ = User.objects.get_or_create(
