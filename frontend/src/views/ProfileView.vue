@@ -11,12 +11,12 @@
             <div class="w-1/2">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
                     <div>Plan de inversion</div>
-                    <DayPlanComponent />
+                    <DayPlanComponent :labels="labels" :values="values" :planName="name" />
                 </div>
             </div>
         </div>
         <div class="mt-8">
-            <DataTable :value="products" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden"
+            <DataTable :value="holdings" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden"
                 @row-click="onRowClick" :pt="{
                     bodyRow: () => ({
                         role: 'button',
@@ -61,18 +61,34 @@ import ChangeValue from '@/components/utils/ChangeValue.vue';
 import PercentageChange from '@/components/utils/PercentageChange.vue';
 import axios from '../axios.js';
 
-const products = ref(null);
+const holdings = ref(null);
+const labels = ref([]);
+const values = ref([]);
+const name = ref('');
 
-const getProducts = () => {
+const getHoldings = () => {
     axios.get('/user/holdings')
         .then(response => {
-            products.value = response.data;
+            holdings.value = response.data;
         })
         .catch(error => {
             console.error('Error fetching products:', error);
         });
 };
-getProducts();
+getHoldings();
+
+const getInvestingPlan = () => {
+    axios.get('/user/investing-plan')
+        .then(response => {
+            labels.value = response.data.labels;
+            values.value = response.data.values;
+            name.value = response.data.name;
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+        });
+};
+getInvestingPlan();
 
 const onRowClick = (event) => {
     window.location.href = `/asset/${event.data.id}`;

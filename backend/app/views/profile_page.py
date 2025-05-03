@@ -18,6 +18,13 @@ def holdings(request):
 
     return Response(holdings)
 
+
 @api_view(['GET'])
-def buyandsell_transaction(request):
-    ...
+def investing_plan(request):
+    investing_plan = {
+        'name': '\"Long-term Growth Strategy\"',
+        'values' : [60, 20, 20],
+        'labels' : ['Stocks', 'Bonds', 'Real Estate'],
+    }
+
+    return Response(investing_plan)

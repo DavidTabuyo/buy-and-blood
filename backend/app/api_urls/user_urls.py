@@ -1,8 +1,8 @@
 # user_urls.py
 from django.urls import path
-from app.views.profile_page import holdings, buyandsell_transaction
+from app.views.profile_page import holdings, investing_plan
 
 urlpatterns = [
     path('holdings/', holdings, name='holdings'),
-    path('transaction/', buyandsell_transaction, name='buyandsell_transaction')
+    path('investing-plan/', investing_plan, name='investing_plan'),
 ]
