@@ -18,14 +18,14 @@
         <div class="mt-8">
             <DataTable :value="products" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden">
                 <Column field="asset" header="Activo" sortable style="width: 40%;"></Column>
-                <Column field="quantity" header="Cantidad" sortable style="width: 10%;">
+                <Column field="quantity" header="Cantidad" sortable style="width: 15%;">
                     <template #body="slotProps">
                         <div class="text-center">
                             {{ slotProps.data.quantity }}
                         </div>
                     </template>
                 </Column>
-                <Column field="value" header="Valor" sortable style="width: 25%;">
+                <Column field="value" header="Valor" sortable style="width: 20%;">
                     <template #body="slotProps">
                         <DolarValue :value="slotProps.data.value" class="text-center" />
                     </template>
