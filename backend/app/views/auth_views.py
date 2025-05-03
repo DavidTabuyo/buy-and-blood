@@ -79,8 +79,7 @@ def google_callback(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def me(request):
+def check_auth(request):
     #Buscamos al usuario que se ha autenticado y devolvemos su balance
     balance = 1000
-
     return Response({'user_balance': balance}, status=status.HTTP_200_OK)
