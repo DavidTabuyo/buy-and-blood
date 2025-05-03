@@ -1,20 +1,14 @@
 from django.http import JsonResponse
+from requests import Response
+from rest_framework.decorators import api_view
 
-def prueba_view(request):
-    if request.method == "GET":
-        print()
-        print()
-        print()
-        print()
-        print("KAKAKKAKAK")
-        print()
-        print()
-        print()
-        print()
-        response = JsonResponse({"mensaje": "Hola desde Django"})
-        response["Access-Control-Allow-Origin"] = "*"
-        response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type"
-        return response
-    else:
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+@api_view(['GET'])
+def asset_list(request):
+
+    return Response({
+        'labels': ["MSCI WORLD","SP500","BTC"],
+        'values': [20,50,30],
+        'percentage_change': 1.9,
+        'description': "Esta gráfica representa la distribución de recursos entre las distintas categorías. Esta gráfica representa la distribución de recursos entre las distintas categorías. Esta gráfica representa la distribución de recursos",
+        'name': "PLAN DEL DIA"
+    })
