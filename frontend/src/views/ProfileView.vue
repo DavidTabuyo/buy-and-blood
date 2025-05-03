@@ -7,6 +7,7 @@
                     <ChangeValue :value=2142.324 class="text-2xl" />
                     <PercentageChange :value=23.34 />
                 </div>
+                <HoldingChart :labels="labels" :values="values"/>
             </div>
             <div class="w-1/2">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
@@ -59,6 +60,7 @@ import DayPlanComponent from '@/components/utils/DayPlanComponent.vue';
 import DolarValue from '@/components/utils/DolarValue.vue';
 import ChangeValue from '@/components/utils/ChangeValue.vue';
 import PercentageChange from '@/components/utils/PercentageChange.vue';
+import HoldingChart from '@/components/profile/HoldingChart.vue';
 import axios from '../axios.js';
 
 const holdings = ref(null);

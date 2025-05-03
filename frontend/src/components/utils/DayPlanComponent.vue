@@ -32,7 +32,7 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount, defineProps } from 'vue';
 import Chart from 'primevue/chart';
-import PercentageChange from './PercentageChange.vue';
+import PercentageChange from '@/components/utils/PercentageChange.vue';
 
 const props = defineProps({
   planName: String,
