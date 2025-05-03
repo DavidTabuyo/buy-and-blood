@@ -32,6 +32,7 @@ class Holding(models.Model):
 
 class Plan(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(default="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.")
 
 class PlanAsset(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)

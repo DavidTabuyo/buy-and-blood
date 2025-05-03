@@ -1,17 +1,19 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex justify-between px-4 pt-4">
-      <h1 class="text-2xl text-gray-500" v-if="asset && asset.fields">
-        {{ asset.fields.symbol }}
+      <h1 class="text-2xl text-gray-500" v-if="asset">
+        {{ asset.name }}
       </h1>
+      <i :class="icon" style="font-size: 2rem"></i>
+
     </div>
 
     <div class="px-4">
-      <h1 v-if="asset && asset.fields" class="text-2xl">${{ asset.fields.price }}</h1>
+      <h1 v-if="asset" class="text-2xl">${{ asset.price }}</h1>
     </div>
 
-    <div class="px-4" v-if="asset && asset.fields">
-      <PercentageChange :value="asset.fields.day_variation" />
+    <div class="px-4" v-if="asset">
+      <PercentageChange :value="asset.percentage_change" />
     </div>
 
     <div class="flex-grow p-4">
@@ -20,12 +22,13 @@
   </div>
 </template>
 
-  
+
 <script setup>
 import { ref, defineProps, watch } from 'vue';
 import Chart from 'primevue/chart';
 import PercentageChange from '@/components/utils/PercentageChange.vue'
 import axios from '@/axios.js';
+import 'primeicons/primeicons.css'
 
 // Recibimos solo el ID del asset
 const props = defineProps({
@@ -33,12 +36,12 @@ const props = defineProps({
 });
 
 const asset = ref(null);
-
+const icon  = ref("");
 const chartData = ref({
   labels: ["", "", "", "", "", "", ""],
   datasets: [
     {
-      data: [10, 20, 15, 25, 30, 22, 18],
+      data: [],
       borderColor: "rgba(75, 192, 192, 1)",
       backgroundColor: "rgba(75, 192, 192, 0.2)",
       fill: true,
@@ -51,6 +54,9 @@ const chartOptions = ref({
   responsive: true,
   plugins: {
     legend: {
+      display: false
+    },
+    datalabels: {
       display: false
     }
   },
@@ -68,13 +74,34 @@ const chartOptions = ref({
   }
 });
 
+
 // Función para cargar los datos del asset por ID
 const loadData = () => {
   // Utilizamos `props.assetId` para hacer la solicitud GET
   axios.get(`asset/mini/${props.assetId}`)
     .then((response) => {
       if (response.data) {
+        console.log(response.data);
         asset.value = response.data;  // Asignamos los datos recibidos a `asset`
+        if (response.data.last_values) {
+          const isPositive = response.data.percentage_change >= 0;
+          const borderColor = isPositive ? "rgba(75, 192, 192, 1)" : "rgba(255, 99, 132, 1)"; // verde o rojo
+          const backgroundColor = isPositive ? "rgba(75, 192, 192, 0.2)" : "rgba(255, 99, 132, 0.2)";
+
+          chartData.value.datasets[0] = {
+            data: response.data.last_values,
+            borderColor,
+            backgroundColor,
+            fill: true,
+            tension: 0.4
+          };
+        }
+        if (response.data.type === "crypto"){
+          icon.value = "pi pi-bitcoin";
+        }else if (response.data.type === "stock") {
+          icon.value = "pi pi-chart-line";
+
+        }
       }
     })
     .catch((error) => {
