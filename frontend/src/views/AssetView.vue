@@ -73,11 +73,9 @@ const assetData = ref(null)
 const fetchAssetData = () => {
     axios.get(`asset/${ticker}/`)
         .then((response) => {
-            console.log('ok')
             assetData.value = response.data
         })
         .catch((error) => {
-            console.log('nook')
             console.error('Error al obtener datos:', error)
             assetData.value = { error: 'No se pudo obtener el asset' }
         })
