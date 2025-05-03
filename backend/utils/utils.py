@@ -54,4 +54,8 @@ def get_plan_percentage_change(plan: Plan) -> float:
     total_weight = sum(weights)
     if total_weight <= 0 or not changes:
         return 0.0
+
+    # Weighted average
+    weighted_avg = sum(w * c for w, c in zip(weights, changes)) / total_weight
+    return round(weighted_avg, 2)
     
