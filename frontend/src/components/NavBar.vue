@@ -39,7 +39,9 @@ const items = ref([
         label: 'Contacto',
         icon: 'pi pi-envelope',
         command: () => {
-            router.push('/contact');
+            window.location.href = 'http://localhost:8000/auth/google/login/';
+
+            //router.push('/contact');
         }
     }
 ]);
