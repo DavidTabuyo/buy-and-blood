@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 
 axios.defaults.baseURL = 'http://localhost:8000/api/'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
-// axios.defaults.withCredentials = true  // si usas cookies de sesión
+axios.defaults.withCredentials = true  // si usas cookies de sesión
 
 axios.interceptors.response.use(
   res => res,
