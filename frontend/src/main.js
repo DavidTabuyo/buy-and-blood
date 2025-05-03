@@ -14,6 +14,12 @@ app.use(router);
 
 app.directive('animateonscroll', AnimateOnScroll);
 
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+
+
 const MyPreset = definePreset(Aura, {
     primitive: {
         borderRadius: {

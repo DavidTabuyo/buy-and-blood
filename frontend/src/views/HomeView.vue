@@ -4,7 +4,6 @@
             <MainComponent class="w-2/3" />
             <div class="bg-white shadow-lg rounded-xl w-1/3 ">
                 <div class="pt-8 flex flex-col items-center">
-                    <Tag severity="secondary" value="Plan del día" rounded style="font-size: 40px;"></Tag>
                     <DayPlanComponent  />
                 </div>
 
