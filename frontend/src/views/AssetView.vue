@@ -22,6 +22,15 @@
                     <PercentageChange :value="percentageChange" />
                 </div>
             </div>
+            <div>
+                <DataTable :value="transactions" stripedRows tableStyle="">
+                    <Column field="date" header="Fecha"></Column>
+                    <Column field="buyPrice" header="Precio de compra"></Column>
+                    <Column field="sharesNumber" header="Número de acciones"></Column>
+                    <Column field="quantity" header="Valor total"></Column>
+                </DataTable>
+
+            </div>
             <div class="w-full flex flex-col items-center gap-4">
                 <ButtonGroup class="flex justify-center">
                     <Button label="Comprar" class="flex-1" :class="getButtonClass('opcion1')"
@@ -54,7 +63,7 @@
 
 <script setup>
 import axios from '../axios.js';
-import { ref, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import InputNumber from 'primevue/inputnumber';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
@@ -64,10 +73,13 @@ import ChangeValue from '@/components/utils/ChangeValue.vue';
 import DolarValue from '@/components/utils/DolarValue.vue';
 import ButtonGroup from 'primevue/buttongroup';
 import { useRoute } from 'vue-router'
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+
 
 const route = useRoute()
 const ticker = route.params.ticker
-
+const transactions = ref();
 const assetData = ref(null)
 
 const fetchAssetData = () => {
@@ -122,4 +134,30 @@ const getButtonClass = (option) => {
         'p-button-outlined': selected.value !== option // Color por defecto
     };
 };
+
+const loadTransactionsData = () => {
+
+    axios.get('asset/transactions/', {
+        params: {
+            asset_id: 1
+        }
+    })
+    .then((response) => {
+        if (response.data) {
+            
+        }else{
+            //Mostramos el aviso de que está vacío
+        }
+    })
+    .catch((error) => {
+        console.error('Error al obtener datos:', error);
+    });
+
+};
+
+onMounted(()=> {
+    loadTransactionsData()
+
+});
+
 </script>
