@@ -51,11 +51,12 @@ const items = ref([
 onMounted(() => {
   const url = new URL(window.location.href)
   if (url.searchParams.get('logged_in') === '1') {
-    // Aquí llamas a tu store para marcar isLoggedIn
     console.log('¡Usuario autenticado!')
-    // Opcional: limpia el parámetro de la URL
     url.searchParams.delete('logged_in')
     window.history.replaceState(null, '', url.toString())
+  }else{
+    //el usuario no ha conseguido autenticarse
+    
   }
 })
 

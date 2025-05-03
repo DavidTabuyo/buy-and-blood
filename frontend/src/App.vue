@@ -18,12 +18,16 @@ import { onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+import { storeToRefs } from 'pinia'
+
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
+const { isLoggedIn, user_data } = storeToRefs(auth)
 
 onMounted(async () => {
-  await auth.checkSession()
+  await auth.checkSession();
+  console.log(isLoggedIn.value);
 });
 
 // 2) Observa cambios en el query param `logged_in`
@@ -33,7 +37,6 @@ watch(
     if (val === '1') {
       // llegó de Google; refresca la sesión y marca isLoggedIn=true si todo OK
       await auth.checkSession()
-
       // 3) Limpia la URL
       const q = { ...route.query }
       delete q.logged_in
