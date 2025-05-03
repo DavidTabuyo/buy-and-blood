@@ -10,7 +10,7 @@ import NavBar from '@/components/NavBar.vue';
     </div>
 
     <!-- Contenido principal -->
-    <div class="flex-1 overflow-hidden pt-24 px-16 pb-16">
+    <div class="flex-1  pt-24 px-16 pb-16">
       <router-view class="h-full"></router-view>
     </div>
   </div>
