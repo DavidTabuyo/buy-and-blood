@@ -16,7 +16,14 @@
             </div>
         </div>
         <div class="mt-8">
-            <DataTable :value="products" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden">
+            <DataTable :value="products" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden"
+                @row-click="onRowClick" :pt="{
+                    bodyRow: () => ({
+                        role: 'button',
+                        tabindex: 0,
+                        class: 'cursor-pointer hover:bg-gray-200'
+                    })
+                }">
                 <Column field="asset" header="Activo" sortable style="width: 40%;"></Column>
                 <Column field="quantity" header="Cantidad" sortable style="width: 15%;">
                     <template #body="slotProps">
