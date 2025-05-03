@@ -48,17 +48,11 @@ const setChartData = () => {
       {
         data: [540, 325, 702],
         backgroundColor: [
-          '#f4b2cc', // Rosa pastel
-          '#c89eff', // Lila pastel
-          '#add8e6', // Verde pastel
-          '#fff1b8', // Amarillo pastel
-          '#add8e6'  // Azul pastel
-        ], hoverBackgroundColor: [
-          '#f7c1d5', // Rosa pastel hover (más suave)
-          '#d0a8ff', // Lila pastel hover (más suave)
-          '#c4e6f1', // Verde pastel hover (más suave)
-          '#fff7d1', // Amarillo pastel hover (más suave)
-          '#c4e6f1'  // Azul pastel hover (más suave)
+          '#FFC0CB', // Light Pink
+          '#FFB6C1', // Light Pink 2
+          '#FF69B4', // Hot Pink
+          '#FF1493', // Deep Pink
+          '#DB7093'  // Pale Violet Red
         ]
       }
     ]
@@ -72,12 +66,18 @@ function setChartOptions() {
   return {
     responsive: true,
     maintainAspectRatio: false,
-    // 🔧 Desactivamos el offset al pasar el ratón
+
+    hover: {
+      mode: null
+    },
+    events: [],
+
     elements: {
       arc: {
         hoverOffset: 0
       }
     },
+
     plugins: {
       legend: { display: false },
 
@@ -88,7 +88,6 @@ function setChartOptions() {
           size: 16,
           weight: '600'
         },
-        // 🎨 Fondo oscuro uniforme
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
         borderRadius: 10,
         borderColor: '#ffffff',
@@ -99,16 +98,14 @@ function setChartOptions() {
         align: 'center',
         anchor: 'center',
         formatter: (value, ctx) => {
-          const data = ctx.chart.data.datasets[0].data;
-          const total = data.reduce((sum, v) => sum + v, 0);
-          const pct = ((value / total) * 100).toFixed(1) + '%';
           const label = ctx.chart.data.labels[ctx.dataIndex].toUpperCase();
-          return `${label}\n${pct}`;
+          return `${label}\n${value}%`;
         }
       }
     }
   };
 }
+
 
 
 

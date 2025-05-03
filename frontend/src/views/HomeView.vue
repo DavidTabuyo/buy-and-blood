@@ -15,9 +15,14 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import MainComponent from '@/components/home/MainComponent.vue';
 import DayPlanComponent from '@/components/utils/DayPlanComponent.vue';
-import Tag from 'primevue/tag';
 const value = ref(null);
+
+
+onMounted(()=> {
+
+});
+
 </script>
