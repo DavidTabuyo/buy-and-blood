@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-x%#n^4o_!q*m(3z+!ze9gr!llk5@pkke_%jpcn8fpls*4r7ms8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -61,10 +61,14 @@ MIDDLEWARE = [
 # Para desarrollo (permite todo, cuidado en producción)
 CORS_ALLOW_ALL_ORIGINS = True
 
-# O, mejor:
+# [Opcional] Si en lugar de permitir todo quieres restringir:
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  # Tu frontend
+#     "http://localhost:8080",  # Tu frontend Vue
 # ]
+
+# Permitir envío de cookies de sesión entre frontend y backend
+CORS_ALLOW_CREDENTIALS = True
+
 
 ROOT_URLCONF = 'app.urls'
 
@@ -93,6 +97,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -130,9 +135,47 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 AUTH_USER_MODEL = 'app.User'
+
+
+# -------------------------------------------------------------------
+# Google OAuth2
+# -------------------------------------------------------------------
+
+GOOGLE_CLIENT_ID     = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+# Asegúrate de que este URL coincide con el autorizado en Google Cloud Console
+GOOGLE_REDIRECT_URI  = os.getenv(
+    'GOOGLE_REDIRECT_URI',
+    'http://localhost:8000/auth/google/callback/'
+)
+
+
+# -------------------------------------------------------------------
+# CORS / Sesión / Seguridad para OAuth
+# -------------------------------------------------------------------
+
+# Dominios desde los que aceptas solicitudes con CSRF (para el callback)
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080',
+    # 'https://tu-dominio-frontend.com',
+]
+
+# Configuración de cookies de sesión y CSRF
+SESSION_COOKIE_SAMESITE         = 'Lax'
+SESSION_COOKIE_SECURE           = not DEBUG  # True en producción
+CSRF_COOKIE_SECURE              = not DEBUG
+
+# Duración de la sesión (opcional)
+# SESSION_COOKIE_AGE              = 60 * 60 * 24 * 7  # 1 semana
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# SESSION_SAVE_EVERY_REQUEST      = True
+
+# Fin de settings.py
