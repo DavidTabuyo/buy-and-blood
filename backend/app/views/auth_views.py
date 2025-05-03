@@ -1,11 +1,13 @@
 import os
 import secrets
 import requests
-
 from django.conf           import settings
 from django.shortcuts      import redirect
 from django.contrib.auth   import login, get_user_model
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 from google.oauth2         import id_token
 from google.auth.transport import requests as grequests
 
@@ -74,3 +76,11 @@ def google_callback(request):
     # 7. Redirigir al frontend
     frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:5173')
     return redirect(f'{frontend_url}?logged_in=1')
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def me(request):
+    #Buscamos al usuario que se ha autenticado y devolvemos su balance
+    balance = 1000
+
+    return Response({'user_balance': balance}, status=status.HTTP_200_OK)
