@@ -55,6 +55,9 @@ const chartOptions = ref({
   plugins: {
     legend: {
       display: false
+    },
+    datalabels: {
+      display: false
     }
   },
   scales: {
@@ -70,6 +73,7 @@ const chartOptions = ref({
     }
   }
 });
+
 
 // Función para cargar los datos del asset por ID
 const loadData = () => {
