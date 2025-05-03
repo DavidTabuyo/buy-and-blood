@@ -5,8 +5,11 @@ from app.models import Asset
 
 
 @api_view(['GET'])
-def asset_detail(request, ticker):
-    asset = yf.Ticker(ticker)
+def asset_detail(request, id):
+
+    asset = Asset.objects.get(id=id)
+    asset = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+
 
     important_fields = [
         "symbol",
@@ -52,4 +55,35 @@ def asset_list(request):
 @api_view(['GET'])
 def asset_mini_detail(request, id):
     print("XZZZZZZ")
-    return Response()
+    # Get the asset from the database using the provided ID
+    asset = Asset.objects.get(id=id)
+    
+    # Use yfinance to get the asset data
+    ticker = yf.Ticker(asset.symbolYF)  # Assuming 'ticker' is a field in your model
+    
+    # Get the historical data for the last 24 hours with an hourly interval
+    hist = ticker.history(period="1d", interval="1h")
+    
+    # Calculate the percentage change from the first to the last closing price
+    start_price = hist['Close'].iloc[0]
+    end_price = hist['Close'].iloc[-1]
+    percentage_change = (end_price - start_price) / start_price
+    
+    # Get the last 5 closing prices (within the last day)
+    last_values = hist['Close'][-5:].tolist()  # Last 5 closing prices
+
+    # Return the response with the data obtained
+    # return Response({
+    #     'name': asset.name,
+    #     'type': asset.type,
+    #     'price': end_price,
+    #     'percentage_change': percentage_change,
+    #     'last_values': last_values,
+    # })
+    return Response({
+        'name': "BTC",
+        'type': "CURRENCY",
+        'price': 10.10,
+        'percentage_change': 0.54,
+        'last_values': [9.5, 10.8, 12.2, 13, 13.5, 11, 10.5],
+    })
