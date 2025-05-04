@@ -1,6 +1,6 @@
 // src/plugins/axios.js
 import axios from 'axios'
-import router from '@/router'          // 🚩 importa la instancia de Vue Router
+import router from '@/router'          
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 
