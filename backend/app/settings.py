@@ -9,12 +9,13 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+FRONTEND_SERVER = os.getenv("FRONTEND_SERVER")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x%#n^4o_!q*m(3z+!ze9gr!llk5@pkke_%jpcn8fpls*4r7ms8'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,7 +51,7 @@ MIDDLEWARE = [
 
 # [Opcional] Si en lugar de permitir todo quieres restringir:
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",   # Vite / Vue dev server
+    FRONTEND_SERVER,   # Vite / Vue dev server
 ]
 
 # Permitir envío de cookies de sesión entre frontend y backend
@@ -150,7 +151,7 @@ GOOGLE_REDIRECT_URI  = os.getenv(
 # -------------------------------------------------------------------
 
 # Dominios desde los que aceptas solicitudes con CSRF (para el callback)
-CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
+CSRF_TRUSTED_ORIGINS = [FRONTEND_SERVER]
 
 
 # Configuración de cookies de sesión y CSRF
