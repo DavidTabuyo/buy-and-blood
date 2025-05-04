@@ -74,7 +74,7 @@ const clickAsset = (asset_id) => {
 
 // Función para obtener activos según los filtros
 const fetchAssets = () => {
-    axios.get('asset/list', {
+    axios.get('asset/list/', {
         params: {
             type: selected.value,
             search: search.value
