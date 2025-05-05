@@ -80,6 +80,24 @@ def google_callback(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_auth(request):
+    '''
     #Buscamos al usuario que se ha autenticado y devolvemos su balance
     balance = 1000
     return Response({'user_balance': balance}, status=status.HTTP_200_OK)
+    '''
+
+    user = request.user
+
+    if not user or not user.is_authenticated:
+        return Response({}, status=status.HTTP_200_OK)
+
+    # Asumo que User tiene un campo balance
+    balance = getattr(user, 'balance', None)
+
+    if balance is None:
+        balance = 0
+
+    return Response(
+        {'user_balance': balance},
+        status=status.HTTP_200_OK
+    )
