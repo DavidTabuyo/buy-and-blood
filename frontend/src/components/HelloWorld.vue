@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-import apiClient from '../axios.js';
+import axios from '../axios.js';
 
 defineProps({
   msg: String,
 })
 
 const zzzz = () => {
-  apiClient.get('prueba/')
+  axios.get('prueba/')
     .then(response => {
       console.log('Respuesta de la API:', response.data); 
     })

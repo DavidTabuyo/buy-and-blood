@@ -7,13 +7,16 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from "./router";
 import './assets/tailwind.css'
+import { createPinia } from 'pinia'
+import piniaPersist from 'pinia-plugin-persistedstate'
 
+const pinia = createPinia()
 const app = createApp(App);
-
+pinia.use(piniaPersist)  
+app.use(pinia)
 app.use(router);
-
 app.directive('animateonscroll', AnimateOnScroll);
-
+import '@/axios'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
