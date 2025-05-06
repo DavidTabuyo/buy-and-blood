@@ -4,6 +4,7 @@ import requests
 from django.conf           import settings
 from django.shortcuts      import redirect
 from django.contrib.auth   import login, get_user_model
+from app.models import Holding
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -89,13 +90,23 @@ def check_auth(request):
     user = request.user
     if not user or not user.is_authenticated:
         return Response({}, status=status.HTTP_200_OK)
-
-    balance = getattr(user, 'balance', None)
-
-    if balance is None:
+        
+    
+    holdings = Holding.objects.filter(user_id=user.id)   
+    holdings = [holding.to_dict() for holding in holdings]
+    
+    try:
+        dolar_holding = Holding.objects.get(user_id=user.id, asset_id=1)    # asset_id=1 del dolar
+        balance = dolar_holding.amount * dolar_holding.mean_price
+    except Exception as e:
         balance = 0
+        print(f"El pibe no tiene dolares: {e}")
+    
+    user_data = {
+        'email' : user.email,
+        'balance': balance,
+        'plan_id': user.plan.id if user.plan else None,
+        'holdings': holdings,
+    }
 
-    return Response(
-        {'user_balance': 1000},
-        status=status.HTTP_200_OK
-    )
+    return Response(user_data, status=status.HTTP_200_OK)

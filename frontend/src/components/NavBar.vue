@@ -16,7 +16,7 @@
                     </div>
 
                     <div v-if="auth.isLoggedIn" class="flex items-center space-x-4">
-                        <Tag severity="info" :value="`Saldo disponible: ${auth.user_data}`" />
+                        <Tag severity="info" :value="`Saldo disponible: ${auth.user_data.balance}`" />
                         <Avatar @click="toggle" icon="pi pi-user" class="ml-auto cursor-pointer" size="large"
                             style="background-color: #ece9fc; color: #2a1261" shape="circle" />
                     </div>

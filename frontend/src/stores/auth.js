@@ -13,9 +13,9 @@ export const useAuthStore = defineStore('auth', {
       console.log("Comprobando sesión...");
       try {
         const response = await axios.get('/check/auth/');
-        if (response && response.data.user_balance) {
+        if (response && response.data) {
           this.isLoggedIn = true;
-          this.user_data = response.data.user_balance;
+          this.user_data = response.data;
           console.log("Sesión verificada con éxito.");
         }
       } catch (error) {

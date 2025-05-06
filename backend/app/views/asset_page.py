@@ -58,7 +58,6 @@ def asset_list(request):
     
 @api_view(['GET'])
 def asset_mini_detail(request, id):
-    print("XZZZZZZ")
     # Get the asset from the database using the provided ID
     asset = Asset.objects.get(id=id)
     
@@ -70,7 +69,6 @@ def asset_mini_detail(request, id):
     elif asset.type == 'crypto':
         # Get the historical data for the cryptocurrency
         hist = ticker.history(period="2d", interval="1h").tail(24)
-    print(hist)
     
     start_price = hist['Close'].iloc[0]
     end_price = hist['Close'].iloc[-1]
