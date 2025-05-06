@@ -17,3 +17,7 @@ def holdings(request):
     ]
 
     return Response(holdings)
+
+@api_view(['GET'])
+def buyandsell_transaction(request):
+    ...

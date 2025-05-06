@@ -40,7 +40,7 @@ def asset_list(request):
     search = request.GET.get('search', None)
 
     # Filtrar los activos según los parámetros recibidos
-    assets = Asset.objects.all()
+    assets = Asset.objects.exclude(type='currency')
 
     if asset_type:
         # Filtra por tipo si se pasó el parámetro 'type'
@@ -101,3 +101,7 @@ def asset_mini_detail(request, id):
         'last_values': last_values,
         'type': "crypto"
     })
+
+@api_view(['GET'])
+def transaction_byid(request, id, id_user):
+    ...
