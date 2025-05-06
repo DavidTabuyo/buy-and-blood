@@ -82,7 +82,6 @@ def google_callback(request):
 def check_auth(request):
     '''
     #Buscamos al usuario que se ha autenticado y devolvemos su balance
-    balance = 1000
     return Response({'user_balance': balance}, status=status.HTTP_200_OK)
     '''
 
@@ -98,6 +97,6 @@ def check_auth(request):
         balance = 0
 
     return Response(
-        {'user_balance': balance},
+        {'user_balance': 1000},
         status=status.HTTP_200_OK
     )
