@@ -101,3 +101,7 @@ def asset_mini_detail(request, id):
         'last_values': last_values,
         'type': "crypto"
     })
+
+@api_view(['GET'])
+def transaction_byid(request, id, id_user):
+    ...
