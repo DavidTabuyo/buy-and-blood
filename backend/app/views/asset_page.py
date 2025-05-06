@@ -2,7 +2,7 @@ import random
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import yfinance as yf
-from app.models import Asset  
+from app.models import Asset, Transaction  
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
@@ -88,5 +88,20 @@ def asset_mini_detail(request, id):
     })
 
 @api_view(['GET'])
-def transaction_byid(request, id, id_user):
-    ...
+def transaction_byid(request, id):
+
+    transactions = Transaction.objects.filter(dest_asset_id=id, user_id=request.user.id)
+
+    # Crear una lista con los datos de las transacciones
+    transactions_data = []
+    for transaction in transactions:
+        transaction_data = {
+            'date': transaction.datetime,
+            'buyPrice': transaction.price,
+            'quantity': transaction.amount,
+            'total': transaction.price * transaction.amount,
+        }
+        transactions_data.append(transaction_data)
+    
+    # Devolver todas las transacciones como respuesta
+    return Response(transactions_data)

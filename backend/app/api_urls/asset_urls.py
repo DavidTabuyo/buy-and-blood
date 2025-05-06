@@ -5,6 +5,6 @@ from app.views.asset_page import asset_detail, asset_list, asset_mini_detail, tr
 urlpatterns = [
     path('list/', asset_list, name='asset-detail'),
     path('mini/<str:id>/', asset_mini_detail, name='asset-detail'),
-    path('transaction/<str:asset_id>/', transaction_byid, name='transaction_byid'),
+    path('transactions/<str:id>/', transaction_byid, name='transaction_byid'),
     path('<str:id>/', asset_detail, name='asset-detail'),
 ]

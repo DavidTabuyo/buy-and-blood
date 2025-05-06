@@ -47,8 +47,8 @@
       <DataTable :value="transactions" stripedRows>
         <Column field="date"         header="Fecha" />
         <Column field="buyPrice"     header="Precio de compra" />
-        <Column field="sharesNumber" header="Acciones" />
-        <Column field="quantity"     header="Total" />
+        <Column field="quantity" header="Cantidad" />
+        <Column field="total"     header="Total" />
       </DataTable>
 
       <!-- Formulario simple de compra / venta -->
@@ -169,9 +169,7 @@ async function fetchAssetData () {
 
 async function loadTransactions () {
   try {
-    const { data } = await axios.get('asset/transactions/', {
-      params: { asset_id: ticker }
-    })
+    const { data } = await axios.get(`asset/transactions/${ticker}/`)
     transactions.value = data
   } catch (err) {
     console.error('Error al obtener transacciones:', err)
