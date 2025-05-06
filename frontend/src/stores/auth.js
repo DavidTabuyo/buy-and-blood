@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', {
           console.log("Sesión verificada con éxito.");
         }
       } catch (error) {
+        console.log("user baaad");
         this.isLoggedIn = false;
         this.user_data = null;
         console.error("Error al verificar la sesión:", error);
