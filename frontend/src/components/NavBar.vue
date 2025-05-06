@@ -6,12 +6,28 @@
                     <p class="text-2xl font-bold text-indigo-600">BUY-LOGO</p>
                 </template>
                 <template #end>
-                    <Button @click="loginWithGoogle"
-                        class="flex items-center gap-2 bg-white border border-gray-300 hover:shadow-lg transition rounded-full px-4 py-2">
-                        <!-- Google “G” icon -->
-                         <i class="pi pi-google"></i>
-                        <span class="text-gray-700 font-medium">Iniciar sesión con Google</span>
-                    </Button>
+                    <div v-if="!auth.isLoggedIn">
+                        <Button @click="loginWithGoogle"
+                            class="flex items-center gap-2 bg-white border border-gray-300 hover:shadow-lg transition rounded-full px-4 py-2">
+                            <!-- Google “G” icon -->
+                            <i class="pi pi-google"></i>
+                            <span class="text-gray-700 font-medium">Iniciar sesión con Google</span>
+                        </Button>
+                    </div>
+
+                    <div v-if="auth.isLoggedIn" class="flex items-center space-x-4">
+                        <Tag severity="info" :value="`Saldo disponible: ${auth.user_data}`" />
+                        <Avatar @click="toggle" icon="pi pi-user" class="ml-auto cursor-pointer" size="large"
+                            style="background-color: #ece9fc; color: #2a1261" shape="circle" />
+                    </div>
+                    <Popover ref="op">
+                        <div class="flex flex-col space-y-2">
+                            <Button @click="wallet" label="Mi cartera" severity="secondary" icon="pi pi-wallet" />
+                            <Button @click="logout" label="Cerrar sesión" severity="secondary" icon="pi pi-sign-out" />
+                        </div>
+                    </Popover>
+
+
                 </template>
             </Menubar>
         </div>
@@ -19,12 +35,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
+import Avatar from 'primevue/avatar';
+import Tag from 'primevue/tag';
+import Popover from 'primevue/popover';
 
+//accedemos al valor booleano del log in del usuario
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
+console.log(auth.isLoggedIn)
 const router = useRouter()
+const op = ref();
 
 function loginWithGoogle() {
     window.location.href = 'http://localhost:8000/auth/google/login/'
@@ -48,16 +72,29 @@ const items = ref([
     }
 ])
 
+const toggle = (event) => {
+    op.value.toggle(event);
+}
+
+const wallet = () => {
+    router.push('/profile')
+};
+
+
+const logout = () => {
+    console.log("TODO: USUARIO CIERRA SESIÓN");
+};
+
+
 onMounted(() => {
-  const url = new URL(window.location.href)
-  if (url.searchParams.get('logged_in') === '1') {
-    console.log('¡Usuario autenticado!')
-    url.searchParams.delete('logged_in')
-    window.history.replaceState(null, '', url.toString())
-  }else{
-    //el usuario no ha conseguido autenticarse
-    
-  }
+    const url = new URL(window.location.href)
+    if (url.searchParams.get('logged_in') === '1') {
+        url.searchParams.delete('logged_in')
+        window.history.replaceState(null, '', url.toString())
+    } else {
+        //el usuario no ha conseguido autenticarse
+
+    }
 })
 
 </script>
