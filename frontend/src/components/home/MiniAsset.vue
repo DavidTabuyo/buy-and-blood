@@ -38,7 +38,7 @@ const props = defineProps({
 const asset = ref(null);
 const icon  = ref("");
 const chartData = ref({
-  labels: ["", "", "", "", "", "", ""],
+  labels: new Array(24).fill(''),
   datasets: [
     {
       data: [],
