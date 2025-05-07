@@ -3,7 +3,7 @@ name: Django CI with NeonDB 🚀
 on:
   push:
     branches:
-      - feature/test-ci-cd  # Ejecutar en la rama de test
+      - develop  # Ejecutar en la rama de develop
   pull_request:
     branches:
       - main  # Ejecutar en pull requests hacia la rama principal
