@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
+          pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
       # 🔑 Paso 4: Cargar variables de entorno desde GitHub Secrets
       - name: Set up environment variables
