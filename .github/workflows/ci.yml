@@ -39,7 +39,7 @@ jobs:
           echo "FRONTEND_SERVER=${{ secrets.FRONTEND_SERVER }}" >> $GITHUB_ENV
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          ececho "DJANGO_SETTINGS_MODULE=app.settings" >> $GITHUB_ENVa
+          echo "DJANGO_SETTINGS_MODULE=app.settings" >> $GITHUB_ENV
 
       #  Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
