@@ -31,7 +31,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
-      # 🔑 Paso 4: Cargar las variables de entorno desde GitHub Secrets
+      # Paso 4: Cargar las variables de entorno desde GitHub Secrets
       - name: Set up environment variables
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
@@ -39,14 +39,14 @@ jobs:
           echo "FRONTEND_SERVER=${{ secrets.FRONTEND_SERVER }}" >> $GITHUB_ENV
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
-          echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> $GITHUB_ENV
+          ececho "DJANGO_SETTINGS_MODULE=app.settings" >> $GITHUB_ENVa
 
-      # 🔄 Paso 5: Realizar las migraciones de Django
+      #  Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
         run: |
           python backend/manage.py migrate --noinput  # Aplica las migraciones de la base de datos
 
-      # 🧪 Paso 6: Ejecutar los tests con pytest
+      # Paso 6: Ejecutar los tests con pytest
       - name: Run tests with pytest 🧑‍🔬
         run: |
           cd backend/
