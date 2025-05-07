@@ -78,7 +78,7 @@ def asset_mini_detail(request, id):
 
     # Return the response with the data obtained
     return Response({
-        'name': asset.name,
+        'name': asset.symbol_yf,
         'type': asset.type,
         'price': end_price,
         'percentage_change': percentage_change,
