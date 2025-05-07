@@ -1,64 +1,46 @@
-name: CI-Pipeline
+name: Django CI with NeonDB 🚀
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - feature/test-ci-cd  # Ejecutar en la rama de test
   pull_request:
-    branches: [ main ]
+    branches:
+      - main  # Ejecutar en pull requests hacia la rama principal
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        # espera a que esté listo
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    env:
-      # Ajusta la cadena de conexión según tu engine
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
-      # Necesario para pytest-django
-      DJANGO_SETTINGS_MODULE: mi_proyecto.settings
-      # Evita que Django intente enviar emails reales
-      EMAIL_BACKEND: django.core.mail.backends.locmem.EmailBackend
+    runs-on: ubuntu-latest  # Usar un entorno Ubuntu para ejecutar los tests
 
     steps:
-      - name: 📥 Clonar el repositorio
+      # 👨‍💻 Paso 1: Checkout del código
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🐍 Configurar Python
+      # 🐍 Paso 2: Configuración de Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: 3.10
 
-      - name: 📦 Instalar dependencias
+      # 📦 Paso 3: Instalar dependencias
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-django coverage
+          pip install -r requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
-      - name: 🛠️ Ejecutar migraciones
+      # 🔑 Paso 4: Cargar variables de entorno desde GitHub Secrets
+      - name: Set up environment variables
         run: |
-          python manage.py migrate --noinput
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+        # Esto configura la variable de entorno DATABASE_URL con la cadena de conexión a NeonDB
 
-      - name: 🧪 Ejecutar tests con pytest
+      # 🔄 Paso 5: Realizar las migraciones de Django
+      - name: Run migrations 🛠️
         run: |
-          pytest --maxfail=1 --disable-warnings -q
+          python manage.py migrate --noinput  # Aplica las migraciones de la base de datos
 
-      - name: 📊 Subir reporte de cobertura
-        if: always()
+      # 🧪 Paso 6: Ejecutar los tests con pytest
+      - name: Run tests with pytest 🧑‍🔬
         run: |
-          coverage xml
-          bash <(curl -s https://codecov.io/bash) || echo "Codecov failed"
+          pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
