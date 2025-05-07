@@ -21,26 +21,31 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: 3.10
 
       # 📦 Paso 3: Instalar dependencias
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
+          pip install -r requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
-      # 🔑 Paso 4: Cargar variables de entorno desde GitHub Secrets
+      # 🔑 Paso 4: Cargar las variables de entorno desde GitHub Secrets
       - name: Set up environment variables
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-        # Esto configura la variable de entorno DATABASE_URL con la cadena de conexión a NeonDB
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "FRONTEND_SERVER=${{ secrets.FRONTEND_SERVER }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> $GITHUB_ENV
+        # Esto asegura que las variables de entorno estén disponibles para los siguientes pasos en GitHub Actions
 
       # 🔄 Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
         run: |
-          python backend/manage.py migrate --noinput  # Aplica las migraciones de la base de datos
+          python manage.py migrate --noinput  # Aplica las migraciones de la base de datos
 
       # 🧪 Paso 6: Ejecutar los tests con pytest
       - name: Run tests with pytest 🧑‍🔬
         run: |
-          backend/pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
+          pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
