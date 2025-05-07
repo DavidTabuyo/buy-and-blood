@@ -1,11 +1,10 @@
 import pytest
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from app.models import Asset
 
 @pytest.mark.django_db
 def test_create_asset_uses_default_symbol_yf_and_saves_all_fields():
-    # Sólo pasamos symbol_tv, name y type; symbol_yf debe tomar el default 'QQQ'
     asset = Asset.objects.create(
         symbol_tv='AAPL',
         name='Apple Inc.',
@@ -18,7 +17,6 @@ def test_create_asset_uses_default_symbol_yf_and_saves_all_fields():
 
 @pytest.mark.django_db
 def test_invalid_type_choice_raises_validation_error():
-    # full_clean() comprueba choices y otros validators
     asset = Asset(
         symbol_tv='BTC',
         name='Bitcoin',
@@ -30,26 +28,30 @@ def test_invalid_type_choice_raises_validation_error():
 
 @pytest.mark.django_db
 def test_uniqueness_constraints_on_fields():
-    # Crea un primer Asset con symbol_yf explícito para evitar conflicto por default
+    # Creo el asset válido
     Asset.objects.create(
         symbol_yf='TSLA',
         symbol_tv='TSLA',
         name='Tesla, Inc.',
         type='stock'
     )
-    # Intentar crear otro con el mismo symbol_tv debe fallar
+
+    # 1) Mismo symbol_tv ➞ fallo en su propio atomic()
     with pytest.raises(IntegrityError):
-        Asset.objects.create(
-            symbol_yf='TSLAX',       # distinto para aislar symbol_tv
-            symbol_tv='TSLA',        # mismo
-            name='Tesla Duplicate',
-            type='stock'
-        )
-    # Intentar crear otro con el mismo name debe fallar
+        with transaction.atomic():
+            Asset.objects.create(
+                symbol_yf='TSLAX',      # distinto
+                symbol_tv='TSLA',       # mismo que el primero
+                name='Tesla Duplicate',
+                type='stock'
+            )
+
+    # 2) Mismo name ➞ otro atomic() independiente
     with pytest.raises(IntegrityError):
-        Asset.objects.create(
-            symbol_yf='TSLAXX',
-            symbol_tv='TSLAXX',
-            name='Tesla, Inc.',      # mismo
-            type='stock'
-        )
+        with transaction.atomic():
+            Asset.objects.create(
+                symbol_yf='TSLAXX',
+                symbol_tv='TSLAXX',
+                name='Tesla, Inc.',     # mismo que el primero
+                type='stock'
+            )
