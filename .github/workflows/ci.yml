@@ -27,9 +27,9 @@ jobs:
       #  Paso 3: Instalar dependencias
       - name: Install dependencies 📦
         run: |
-          cd backend/
+          
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
+          pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
       # 🔑 Paso 4: Cargar las variables de entorno desde GitHub Secrets
       - name: Set up environment variables
@@ -44,9 +44,10 @@ jobs:
       # 🔄 Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
         run: |
-          python manage.py migrate --noinput  # Aplica las migraciones de la base de datos
+          python backend/manage.py migrate --noinput  # Aplica las migraciones de la base de datos
 
       # 🧪 Paso 6: Ejecutar los tests con pytest
       - name: Run tests with pytest 🧑‍🔬
         run: |
+          cd backend/
           pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
