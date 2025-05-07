@@ -38,9 +38,9 @@ jobs:
       # 🔄 Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
         run: |
-          python manage.py migrate --noinput  # Aplica las migraciones de la base de datos
+          python backend/manage.py migrate --noinput  # Aplica las migraciones de la base de datos
 
       # 🧪 Paso 6: Ejecutar los tests con pytest
       - name: Run tests with pytest 🧑‍🔬
         run: |
-          pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
+          backend/pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
