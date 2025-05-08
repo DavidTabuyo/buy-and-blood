@@ -1,4 +1,4 @@
-name: Django CI with NeonDB 🚀
+name: Backend Tests🚀
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
           pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
 
       # Paso 4: Cargar las variables de entorno desde GitHub Secrets
-      - name: Set up environment variables
+      - name: Set up environment variables 📝
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
           echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> $GITHUB_ENV
