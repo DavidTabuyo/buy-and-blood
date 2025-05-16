@@ -14,11 +14,7 @@
   
   const props = defineProps({
     planName: String,
-    labels: {
-      type: Array,
-      default: () => []
-    },
-    values: {
+    holdings: {
       type: Array,
       default: () => []
     },
@@ -39,13 +35,15 @@
   ];
   
   function setChartData() {
+    let labels = props.holdings.map(holding => holding.label);
+    let values = props.holdings.map(holding => holding.percentage);
     return {
-      labels: props.labels,
+      labels: labels,
       datasets: [
         {
-          data: props.values,
-          backgroundColor: PALETTE.slice(0, props.values.length),
-          hoverBackgroundColor: PALETTE.slice(0, props.values.length)
+          data: values,
+          backgroundColor: PALETTE.slice(0, props.holdings.length),
+          hoverBackgroundColor: PALETTE.slice(0, props.holdings.length)
         }
       ]
     };
@@ -90,23 +88,16 @@
       }
     };
   }
-  
-  function resizeChart() {
-    if (myChart.value?.chart) {
-      myChart.value.chart.resize();
-    }
-  }
-  
+
   // Inicialización
   onMounted(() => {
     chartData.value = setChartData();
     chartOptions.value = setChartOptions();
-    window.addEventListener('resize', resizeChart);
   });
   
   // Watchers para actualizar datos si cambian los props
   watch(
-    () => [props.labels, props.values],
+    () => props.holdings,
     () => {
       chartData.value = setChartData();
       // Forzar actualización del chart
@@ -114,12 +105,7 @@
         myChart.value.chart.data = chartData.value;
         myChart.value.chart.update();
       }
-    },
-    { deep: true }
+    }
   );
-  
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', resizeChart);
-  });
   </script>
   

@@ -7,7 +7,7 @@
                     <ChangeValue :value=2142.324 class="text-2xl" />
                     <PercentageChange :value=23.34 />
                 </div>
-                <HoldingChart :labels="labels" :values="values" class="grow"/>
+                <HoldingChart :values="holdings" class="grow"/>
             </div>
             <div class="w-1/2">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
@@ -69,7 +69,7 @@ const values = ref([]);
 const name = ref('');
 
 const getHoldings = () => {
-    axios.get('/user/holdings')
+    axios.get('/user/holdings/')
         .then(response => {
             holdings.value = response.data;
         })
@@ -80,7 +80,7 @@ const getHoldings = () => {
 getHoldings();
 
 const getInvestingPlan = () => {
-    axios.get('/user/investing-plan')
+    axios.get('/user/investing-plan/')
         .then(response => {
             labels.value = response.data.labels;
             values.value = response.data.values;
