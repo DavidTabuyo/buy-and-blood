@@ -32,11 +32,11 @@ import 'primeicons/primeicons.css'
 
 // Recibimos solo el ID del asset
 const props = defineProps({
-  assetId: Number 
+  assetId: Number
 });
 
 const asset = ref(null);
-const icon  = ref("");
+const icon = ref("");
 const chartData = ref({
   labels: new Array(24).fill(''),
   datasets: [
@@ -75,13 +75,13 @@ const chartOptions = ref({
 });
 
 
+
 // Función para cargar los datos del asset por ID
 const loadData = () => {
   // Utilizamos `props.assetId` para hacer la solicitud GET
   axios.get(`asset/mini/${props.assetId}/`)
     .then((response) => {
       if (response.data) {
-        console.log(response.data);
         asset.value = response.data;  // Asignamos los datos recibidos a `asset`
         if (response.data.last_values) {
           const isPositive = response.data.percentage_change >= 0;
@@ -96,9 +96,9 @@ const loadData = () => {
             tension: 0.4
           };
         }
-        if (response.data.type === "crypto"){
+        if (response.data.type === "crypto") {
           icon.value = "pi pi-bitcoin";
-        }else if (response.data.type === "stock") {
+        } else if (response.data.type === "stock") {
           icon.value = "pi pi-chart-line";
 
         }
