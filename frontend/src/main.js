@@ -9,16 +9,23 @@ import router from "./router";
 import './assets/tailwind.css'
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persistedstate'
+import 'primeicons/primeicons.css';      
+import Toast from 'primevue/toast';
+import 'primeicons/primeicons.css';
 
 const pinia = createPinia()
 const app = createApp(App);
 pinia.use(piniaPersist)  
 app.use(pinia)
 app.use(router);
+app.use(ToastService);
+app.component('Toast', Toast);
+
 app.directive('animateonscroll', AnimateOnScroll);
 import '@/axios'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import ToastService from 'primevue/toastservice';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 

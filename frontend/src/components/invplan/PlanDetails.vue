@@ -13,7 +13,7 @@
                 <div>
                     <Chart type="line" :data="chartData" :options="chartOptions" class="w-full h-full" />
                 </div>
-                <div class="flex justify-end">
+                <div v-if="auth.isLoggedIn"  class="flex justify-end">
                     <Button label="Elegir Plan" @click="selectPlan" />
                 </div>
             </div>
@@ -22,6 +22,8 @@
 
 
     </div>
+    <Toast />
+
 </template>
 
 
@@ -32,6 +34,12 @@ import 'primeicons/primeicons.css'
 import DayPlanComponent from '@/components/utils/DayPlanComponent.vue';
 import Button from 'primevue/button';
 import Chart from 'primevue/chart';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
+
+const toast = useToast();
 
 //variables para el componente con la chart
 const plan_description = ref("");
@@ -100,18 +108,12 @@ const loadData = () => {
 
 const selectPlan = () => {
 
-    axios.get('invplan/list/', {
-        params: {
-            type: selected.value,
-            search: search.value
-        }
-    })
+    axios.put(`user/set-investing-plan/${props.planId}/`,)
         .then((response) => {
-            if (response.data) {
-                assets.value = response.data;
-            }
+            toast.add({ severity: 'success', summary: 'Cambio realizado correctamente', detail: 'Plan de inversión actualizado', life: 3000 });
         })
         .catch((error) => {
+            toast.add({ severity: 'error', summary: 'Error', detail: 'Ya has seleccionado este plan', life: 3000 });
             console.error('Error al obtener datos:', error);
         });
 };

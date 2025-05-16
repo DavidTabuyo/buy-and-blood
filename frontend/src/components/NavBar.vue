@@ -46,7 +46,6 @@ import Popover from 'primevue/popover';
 //accedemos al valor booleano del log in del usuario
 import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
-console.log(auth.isLoggedIn)
 const router = useRouter()
 const op = ref();
 
