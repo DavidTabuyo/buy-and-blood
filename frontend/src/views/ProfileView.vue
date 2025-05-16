@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div class="flex">
-            <div class="w-1/2">
+        <div class="flex overflow-hidden">
+            <div class="w-1/2 flex flex-col">
                 <DolarValue :value=123453.234 class="text-center text-5xl font-bold" />
                 <div class="flex justify-center items-center gap-2">
                     <ChangeValue :value=2142.324 class="text-2xl" />
                     <PercentageChange :value=23.34 />
                 </div>
-                <HoldingChart :labels="labels" :values="values"/>
+                <HoldingChart :labels="labels" :values="values" class="grow"/>
             </div>
             <div class="w-1/2">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
                     <div>Plan de inversion</div>
-                    <DayPlanComponent :labels="labels" :values="values" :planName="name" />
+                    <DayPlanComponent :labels="labels" :values="values" :planName="name"/>
                 </div>
             </div>
         </div>

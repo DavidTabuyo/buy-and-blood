@@ -1,18 +1,11 @@
 <template>
-    <div class="flex flex-col items-center space-y-6">
-      <div class="card flex flex-col items-center overflow-hidden max-w-full mt-4">
-        <div class="relative w-full max-w-[30rem] aspect-square">
-          <Chart
-            ref="myChart"
-            type="pie"
-            :data="chartData"
-            :options="chartOptions"
-            class="w-full h-full"
-          />
-        </div>
-      </div>
-    </div>
-  </template>
+    <Chart
+      ref="myChart"
+      type="pie"
+      :data="chartData"
+      :options="chartOptions"
+    />
+</template>
   
   <script setup>
   import { ref, watch, onMounted, onBeforeUnmount, defineProps } from 'vue';
