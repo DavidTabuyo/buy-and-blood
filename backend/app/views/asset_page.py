@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
 def asset_detail(request, id):
 
     asset = Asset.objects.get(id=id)
@@ -86,6 +85,7 @@ def asset_mini_detail(request, id):
     })
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def transaction_byid(request, id):
 
     transactions = Transaction.objects.filter(dest_asset_id=id, user_id=request.user.id)
