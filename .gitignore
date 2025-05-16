@@ -1,0 +1,9 @@
+.env
+*__pycache__
+frontend/package-lock.json
+node_modules/.package-lock.json
+package-lock.json
+frontend/node_modules
+sw2/
+venv
+backend/.coverage
