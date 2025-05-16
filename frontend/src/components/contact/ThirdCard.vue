@@ -1,28 +1,45 @@
 <template>
-    <Card style="width: 30rem; height: auto; overflow: hidden; right: 10rem;" class="absolute">
-        <template #header>
-            <img alt="user header" src="/src/assets/future.jpg" />
-        </template>
-        <template #title>Tercer cuadro info</template>
-        <template #content>
-            <p class="m-0" style="text-align: justify;">
-                <br />"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br />
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."<br />
-            </p>
-        </template>
-        <template #footer>
-            <div class="flex gap-4 mt-1">
-                <Button label="Cancel" severity="secondary" outlined class="w-full" />
-                <Button label="Save" class="w-full" />
-            </div>
-        </template>
-    </Card>
+  <Card
+    style="width: 30rem; right: 10rem; overflow: hidden;"
+    class="absolute transition-all duration-300"
+    :style="{ height: expanded ? 'auto' : '50rem' }"
+  >
+    <template #header>
+      <img alt="user header" src="/src/assets/future.jpg" />
+    </template>
+    <template #title>Tercer cuadro info</template>
+    <template #content>
+      <p class="m-0" style="text-align: justify;">
+        <br />
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br />
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br />
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br />
+      </p>
+    </template>
+    <template #footer>
+    <div
+        class="flex justify-center"
+        style="position: absolute; bottom: 0; left: 0; right: 0; padding: 0.5rem; background: white;"
+    >
+        <Button 
+            :label="expanded ? 'Leer más' : 'Leer menos'"
+            @click="toggleExpanded"
+        />
+      </div>
+    </template>
+  </Card>
 </template>
 
-
 <script setup>
+import { ref } from 'vue';
 import Card from 'primevue/card';
-</script>
+import Button from 'primevue/button';
 
+const expanded = ref(false);
+
+function toggleExpanded() {
+  expanded.value = !expanded.value;
+}
+</script>

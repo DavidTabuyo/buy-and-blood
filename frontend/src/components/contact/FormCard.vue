@@ -13,9 +13,8 @@
             </p>
         </template>
         <template #footer>
-            <div class="flex gap-4 mt-1">
-                <Button label="Cancel" severity="secondary" outlined class="w-full" />
-                <Button label="Save" class="w-full" />
+            <div class="flex justify-center mt-1">
+                <Button label="Leer más" />
             </div>
         </template>
     </Card>
@@ -24,5 +23,6 @@
 
 <script setup>
 import Card from 'primevue/card';
+import Button from 'primevue/button';
 </script>
 
