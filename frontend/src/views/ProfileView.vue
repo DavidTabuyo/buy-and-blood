@@ -93,7 +93,7 @@ const getInvestingPlan = () => {
     axios.get('/user/investing-plan/')
         .then(response => {
             labels.value = response.data.labels;
-            values.value = response.data.values;
+            values.value = response.data.percentages;
             name.value = response.data.name;
         })
         .catch(error => {

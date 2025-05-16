@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from app.models import Plan, PlanAsset
 
 @api_view(['GET'])
-def invplan_details(request, id):
+def invplan_details(request, id=None):
+    if not id:
+        id = request.user.plan.id
+        
     try:
         plan = Plan.objects.get(id=id)
     except Plan.DoesNotExist:
