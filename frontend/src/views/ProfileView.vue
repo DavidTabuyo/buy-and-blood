@@ -25,17 +25,17 @@
                         class: 'cursor-pointer hover:bg-gray-200'
                     })
                 }">
-                <Column field="asset" header="Activo" sortable style="width: 40%;"></Column>
-                <Column field="quantity" header="Cantidad" sortable style="width: 15%;">
+                <Column field="asset_name" header="Activo" sortable style="width: 40%;"></Column>
+                <Column field="amount" header="Cantidad" sortable style="width: 15%;">
                     <template #body="slotProps">
                         <div class="text-center">
-                            {{ slotProps.data.quantity }}
+                            {{ slotProps.data.amount }}
                         </div>
                     </template>
                 </Column>
-                <Column field="value" header="Valor" sortable style="width: 20%;">
+                <Column field="total_value" header="Valor" sortable style="width: 20%;">
                     <template #body="slotProps">
-                        <DolarValue :value="slotProps.data.value" class="text-center" />
+                        <DolarValue :value="slotProps.data.total_value" class="text-center" />
                     </template>
                 </Column>
                 <Column header="Ganancias" sortable sortField="percentage_change" style="width: 25%;">
@@ -77,12 +77,10 @@ const getHoldings = () => {
         .then(response => {
             holdings.value = response.data;
             holdings.value.forEach(element => {
-                console.log(element);
-                total.value += element.value;
+                total.value += element.total_value;
                 totalChange.value += element.change_value;
-                percentageChange.value = totalChange.value /total.value*100;
+                percentageChange.value = totalChange.value / total.value * 100;
             });
-        console.log(total.value);
 
         })
         .catch(error => {
