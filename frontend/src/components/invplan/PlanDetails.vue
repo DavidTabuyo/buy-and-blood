@@ -14,8 +14,8 @@
                     <Chart type="line" :data="chartData" :options="chartOptions" class="w-full h-full" />
                 </div>
                 <div class="flex justify-end">
-            <Button>Elegir plan</Button>
-        </div>
+                    <Button label="Elegir Plan" @click="selectPlan" />
+                </div>
             </div>
 
         </div>
@@ -98,6 +98,24 @@ const loadData = () => {
         });
 };
 
+const selectPlan = () => {
+
+    axios.get('invplan/list/', {
+        params: {
+            type: selected.value,
+            search: search.value
+        }
+    })
+        .then((response) => {
+            if (response.data) {
+                assets.value = response.data;
+            }
+        })
+        .catch((error) => {
+            console.error('Error al obtener datos:', error);
+        });
+};
+
 // Realizamos el seguimiento del cambio en `invplan` y cargamos los datos
 watch(
     () => props.planId,
@@ -106,4 +124,5 @@ watch(
     },
     { immediate: true }
 );
+
 </script>
