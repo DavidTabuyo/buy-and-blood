@@ -1,26 +1,45 @@
 <template>
 <div class="card flex flex-col justify-start">
     <!-- Contenedor para InputText y SelectButton en una fila -->
-        <div class="flex space-x-4 mb-4">
-            <!-- FloatLabel con más espacio -->
-            <div class="flex-[3]">
-                <FloatLabel variant="on" class="w-full">
-                    <IconField>
-                        <InputIcon class="pi pi-search" />
-                        <InputText id="in_label" v-model="search" autocomplete="off" variant="filled" class="w-full" />
-                    </IconField>
-                    <label for="in_label">Buscar activo</label>
-                </FloatLabel>
-            </div>
-            <!-- SelectButton con menos espacio -->
-            <div class="flex-[1]">
-                <ButtonGroup>
-                    <Button label="Todas" :class="getButtonClass('')" @click="selectOption('')" />
-                    <Button label="Fondos" :class="getButtonClass('stock')" @click="selectOption('stock')" />
-                    <Button label="Cryptos" :class="getButtonClass('crypto')" @click="selectOption('crypto')" />
-                </ButtonGroup>
-            </div>
-        </div>
+    <div class="flex items-center mb-4 gap-4">
+    <!-- FloatLabel ocupa todo el espacio restante -->
+    <div class="flex-1">
+      <FloatLabel variant="on" class="w-full">
+        <IconField>
+          <InputIcon class="pi pi-search" />
+          <InputText
+            id="in_label"
+            v-model="search"
+            autocomplete="off"
+            variant="filled"
+            class="w-full"
+          />
+        </IconField>
+        <label for="in_label">Buscar activo</label>
+      </FloatLabel>
+    </div>
+
+    <!-- Con ml-auto, este div se pega al extremo derecho -->
+    <div class="ml-auto">
+      <ButtonGroup>
+        <Button
+          label="Todas"
+          :class="getButtonClass('')"
+          @click="selectOption('')"
+        />
+        <Button
+          label="Acciones"
+          :class="getButtonClass('stock')"
+          @click="selectOption('stock')"
+        />
+        <Button
+          label="Cryptos"
+          :class="getButtonClass('crypto')"
+          @click="selectOption('crypto')"
+        />
+      </ButtonGroup>
+    </div>
+  </div>
 
         <div class="flex justify-center bg-white shadow-lg rounded-xl p-2">
             <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">

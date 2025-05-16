@@ -32,7 +32,7 @@ import 'primeicons/primeicons.css'
 
 // Recibimos solo el ID del asset
 const props = defineProps({
-  assetId: Number // Cambia el nombre del prop a assetId
+  assetId: Number 
 });
 
 const asset = ref(null);
