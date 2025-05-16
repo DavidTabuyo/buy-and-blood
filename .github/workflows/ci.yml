@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop  # Ejecutar en la rama de develop
+      - main  # Ejecutar en la rama principal
   pull_request:
     branches:
       - main  # Ejecutar en pull requests hacia la rama principal
