@@ -5,23 +5,64 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import yfinance as yf
 
+def get_holding(request, asset_id):
+    try:
+        holding = Holding.objects.get(user=request.user, asset_id=asset_id)
+    except Holding.DoesNotExist:
+        return None
+    
+    asset_name = holding.asset.name
+    mean_price = holding.mean_price
+    amount = holding.amount
+    total_value = holding.amount * mean_price
+    
+    # Obtener el precio actual del activo usando yfinance
+    yf_asset = yf.Ticker(holding.asset.symbol_yf)
+    try:
+        current_price = yf_asset.fast_info['last_price']
+    except Exception:
+        current_price = mean_price
+        
+    # Calcular el cambio en valor y porcentaje
+    change_value = (current_price - mean_price) * holding.amount
+    percentage_change = (change_value / total_value) * 100
+    
+    return {
+        'asset_id': asset_id,
+        'asset_name': asset_name,
+        'mean_price': mean_price,
+        'amount': amount,
+        'total_value': total_value,
+        'current_price': current_price,
+        'change_value': change_value,
+        'percentage_change': percentage_change,
+    }
+    
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def holdings(request):
-    holdings = [
-        { 'id': 1, 'asset': 'SPDR S&P 500 ETF', 'quantity': 100.234, 'value': 45000.56, 'change_value': 500.12, 'percentage_change': 1.123 },
-        { 'id': 2, 'asset': 'Vanguard Total Stock Market ETF', 'quantity': 150.567, 'value': 34500.78, 'change_value': 300.45, 'percentage_change': 0.874 },
-        { 'id': 3, 'asset': 'iShares MSCI Emerging Markets ETF', 'quantity': 200.891, 'value': 11000.34, 'change_value': 100.23, 'percentage_change': 0.912 },
-        { 'id': 4, 'asset': 'Invesco QQQ Trust', 'quantity': 50.123, 'value': 18500.89, 'change_value': 700.67, 'percentage_change': 3.934 },
-        { 'id': 5, 'asset': 'Schwab U.S. Dividend Equity ETF', 'quantity': 120.456, 'value': 9000.12, 'change_value': 150.34, 'percentage_change': 1.693 },
-        { 'id': 6, 'asset': 'ARK Innovation ETF', 'quantity': 80.789, 'value': 9600.45, 'change_value': 400.56, 'percentage_change': 4.354 },
-        { 'id': 7, 'asset': 'iShares Russell 2000 ETF', 'quantity': 70.234, 'value': 14700.67, 'change_value': 350.78, 'percentage_change': 2.432 },
-        { 'id': 8, 'asset': 'Vanguard FTSE Developed Markets ETF', 'quantity': 180.567, 'value': 9000.89, 'change_value': 80.12, 'percentage_change': 0.894 },
-        { 'id': 9, 'asset': 'Bitcoin (BTC)', 'quantity': 0.543, 'value': 30000.34, 'change_value': 2000.45, 'percentage_change': 7.143 },
-        { 'id': 10, 'asset': 'Ethereum (ETH)', 'quantity': 2.345, 'value': 4000.56, 'change_value': 300.67, 'percentage_change': 8.114 },
-    ]
-
+    holdings = []
+    for holding in Holding.objects.filter(user=request.user):
+        asset_id = holding.asset_id
+        
+        holding_info = get_holding(request, asset_id)
+        if holding_info:
+            holdings.append(holding_info)
+        else:
+            Response({'error': 'Holding not found'}, status=404)
+            
     return Response(holdings)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def holding(request, asset_id):
+    holding = get_holding(request, asset_id)
+    if holding:
+        return Response(holding)
+    else:
+        return Response({'error': 'Holding not found'}, status=404)
+    
+    
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

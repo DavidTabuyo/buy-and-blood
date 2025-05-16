@@ -41,7 +41,7 @@ const setChartData = () => {
 
   // 2. Mapear sobre el array ya ordenado
   const labels = sorted.map(
-    h => `${h.asset} \n ${h.percentage_change}%`
+    h => `${h.asset_name} \n ${h.percentage_change.toFixed(2)}%`
   );
   const values = sorted.map(h => h.change_value);
 
