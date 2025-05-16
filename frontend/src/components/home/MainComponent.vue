@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="flex justify-center bg-white shadow-lg rounded-xl p-2">
+    <div class="flex justify-center grow bg-white shadow-lg rounded-xl p-2">
       <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">
         <div class="grid gap-4 justify-center pt-8 pb-8 px-4"
           style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); max-width: 1024px; margin: 0 auto;">
