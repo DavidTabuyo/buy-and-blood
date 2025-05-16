@@ -33,6 +33,7 @@
 import { ref, watch, onMounted, onBeforeUnmount, defineProps } from 'vue';
 import Chart from 'primevue/chart';
 import PercentageChange from '@/components/utils/PercentageChange.vue';
+import { PALETTE_2 } from '@/constants.js'; 
 
 const props = defineProps({
   planName: String,
@@ -52,13 +53,6 @@ const myChart = ref(null);
 const chartData = ref({});
 const chartOptions = ref({});
 
-const PALETTE = [
-  '#FFC0CB', // Light Pink
-  '#FFB6C1', // Light Pink 2
-  '#FF69B4', // Hot Pink
-  '#FF1493', // Deep Pink
-  '#DB7093'  // Pale Violet Red
-];
 
 function setChartData() {
   return {
@@ -66,8 +60,8 @@ function setChartData() {
     datasets: [
       {
         data: props.values,
-        backgroundColor: PALETTE.slice(0, props.values.length),
-        hoverBackgroundColor: PALETTE.slice(0, props.values.length)
+        backgroundColor: PALETTE_2.slice(0, props.values.length),
+        hoverBackgroundColor: PALETTE_2.slice(0, props.values.length)
       }
     ]
   };

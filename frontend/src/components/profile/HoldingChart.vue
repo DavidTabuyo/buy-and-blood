@@ -1,11 +1,10 @@
 <template>
-  <!-- Aquí el wrapper cuadrado: ancho 100%, relación 1:1 -->
-    <!-- El Chart ocupa todo ese cuadrado -->
+
     <Chart
       type="pie"
       :data="chartData"
       :options="chartOptions"
-      class="w-full h-full"
+      class="w-full h-full "
     />
 </template>
 
@@ -18,8 +17,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+import { PALETTE } from '@/constants.js'; 
 
-// 2. Props
 const props = defineProps({
   planName: String,
   holdings: {
@@ -30,23 +29,23 @@ const props = defineProps({
   description: String
 });
 
-// 3. Reactivos para datos y opciones
 const chartData = ref({ labels: [], datasets: [] });
 const chartOptions = ref({});
 
-// 4. Paleta de colores
-const PALETTE = [
-  '#FFC0CB', // Light Pink
-  '#FFB6C1', // Light Pink 2
-  '#FF69B4', // Hot Pink
-  '#FF1493', // Deep Pink
-  '#DB7093'  // Pale Violet Red
-];
 
-// 5. setChartData tal como antes, usando labels y values dinámicos
-function setChartData() {
-  const labels = props.holdings.map(h => h.asset);
-  const values = props.holdings.map(h => h.change_value);
+const setChartData = () => {
+  // 1. Hacemos una copia y la ordenamos de mayor a menor según change_value
+  const sorted = [...props.holdings].sort(
+    (a, b) => b.change_value - a.change_value
+  );
+
+  // 2. Mapear sobre el array ya ordenado
+  const labels = sorted.map(
+    h => `${h.asset} \n ${h.percentage_change}%`
+  );
+  const values = sorted.map(h => h.change_value);
+
+  // 3. Aplicar la paleta a los valores ordenados
   const colors = PALETTE.slice(0, values.length);
 
   return {
@@ -59,36 +58,50 @@ function setChartData() {
       }
     ]
   };
-}
+};
 
-// 6. Tu setChartOptions completo
-function setChartOptions() {
-  const textColor =
-    getComputedStyle(document.documentElement)
-      .getPropertyValue('--p-text-color')
-      .trim() || '#374151';
+const setChartOptions = () => {
+  const textColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--p-text-color')
+    .trim() || '#374151';
 
   return {
     maintainAspectRatio: false,
-    
+    layout: {
+      padding: { top: 16, bottom: 16, left: 16, right: 16 }
+    },
     plugins: {
       datalabels: {
+        clip: false,
+        anchor: 'center',
+        align: 'center',
+        offset: 20,
         color: '#fff',
-        font: { family: 'Inter, sans-serif', size: 16, weight: '600' },
+        font: { family: 'Inter, sans-serif', size: 12, weight: '500' },
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: 10,
-        borderColor: '#ffffff',
-        borderWidth: 2,
-        padding: 8,
+        borderRadius: 8,
+        borderColor: '#fff',
+        borderWidth: 1,
+        padding: 4,
         textStrokeColor: 'rgba(0,0,0,0.3)',
         textStrokeWidth: 1,
-        align: 'center',
-        anchor: 'center',
+        // **Aquí** la clave: ocultar si representan < 5%
+        display: ctx => {
+          const data = ctx.chart.data.datasets[0].data;
+          const total = data.reduce((sum, v) => sum + v, 0);
+          const percent = (data[ctx.dataIndex] / total) * 100;
+          return percent >= 5;
+        },
+        formatter: (value, ctx) => ctx.chart.data.labels[ctx.dataIndex]
       },
-      legend: { display: true, position: 'bottom', labels: { color: textColor } }
+      legend: { display: false }
     }
   };
-}
+};
+
+
+
+
 
 // 7. Iniciar datos y opciones al montar
 onMounted(() => {

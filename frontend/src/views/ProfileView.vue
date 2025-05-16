@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="flex h-1000">
-            <div class="w-1/2 flex flex-col h-[40em]">
+            <div class="w-1/2 flex flex-col h-[40em] ">
                 <DolarValue :value=123453.234 class="text-center text-5xl font-bold" />
                 <div class="flex justify-center items-center gap-2">
                     <ChangeValue :value=2142.324 class="text-2xl" />
