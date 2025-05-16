@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from requests import Response
+from rest_framework.response import Response
 from app.models import Plan, PlanAsset
 
 @api_view(['GET'])
@@ -23,8 +23,9 @@ def invplan_details(request, id):
     }
 
     return JsonResponse(response_data)
-@api_view(['GET'])
-def invplan_idlist(request):
-    ids = Plan.objects.values_list('id', flat=True)
 
-    return JsonResponse(list(ids))
+
+@api_view(['GET'])
+def invplan_list(request):
+    ids = list(Plan.objects.values_list('id', flat=True))
+    return Response(ids)
