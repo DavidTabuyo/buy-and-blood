@@ -6,3 +6,5 @@ package-lock.json
 frontend/node_modules
 sw2/
 venv
+backend/.coverage
+backend/pytest.ini

@@ -1,11 +1,14 @@
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from requests import Response
+from rest_framework.response import Response
 from app.models import Plan, PlanAsset
 
 @api_view(['GET'])
 def invplan_details(request, id):
-    plan = Plan.objects.get(id=id)
+    try:
+        plan = Plan.objects.get(id=id)
+    except Plan.DoesNotExist:
+        return JsonResponse({'error': 'Plan not found'}, status=404)
     
     plan_assets = PlanAsset.objects.filter(plan_id=id)
     
@@ -18,12 +21,11 @@ def invplan_details(request, id):
         'labels': labels,
         'percentages': percentages,
     }
-    print(response_data.get('percentages'))
 
     return JsonResponse(response_data)
 
-@api_view(['GET'])
-def invplan_idlist(request):
-    ids = Plan.objects.values_list('id', flat=True)
 
-    return JsonResponse(list(ids))
+@api_view(['GET'])
+def invplan_list(request):
+    ids = list(Plan.objects.values_list('id', flat=True))
+    return Response(ids)
