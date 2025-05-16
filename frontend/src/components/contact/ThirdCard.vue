@@ -21,13 +21,13 @@
     <template #footer>
     <div
         class="flex justify-center"
-        style="position: absolute; bottom: 0; left: 0; right: 0; padding: 0.5rem; background: white;"
+        style="position: absolute; bottom: 0; left: 0; right: 0; padding-top: 1rem; padding-bottom: 1rem; background: white;"
     >
-        <Button 
-            :label="expanded ? 'Leer más' : 'Leer menos'"
-            @click="toggleExpanded"
-        />
-      </div>
+    <Button 
+        :label="expanded ? 'Leer más' : 'Leer menos'"
+        @click="toggleExpanded"
+    />
+    </div>
     </template>
   </Card>
 </template>
@@ -37,7 +37,7 @@ import { ref } from 'vue';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 
-const expanded = ref(false);
+const expanded = ref(true);
 
 function toggleExpanded() {
   expanded.value = !expanded.value;
