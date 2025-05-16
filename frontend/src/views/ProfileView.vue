@@ -2,10 +2,10 @@
     <div>
         <div class="flex h-1000">
             <div class="w-1/2 flex flex-col h-[40em] ">
-                <DolarValue :value=123453.234 class="text-center text-5xl font-bold" />
+                <DolarValue :value=total class="text-center text-5xl font-bold" />
                 <div class="flex justify-center items-center gap-2">
-                    <ChangeValue :value=2142.324 class="text-2xl" />
-                    <PercentageChange :value=23.34 />
+                    <ChangeValue :value=totalChange class="text-2xl" />
+                    <PercentageChange :value=percentageChange />
                 </div>
                 <HoldingChart :holdings="holdings" class="grow"/>
             </div>
@@ -67,11 +67,23 @@ const holdings = ref(null);
 const labels = ref([]);
 const values = ref([]);
 const name = ref('');
+const total = ref(0);
+const totalChange = ref(0);
+const percentageChange = ref(0);
+
 
 const getHoldings = () => {
     axios.get('/user/holdings/')
         .then(response => {
             holdings.value = response.data;
+            holdings.value.forEach(element => {
+                console.log(element);
+                total.value += element.value;
+                totalChange.value += element.change_value;
+                percentageChange.value = totalChange.value /total.value*100;
+            });
+        console.log(total.value);
+
         })
         .catch(error => {
             console.error('Error fetching products:', error);
