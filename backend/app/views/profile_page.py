@@ -23,18 +23,6 @@ def holdings(request):
 
     return Response(holdings)
 
-<<<<<<< HEAD
-
-@api_view(['GET'])
-def investing_plan(request):
-    investing_plan = {
-        'name': '\"Long-term Growth Strategy\"',
-        'values' : [60, 20, 20],
-        'labels' : ['Stocks', 'Bonds', 'Real Estate'],
-    }
-
-    return Response(investing_plan)
-=======
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @transaction.atomic  # Esto asegura que todo el bloque se ejecute como una única transacción atómica
@@ -103,4 +91,3 @@ def set_investing_plan(request, id):
     user.save()
 
     return Response({'message': 'Investing plan updated successfully'}, status=200)
->>>>>>> feature/endpoints
