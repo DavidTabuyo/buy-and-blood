@@ -1,10 +1,12 @@
 from app.models import Asset, Holding, Plan, PlanAsset, Transaction
 from django.db import transaction
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 import yfinance as yf
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def holdings(request):
     holdings = [
         { 'id': 1, 'asset': 'SPDR S&P 500 ETF', 'quantity': 100.234, 'value': 45000.56, 'change_value': 500.12, 'percentage_change': 1.123 },
@@ -22,6 +24,7 @@ def holdings(request):
     return Response(holdings)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 @transaction.atomic  # Esto asegura que todo el bloque se ejecute como una única transacción atómica
 def buyandsell_transaction(request, id):
     src_asset_id = 1
@@ -71,6 +74,7 @@ def buyandsell_transaction(request, id):
     
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def set_investing_plan(request, id):
     try:
         plan = Plan.objects.get(id=id)
