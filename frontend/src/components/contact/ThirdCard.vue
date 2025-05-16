@@ -1,9 +1,9 @@
 <template>
-    <Card style="width: 30rem; height: auto; overflow: hidden;" class="absolute">
+    <Card style="width: 30rem; height: auto; overflow: hidden; right: 10rem;" class="absolute">
         <template #header>
             <img alt="user header" src="/src/assets/future.jpg" />
         </template>
-        <template #title>Segundo cuadro info</template>
+        <template #title>Tercer cuadro info</template>
         <template #content>
             <p class="m-0" style="text-align: justify;">
                 <br />"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
