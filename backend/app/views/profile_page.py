@@ -1,4 +1,4 @@
-from app.models import Asset, Holding, Transaction
+from app.models import Asset, Holding, Plan, PlanAsset, Transaction
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -68,3 +68,22 @@ def buyandsell_transaction(request, id):
     except Exception as e:
         # Si ocurre cualquier otro error, la transacción atómica hará un rollback de todos los cambios
         return Response({"error": str(e)}, status=400)
+    
+
+@api_view(['PUT'])
+def set_investing_plan(request, id):
+    try:
+        plan = Plan.objects.get(id=id)
+    except Plan.DoesNotExist:
+        return Response({'error': 'Plan not found'}, status=404)
+    
+    
+    user = request.user
+    
+    if user.plan == plan:
+        return Response({'error': 'User already has this plan'}, status=400)
+    
+    user.plan = plan
+    user.save()
+
+    return Response({'message': 'Investing plan updated successfully'}, status=200)
