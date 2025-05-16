@@ -1,5 +1,6 @@
 # app/tests/conftest.py
 import os
+import time
 import pytest
 import psycopg2
 from django.conf import settings
@@ -18,7 +19,7 @@ def set_env_db_url(monkeypatch):
     if url:
         monkeypatch.setenv("DATABASE_URL", url)
 
-# Nuevo fixture para eliminar la base de datos test antes de crearla
+# Fixture para eliminar base de datos test antes de creación
 @pytest.fixture(scope='session', autouse=True)
 def drop_test_db_before_creation():
     database_url = os.getenv("DATABASE_URL")
@@ -33,10 +34,9 @@ def drop_test_db_before_creation():
         'port': parsed.port or 5432,
         'user': parsed.username,
         'password': parsed.password,
-        'dbname': 'postgres'  # conexión a la base administrativa
+        'dbname': 'postgres'  # base administrativa para borrar db
     }
 
-    # Nombre base test, Django suele prefijar con "test_"
     test_db_name = "test_" + (parsed.path[1:] if parsed.path else "db")
 
     try:
@@ -44,19 +44,23 @@ def drop_test_db_before_creation():
         conn.autocommit = True
         cur = conn.cursor()
 
-        # Terminar conexiones activas a la base de test
-        cur.execute(f"""
+        # Terminar conexiones activas a la base de test excepto esta conexión
+        cur.execute("""
             SELECT pg_terminate_backend(pid)
             FROM pg_stat_activity
-            WHERE datname = %s AND pid <> pg_backend_pid();
+            WHERE datname = %s
+              AND pid <> pg_backend_pid();
         """, (test_db_name,))
 
-        # Eliminar la base de datos de test si existe
+        # Esperar un momento para que se cierren conexiones
+        time.sleep(1)
+
+        # Eliminar base de datos test si existe
         cur.execute(f"DROP DATABASE IF EXISTS {test_db_name};")
 
         cur.close()
         conn.close()
-        print(f"Base de datos de test '{test_db_name}' eliminada antes de crearla.")
+        print(f"Base de datos de test '{test_db_name}' eliminada correctamente antes de crearla.")
     except Exception as e:
         print(f"Error eliminando base de datos de test '{test_db_name}': {e}")
 
