@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed w-full top-0 z-50 shadow-md h-[70px] flex items-center bg-white">
+    <div  :key="key" class="fixed w-full top-0 z-50 shadow-md h-[70px] flex items-center bg-white">
         <div class="w-full h-full flex items-center">
             <Menubar :model="items" class="px-4 lg:px-8 w-full h-full">
                 <template #start>
@@ -32,22 +32,30 @@
             </Menubar>
         </div>
     </div>
+    <Toast />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { defineEmits } from 'vue'
 import Menubar from 'primevue/menubar'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar';
 import Tag from 'primevue/tag';
 import Popover from 'primevue/popover';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+import axios from '@/axios.js';
+import { useAuthStore } from '@/stores/auth'
 
 //accedemos al valor booleano del log in del usuario
-import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 const router = useRouter()
 const op = ref();
+const toast = useToast();
+const emit = defineEmits(['reset-app'])
+const key = ref(0)
 
 function loginWithGoogle() {
     window.location.href = 'http://localhost:8000/auth/google/login/'
@@ -81,7 +89,19 @@ const wallet = () => {
 
 
 const logout = () => {
-    console.log("TODO: USUARIO CIERRA SESIÓN");
+    //llamamos al logout del backend
+    axios.post('user/logout/')
+    .then((response) => {
+        toast.add({ severity: 'success', summary: 'La sesión se ha cerrado correctamente', life: 3000 });
+        emit('reset-app') ;
+        key.value++;
+        auth.logout()
+    })
+    .catch((error) => {
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Ha ocurrido un error cerrando la sesión', life: 3000 });
+      console.error('Error al obtener datos:', error);
+      key.value++;
+    });
 };
 
 
@@ -95,5 +115,6 @@ onMounted(() => {
 
     }
 })
+
 
 </script>

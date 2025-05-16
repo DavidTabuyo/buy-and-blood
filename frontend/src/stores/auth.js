@@ -32,7 +32,6 @@ export const useAuthStore = defineStore('auth', {
     
     async logout() {
       try {
-        await axios.post('/auth/logout/');
         this.isLoggedIn = false;
         this.user_data = null;
       } catch (error) {

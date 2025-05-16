@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from google.oauth2         import id_token
 from google.auth.transport import requests as grequests
+from django.contrib.auth import logout as django_logout
 
 # Usa el modelo configurado en AUTH_USER_MODEL
 User = get_user_model()
@@ -116,3 +117,9 @@ def check_auth(request):
     }
 
     return Response(user_data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    django_logout(request) 
+    return Response({'detail': 'Sesión cerrada correctamente.'}, status=status.HTTP_200_OK)

@@ -1,6 +1,6 @@
 # assets_urls.py
 from django.urls import path
-from app.views.auth_views import google_login, google_callback
+from app.views.auth_views import google_login, google_callback, logout
 
 urlpatterns = [
     path('google/login/',   google_login,    name='google_login'),

@@ -2,12 +2,12 @@
   <div class="flex flex-col h-screen">
     <!-- Barra de navegación -->
     <div>
-      <NavBar />
+      <NavBar @reset-app="onResetApp"/>
     </div>
 
     <!-- Contenido principal -->
     <div class="flex-1 pt-24 px-16 pb-16">
-      <router-view class="h-full" />
+      <router-view :key="appKey" class="h-full" />
     </div>
 
     <!-- Diálogo de sesión expirada -->
@@ -25,7 +25,7 @@
 
 <script setup>
 import NavBar from '@/components/NavBar.vue'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -42,6 +42,7 @@ const ui = useUiStore()
 // Router
 const route = useRoute()
 const router = useRouter()
+const appKey = ref(0)
 
 // Refs (si necesitas mostrar info de auth en la UI)
 const { isLoggedIn, user_data } = storeToRefs(auth)
@@ -58,6 +59,10 @@ if (route.query.sessionExpired === '1') {
   const q = { ...route.query }
   delete q.sessionExpired
   router.replace({ query: q })
+}
+
+function onResetApp() {
+  appKey.value++
 }
 
 // Acción del botón "Login" del diálogo
