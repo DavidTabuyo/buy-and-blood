@@ -5,7 +5,7 @@
     :style="{ height: expanded ? 'auto' : '50rem' }"
   >
     <template #header>
-      <img alt="user header" src="/src/assets/future.jpg" />
+      <img alt="user header" src="/src/assets/cartera_inversion.jpg" />
     </template>
     <template #title>Tercer cuadro info</template>
     <template #content>
