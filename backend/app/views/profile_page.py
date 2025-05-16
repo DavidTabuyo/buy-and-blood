@@ -12,9 +12,9 @@ def get_holding(request, asset_id):
         return None
     
     asset_name = holding.asset.name
-    mean_price = holding.mean_price
-    amount = holding.amount
-    total_value = holding.amount * mean_price
+    mean_price = float(holding.mean_price)
+    amount = float(holding.amount)
+    total_value = amount* mean_price
     
     # Obtener el precio actual del activo usando yfinance
     yf_asset = yf.Ticker(holding.asset.symbol_yf)
@@ -24,7 +24,7 @@ def get_holding(request, asset_id):
         current_price = mean_price
         
     # Calcular el cambio en valor y porcentaje
-    change_value = (current_price - mean_price) * holding.amount
+    change_value = (current_price - mean_price) * amount
     percentage_change = (change_value / total_value) * 100
     
     return {

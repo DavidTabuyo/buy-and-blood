@@ -99,21 +99,18 @@ def check_auth(request):
         return Response({}, status=status.HTTP_200_OK)
         
     
-    holdings = Holding.objects.filter(user_id=user.id)   
-    holdings = [holding.to_dict() for holding in holdings]
     
     try:
         dolar_holding = Holding.objects.get(user_id=user.id, asset_id=1)    # asset_id=1 del dolar
         balance = dolar_holding.amount * dolar_holding.mean_price
     except Exception as e:
         balance = 0
-        print(f"El pibe no tiene dolares: {e}")
+
     
     user_data = {
         'email' : user.email,
         'balance': balance,
         'plan_id': user.plan.id if user.plan else None,
-        'holdings': holdings,
     }
 
     return Response(user_data, status=status.HTTP_200_OK)
