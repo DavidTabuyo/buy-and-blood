@@ -9,7 +9,7 @@
     </div>
 
     <div class="px-4">
-      <h1 v-if="asset" class="text-2xl">${{ asset.price }}</h1>
+      <DolarValue v-if="asset" :value="asset.price" class="text-2xl" />
     </div>
 
     <div class="px-4" v-if="asset">
@@ -26,7 +26,8 @@
 <script setup>
 import { ref, defineProps, watch } from 'vue';
 import Chart from 'primevue/chart';
-import PercentageChange from '@/components/utils/PercentageChange.vue'
+import PercentageChange from '@/components/utils/PercentageChange.vue';
+import DolarValue from '@/components/utils/DolarValue.vue';
 import axios from '@/axios.js';
 import 'primeicons/primeicons.css'
 
@@ -38,7 +39,7 @@ const props = defineProps({
 const asset = ref(null);
 const icon = ref("");
 const chartData = ref({
-  labels: new Array(24).fill(''),
+  labels: [],
   datasets: [
     {
       data: [],
@@ -98,9 +99,11 @@ const loadData = () => {
         }
         if (response.data.type === "crypto") {
           icon.value = "pi pi-bitcoin";
+          chartData.value.labels = new Array(24).fill('');
         } else if (response.data.type === "stock") {
           icon.value = "pi pi-chart-line";
-
+          // TODO: Cambiar a 7 o 6 días?
+          chartData.value.labels = new Array(7).fill('');
         }
       }
     })
