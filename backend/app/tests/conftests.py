@@ -2,7 +2,7 @@
 import os
 import pytest
 from django.conf import settings
-from django.db import connections
+from django.db import connection
 from django.core.management import call_command
 from rest_framework.test import APIClient
 from factory import DjangoModelFactory, Faker
@@ -23,10 +23,18 @@ def set_env_db_url(monkeypatch):
 def api_client():
     return APIClient()
 
-# 4) Base de datos limpia: apply migrations o crear tablas
+# 4) Base de datos limpia: matar conexiones activas a test db y aplicar migraciones
 @pytest.fixture(scope='session', autouse=True)
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
+        test_db_name = connection.creation._get_test_db_name()
+        with connection.cursor() as cursor:
+            # Matar conexiones activas a la base de datos de test para evitar errores
+            cursor.execute(f"""
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = '{test_db_name}' AND pid <> pg_backend_pid();
+            """)
         call_command("migrate", "--noinput")
     return django_db_setup
 
