@@ -34,6 +34,12 @@ def google_login(request):
 
 
 def google_callback(request):
+    # 0. Comprobar si hay error en la respuesta (como cancelar)
+    error = request.GET.get('error')
+    if error:
+        frontend_url = os.getenv('FRONTEND_URL', 'http://localhost:5173')
+        return redirect(f'{frontend_url}?error_login')
+
     # 1. Validar state
     state = request.GET.get('state')
     if state != request.session.get('oauth_state'):
