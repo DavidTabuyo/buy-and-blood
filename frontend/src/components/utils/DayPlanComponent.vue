@@ -16,7 +16,7 @@
           class="absolute inset-0 flex items-center justify-center pointer-events-none"
         >
           <PercentageChange
-            :value="1.5"
+            :value="percentage_change"
             class="text-3xl font-bold"
           />
         </div>
@@ -52,6 +52,7 @@ const props = defineProps({
 const myChart = ref(null);
 const chartData = ref({});
 const chartOptions = ref({});
+const percentage_change = ref(0);
 
 
 function setChartData() {
@@ -122,8 +123,9 @@ onMounted(() => {
 
 // Watchers para actualizar datos si cambian los props
 watch(
-  () => [props.labels, props.values],
+  () => [props.labels, props.values, props.percentage_change],
   () => {
+    percentage_change.value = props.percentage_change;
     chartData.value = setChartData();
     // Forzar actualización del chart
     if (myChart.value?.chart) {

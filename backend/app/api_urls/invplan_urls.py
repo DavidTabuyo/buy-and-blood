@@ -1,7 +1,6 @@
 # assets_urls.py
 from django.urls import path
-from app.views.homepage import best_plan
-from app.views.invplan_view import invplan_details, invplan_list
+from app.views.invplan_view import invplan_details, invplan_list, best_plan
 
 urlpatterns = [
     path('best/', best_plan , name='asset-detail'),

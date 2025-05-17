@@ -4,7 +4,7 @@
             <MainComponent class="w-2/3" />
             <div class="bg-white shadow-lg rounded-xl w-1/3 ">
                 <div class="pt-8 flex flex-col items-center">
-                    <DayPlanComponent :description="plan_description" :labels="plan_labels" :values="plan_percentages" :planName="plan_name
+                    <DayPlanComponent :percentage_change="plan_percentage_change" :description="plan_description" :labels="plan_labels" :values="plan_percentages" :planName="plan_name
                         " />
                 </div>
 
@@ -28,13 +28,13 @@ const plan_name = ref("");
 
 
 const loadDayPlanData = () => {
-    axios.get("invplan/details/1/")
+    axios.get("invplan/best/")
         .then((response) => {
             if (response.data) {
                 plan_description.value = response.data.description;
                 plan_labels.value = response.data.labels;
                 plan_percentages.value = response.data.percentages;
-                plan_percentage_change.value = response.data.percentage_change;
+                plan_percentage_change.value = response.data.planPercentageChange;
                 plan_name.value = response.data.name;
             };
         })

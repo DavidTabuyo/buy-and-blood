@@ -2,7 +2,7 @@
     <div class="flex flex-col px-4 pt-4 pb-4">
         <div class="flex">
             <div class="w-1/2">
-                <DayPlanComponent :labels="plan_labels" :values="plan_percentages" :planName="plan_name" />
+                <DayPlanComponent :percentage_change="plan_percentage_change" :labels="plan_labels" :values="plan_percentages" :planName="plan_name" />
             </div>
             <div class="w-1/2 flex flex-col gap-6">
                 <div>
@@ -97,7 +97,7 @@ const loadData = () => {
                 plan_description.value = response.data.description;
                 plan_labels.value = response.data.labels;
                 plan_percentages.value = response.data.percentages;
-                plan_percentage_change.value = response.data.percentage_change;
+                plan_percentage_change.value = response.data.planPercentageChange;
                 plan_name.value = response.data.name;
             }
         })
