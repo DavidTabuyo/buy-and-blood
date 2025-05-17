@@ -73,7 +73,7 @@ import { useToast } from 'primevue/usetoast';
 import axios from '@/axios.js';
 import { useAuthStore } from '@/stores/auth'
 import DolarValue from '@/components/utils/DolarValue.vue'
-import Logo from '@/assets/logo.svg';
+import Logo from '@/assets/big_b.svg';
 import Dialog from 'primevue/dialog'
 import InputNumber from 'primevue/inputnumber'
 import FloatLabel from 'primevue/floatlabel'
