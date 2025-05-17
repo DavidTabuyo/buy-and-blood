@@ -12,7 +12,7 @@
             <div class="w-1/2 ">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
                     <div>Plan de inversion</div>
-                    <DayPlanComponent :labels="labels" :values="values" :planName="name"/>
+                    <DayPlanComponent :labels="labels" :values="values" :planName="name" :percentage_change="planPercentageChange"/>
                 </div>
             </div>
         </div>
@@ -66,6 +66,7 @@ import axios from '../axios.js';
 const holdings = ref(null);
 const labels = ref([]);
 const values = ref([]);
+const planPercentageChange = ref(0);
 const name = ref('');
 const total = ref(0);
 const totalChange = ref(0);
@@ -95,6 +96,17 @@ const getInvestingPlan = () => {
             labels.value = response.data.labels;
             values.value = response.data.percentages;
             name.value = response.data.name;
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log();
+            console.log(response.data.planPercentageChange);
+            planPercentageChange.value = response.data.planPercentageChange;
         })
         .catch(error => {
             console.error('Error fetching products:', error);

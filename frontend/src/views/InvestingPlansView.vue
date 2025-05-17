@@ -1,14 +1,10 @@
 <template>
     <div class="flex justify-center ">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full   justify-items-stretch">
-                <div
-  v-for="invplanId in invPlanList"
-  :key="invplanId"
-  class="w-full bg-white shadow-lg rounded-xl"
->
-  <PlanDetails :planId="invplanId" />
-</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full   justify-items-stretch">
+            <div v-for="invplanId in invPlanList" :key="invplanId" class="w-full bg-white shadow-lg rounded-xl">
+                <PlanDetails :planId="invplanId" />
             </div>
+        </div>
     </div>
 </template>
 
