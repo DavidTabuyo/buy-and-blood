@@ -28,7 +28,7 @@ const plan_name = ref("");
 
 
 const loadDayPlanData = () => {
-    axios.get("invplan/details/1/")
+    axios.get("invplan/best/")
         .then((response) => {
             if (response.data) {
                 plan_description.value = response.data.description;
