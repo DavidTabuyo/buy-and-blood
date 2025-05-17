@@ -14,14 +14,14 @@ import { onMounted, ref } from 'vue';
 import axios from '@/axios.js';
 import PlanDetails from '@/components/invplan/PlanDetails.vue'
 
-const invPlanList = ref([1, 2, 2, 1, 1, 2]);
+const invPlanList = ref([]);
 
 
 const fetchInvPlans = () => {
     axios.get('invplan/list/')
         .then((response) => {
             if (response.data) {
-                //invPlanList.value = response.data;
+                invPlanList.value = response.data;
             }
         })
         .catch((error) => {

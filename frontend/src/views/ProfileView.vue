@@ -7,7 +7,7 @@
                     <ChangeValue :value=totalChange class="text-2xl" />
                     <PercentageChange :value=percentageChange />
                 </div>
-                <HoldingChart :holdings="holdings" class="grow" />
+                <HoldingChart :holdings="pieHoldings" class="grow" />
             </div>
             <div class="w-1/2 ">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="mt-8">
-            <DataTable :value="holdings" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden"
+            <DataTable :value="tableHoldings" showGridlines removableSort class="min-w-[50rem] rounded-xl overflow-hidden"
                 @row-click="onRowClick" :pt="{
                     bodyRow: () => ({
                         role: 'button',
@@ -69,7 +69,8 @@ import PercentageChange from '@/components/utils/PercentageChange.vue';
 import HoldingChart from '@/components/profile/HoldingChart.vue';
 import axios from '../axios.js';
 
-const holdings = ref(null);
+const tableHoldings = ref(null);
+const pieHoldings = ref(null);
 const labels = ref([]);
 const values = ref([]);
 const planPercentageChange = ref(0);
@@ -82,12 +83,16 @@ const percentageChange = ref(0);
 const getHoldings = () => {
     axios.get('/user/holdings/')
         .then(response => {
-            holdings.value = response.data;
-            holdings.value.forEach(element => {
+            tableHoldings.value = response.data;
+            pieHoldings.value = response.data;
+            tableHoldings.value.forEach(element => {
+
                 total.value += element.total_value;
                 totalChange.value += element.change_value;
                 percentageChange.value = totalChange.value / total.value * 100;
             });
+            console.log(tableHoldings.value);
+            tableHoldings.value = tableHoldings.value.filter(el => el.asset_id !== 9);
 
         })
         .catch(error => {

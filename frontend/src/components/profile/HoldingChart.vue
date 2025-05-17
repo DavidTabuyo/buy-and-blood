@@ -47,8 +47,7 @@ const labels = sorted.map(h => {
   return `${h.asset_name} \n ${percentage.toFixed(2)}%`;
 });
 
-  const values = sorted.map(h => h.change_value);
-
+  const values = sorted.map(h => h.total_value);
   // 3. Aplicar la paleta a los valores ordenados
   const colors = PALETTE.slice(0, values.length);
 

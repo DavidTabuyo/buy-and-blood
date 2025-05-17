@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-full">
     <div class="flex justify-between px-4 pt-4">
-      <h1 class="text-2xl text-gray-500" v-if="asset">
+      <h1 class="text-xl text-gray-500" v-if="asset">
         {{ asset.name }}
       </h1>
       <i :class="icon" style="font-size: 2rem"></i>
