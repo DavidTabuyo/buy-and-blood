@@ -33,8 +33,8 @@
 
       <DataTable :value="transactions" stripedRows emptyMessage="No hay transacciones disponibles">
         <template #empty>
-    <div class="p-4 text-center text-gray-500">Todavía no ha realizado ninguna transacción</div>
-  </template>
+          <div class="p-4 text-center text-gray-500">Todavía no ha realizado ninguna transacción</div>
+        </template>
         <Column field="date" header="Fecha" />
         <Column field="buyPrice" header="Precio de compra" />
         <Column field="quantity" header="Cantidad" />
@@ -50,7 +50,8 @@
         </FloatLabel>
         <div class="flex gap-2 mt-8">
           <Button label="Comprar" @click="buy" class="flex-1 px-6 py-3 text-lg" severity="success" />
-          <Button label="Vender" @click="sell" class="flex-1 px-6 py-3 text-lg" />
+          <Button label="Vender" @click="sell" class="flex-1 px-6 py-3 text-lg" :disabled="myTotal === 0" 
+            />
         </div>
 
       </div>
@@ -86,9 +87,9 @@ const assetData = ref(null)
 const transactions = ref([])
 const amount = ref(null)
 
-const percentageChange = ref(-0.3987)
-const changeValue = ref(8234.34)
-const myTotal = ref(123342.45)
+const percentageChange = ref(0)
+const changeValue = ref(0)
+const myTotal = ref(0)
 
 let intervalId = null
 
@@ -114,11 +115,21 @@ async function fetchAssetData() {
 async function loadTransactions() {
   try {
     const { data } = await axios.get(`asset/transactions/${ticker}/`)
+    console.log()
     transactions.value = data
     console.log(transactions.value);
   } catch (err) {
     console.error('Error al obtener transacciones:', err)
   }
+}
+
+async function loadAssetUserData() {
+  const { data } = await axios.get(`user/holding/${ticker}/`)
+  percentageChange.value = data.percentage_change
+  changeValue.value = data.change_value
+  myTotal.value = data.total_value
+  console.log(data);
+
 }
 
 const buy = () => {
@@ -135,6 +146,7 @@ onMounted(async () => {
   if (auth.isLoggedIn) {
     await fetchAssetData()
     await loadTransactions()
+    await loadAssetUserData()
     intervalId = setInterval(fetchAssetData, 5000)
   } else {
     ui.openAuthDialog()

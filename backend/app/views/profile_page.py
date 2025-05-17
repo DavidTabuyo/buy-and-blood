@@ -55,7 +55,7 @@ def holdings(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def holding(request, asset_id):
+def holding(request, asset_id): 
     holding = get_holding(request, asset_id)
     if holding:
         return Response(holding)
