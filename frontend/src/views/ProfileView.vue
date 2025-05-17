@@ -12,12 +12,10 @@
             <div class="w-1/2 ">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
 
-                    <div>Plan de inversion</div>
-                    <DayPlanComponent :labels="labels" :values="values" :planName="name"/>
                     <div v-if="!values.length">
                         Cuando selecciones un plan se mostrará aquí!
                     </div>
-                    <div v-else>
+                    <div  v-show="values.length">
                         <div>Plan de inversion</div>
                         <DayPlanComponent :labels="labels" :values="values" :planName="name" :percentage_change="planPercentageChange"/>
                     </div>
@@ -61,7 +59,7 @@
 
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import DayPlanComponent from '@/components/utils/DayPlanComponent.vue';
@@ -96,7 +94,6 @@ const getHoldings = () => {
             console.error('Error fetching products:', error);
         });
 };
-getHoldings();
 
 const getInvestingPlan = () => {
     axios.get('/user/investing-plan/')
@@ -104,23 +101,17 @@ const getInvestingPlan = () => {
             labels.value = response.data.labels;
             values.value = response.data.percentages;
             name.value = response.data.name;
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log();
-            console.log(response.data.planPercentageChange);
             planPercentageChange.value = response.data.planPercentageChange;
         })
         .catch(error => {
             console.error('Error fetching products:', error);
         });
 };
-getInvestingPlan();
+onMounted(()=> {
+    getHoldings();
+    getInvestingPlan();
+
+});
 
 const onRowClick = (event) => {
     window.location.href = `/asset/${event.data.asset_id}`;
