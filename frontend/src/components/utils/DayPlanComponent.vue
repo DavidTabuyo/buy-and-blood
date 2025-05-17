@@ -83,27 +83,28 @@ function setChartOptions() {
     plugins: {
       legend: { display: false },
       datalabels: {
-        color: '#fff',
-        font: { family: 'Inter, sans-serif', size: 16, weight: '600' },
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: 10,
-        borderColor: '#ffffff',
-        borderWidth: 2,
-        padding: 8,
-        textStrokeColor: 'rgba(0,0,0,0.3)',
-        textStrokeWidth: 1,
-        align: 'center',
-        anchor: 'center',
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex].toUpperCase();
-          const total = ctx.chart.data.datasets[0].data.reduce(
-            (sum, v) => sum + v,
-            0
-          );
-          const pct = ((value / total) * 100).toFixed(1) + '%';
-          return `${label}\n${pct}`;
-        }
-      }
+  color: '#fff',
+  font: { family: 'Inter, sans-serif', size: 12, weight: '600' },
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  borderRadius: 10,
+  borderColor: '#ffffff',
+  borderWidth: 2,
+  padding: 8,
+  textStrokeColor: 'rgba(0,0,0,0.3)',
+  textStrokeWidth: 1,
+  align: 'center',
+  anchor: 'center',
+  formatter: (value, ctx) => {
+    const label = ctx.chart.data.labels[ctx.dataIndex].toUpperCase();
+    const total = ctx.chart.data.datasets[0].data.reduce(
+      (sum, v) => sum + v,
+      0
+    );
+    const pct = ((value / total) * 100).toFixed(1) + '%';
+    return `${label}\n${pct}`;
+  }
+}
+
     }
   };
 }

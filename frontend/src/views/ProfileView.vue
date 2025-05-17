@@ -115,7 +115,7 @@ const getInvestingPlan = () => {
 getInvestingPlan();
 
 const onRowClick = (event) => {
-    window.location.href = `/asset/${event.data.id}`;
+    window.location.href = `/asset/${event.data.asset_id}`;
 };
 
 </script>

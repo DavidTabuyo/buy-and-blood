@@ -34,15 +34,19 @@ const chartOptions = ref({});
 
 
 const setChartData = () => {
-  // 1. Hacemos una copia y la ordenamos de mayor a menor según change_value
   const sorted = [...props.holdings].sort(
-    (a, b) => b.change_value - a.change_value
-  );
+  (a, b) => b.total_value - a.total_value
+);
 
-  // 2. Mapear sobre el array ya ordenado
-  const labels = sorted.map(
-    h => `${h.asset_name} \n ${h.percentage_change.toFixed(2)}%`
-  );
+// Sumar todos los total_value
+const totalSum = sorted.reduce((acc, h) => acc + h.total_value, 0);
+
+// Crear labels con porcentaje real calculado
+const labels = sorted.map(h => {
+  const percentage = (h.total_value / totalSum) * 100;
+  return `${h.asset_name} \n ${percentage.toFixed(2)}%`;
+});
+
   const values = sorted.map(h => h.change_value);
 
   // 3. Aplicar la paleta a los valores ordenados
