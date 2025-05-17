@@ -7,12 +7,20 @@
                     <ChangeValue :value=totalChange class="text-2xl" />
                     <PercentageChange :value=percentageChange />
                 </div>
-                <HoldingChart :holdings="holdings" class="grow"/>
+                <HoldingChart :holdings="holdings" class="grow" />
             </div>
             <div class="w-1/2 ">
                 <div class="w-2/3 ml-auto text-center bg-white shadow-lg rounded-xl p-4">
+
                     <div>Plan de inversion</div>
-                    <DayPlanComponent :labels="labels" :values="values" :planName="name" :percentage_change="planPercentageChange"/>
+                    <DayPlanComponent :labels="labels" :values="values" :planName="name"/>
+                    <div v-if="!values.length">
+                        Cuando selecciones un plan se mostrará aquí!
+                    </div>
+                    <div v-else>
+                        <div>Plan de inversion</div>
+                        <DayPlanComponent :labels="labels" :values="values" :planName="name" :percentage_change="planPercentageChange"/>
+                    </div>
                 </div>
             </div>
         </div>
