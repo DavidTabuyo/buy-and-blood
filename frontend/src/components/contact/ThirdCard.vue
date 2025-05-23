@@ -7,7 +7,7 @@
       <img alt="user header" src="/src/assets/cartera_inversion.jpg" />
     </template>
 
-    <template #title>Tercer cuadro info</template>
+    <template #title>Desde planes de inversión...</template>
 
     <template #content>
       <p class="m-0 text-justify">

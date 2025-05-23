@@ -7,15 +7,14 @@
       <img alt="user header" src="/src/assets/criptos.jpg" />
     </template>
 
-    <template #title>Segundo cuadro info</template>
+    <template #title>Desde Home...</template>
 
     <template #content>
       <p class="m-0 text-justify">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Encontrarás la posibilidad de ver los distintos activos y filtraros en función de Fondos o Cryptos.</p>
+        <p>Cada uno de los activos dispone de su propia gráfica, con su valor de mercado y su crecimiento o decrecimiento.</p>
+        <p>Además, se acompaña con una gráfica circular de una combinación equilibrada para asegurar diversificación y estabilidad.</p>
+        <p>Para poder realizar una compra o venta de activos es necesario iniciar sesión. Cada cuenta tiene asociada una cartera propia con cada uno de los activos comprados. </p>
       </p>
     </template>
 
