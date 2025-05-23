@@ -1,13 +1,13 @@
 <template>
   <Card
-    class="absolute w-[30rem] right-[10rem] overflow-hidden transition-all duration-300"
+    class="absolute w-[30rem] overflow-hidden transition-all duration-300"
     :class="{ 'h-auto': expanded, 'h-[50rem]': !expanded }"
   >
     <template #header>
-      <img alt="user header" src="/src/assets/cartera_inversion.jpg" />
+      <img alt="user header" src="/src/assets/criptos.jpg" />
     </template>
 
-    <template #title>Tercer cuadro info</template>
+    <template #title>Segundo cuadro info</template>
 
     <template #content>
       <p class="m-0 text-justify">
