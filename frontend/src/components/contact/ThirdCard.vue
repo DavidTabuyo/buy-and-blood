@@ -1,7 +1,7 @@
 <template>
   <Card
     class="absolute w-[30rem] right-[10rem] overflow-hidden transition-all duration-300"
-    :class="{ 'h-auto': expanded, 'h-[50rem]': !expanded }"
+    :class="{ 'h-[37.7rem]': expanded, 'h-[50rem]': !expanded }"
   >
     <template #header>
       <img alt="user header" src="/src/assets/cartera_inversion.jpg" />
@@ -11,11 +11,12 @@
 
     <template #content>
       <p class="m-0 text-justify">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Podrás visualizar los planes de inversión de la aplicación.</p>
+        <p>Además, se podrá asignar el que más te guste.</p>
+        <p>Cada plan incluye información detallada sobre su composición (acciones, ETFs y criptomonedas).</p>
+        <p>Gracias a nuestras gráficas, podrás comparar rendimientos históricos y filtraros en función del tiempo.</p>
+        <p>Además, podrás crear planes, con una combinación equilibrada entre grandes tecnologías o criptomonedas asociadas como Bitcoin o Ethereum, entre otros muchos.</p>
+        <p>Las posibilidades son ilimitadas.</p>
       </p>
     </template>
 

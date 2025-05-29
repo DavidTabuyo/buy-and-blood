@@ -14,7 +14,7 @@
         <p>Encontrarás la posibilidad de ver los distintos activos y filtraros en función de Fondos o Cryptos.</p>
         <p>Cada uno de los activos dispone de su propia gráfica, con su valor de mercado y su crecimiento o decrecimiento.</p>
         <p>Además, se acompaña con una gráfica circular de una combinación equilibrada para asegurar diversificación y estabilidad.</p>
-        <p>Para poder realizar una compra o venta de activos es necesario iniciar sesión. Cada cuenta tiene asociada una cartera propia con cada uno de los activos comprados. </p>
+        <p>Para poder realizar una compra o venta de activos es necesario iniciar sesión. Cada cuenta tiene asociada una cartera propia con cada uno de los activos comprados.</p>
       </p>
     </template>
 
