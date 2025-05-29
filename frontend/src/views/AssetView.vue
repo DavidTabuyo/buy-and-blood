@@ -133,7 +133,20 @@ async function loadAssetUserData() {
 }
 
 const buy = () => {
-
+  console.log(typeof ticker, ticker);
+  axios.post(`user/transaction/2/`, {
+    transaction_money: amount.value
+  })
+    .then(() => {
+      ui.showToast('Compra realizada con éxito', 'success')
+      amount.value = null
+      loadTransactions()
+      loadAssetUserData()
+    })
+    .catch((error) => {
+      console.error('Error al realizar la compra:', error)
+      ui.showToast('Error al realizar la compra', 'error')
+    })
 };
 
 const sell = () => {
