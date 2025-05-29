@@ -117,14 +117,14 @@ function selectPlan() {
 }
 
 const fetchChartData = () => {
-  axios.get(`invplan/details/${planId}/`)
+  axios.get(`invplan/chart/${planId}/`)
     .then(response => {
       console.log(response);
+      chartData.value.datasets[0].data = response.data.chartData;
     })
     .catch(err => {
       console.error('Error al obtener datos:', err);
     });
-  chartData.value.datasets[0].data = [1, 2, 3, 4, 5, 6, 7, 8, 3, 2, 3, 5];
 };
 
 // Recarga los datos cuando cambie planId (e inmediatamente al montar)
