@@ -3,7 +3,7 @@
     <ContactCard></ContactCard>
     <SecondCard></SecondCard>
     <ThirdCard></ThirdCard>
-    <!--<FormCard class="mt-[700px]"></FormCard>  -->
+    <TeamCard class="mt-[700px]"></TeamCard>
   </div>
 </template>
   
@@ -11,5 +11,5 @@
   import ContactCard from '@/components/contact/InfoCard.vue';
   import SecondCard from '@/components/contact/SecondCard.vue';
   import ThirdCard from '@/components/contact/ThirdCard.vue';
-  import FormCard from '@/components/contact/FormCard.vue';
+  import TeamCard from '../components/contact/TeamCard.vue';
 </script>
