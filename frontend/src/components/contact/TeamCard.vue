@@ -22,13 +22,13 @@
                justify-center items-center max-w-80 rounded-2xl p-8 gap-4"
       >
         <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+          image="/src/assets/david.jpg"
           shape="circle"
           size="xlarge"
         />
         <span class="text-2xl font-medium">David Tabuyo</span>
         <span class="text-muted-color text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          FullStack Developer especializado en fronted & Software Architect
         </span>
       </div>
 
@@ -38,13 +38,13 @@
                justify-center items-center max-w-80 rounded-2xl p-8 gap-4"
       >
         <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
+          image="/src/assets/dario.jpg"
           shape="circle"
           size="xlarge"
         />
         <span class="text-2xl font-medium">Darío Martín</span>
         <span class="text-muted-color text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Database Modeler especializado en backend
         </span>
       </div>
 
@@ -54,13 +54,13 @@
                justify-center items-center max-w-80 rounded-2xl p-8 gap-4"
       >
         <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
+          image="/src/assets/dani.jpg"
           shape="circle"
           size="xlarge"
         />
         <span class="text-2xl font-medium">Daniel Gregori</span>
         <span class="text-muted-color text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Project Mannager & QA
         </span>
       </div>
     </div>
