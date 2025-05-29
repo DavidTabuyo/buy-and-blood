@@ -5,14 +5,14 @@
       <span class="text-xl font-medium">Scroll Down</span>
       <span
         class="animate-bounce h-8 w-8 bg-primary text-primary-contrast
-               rounded-full inline-flex items-center justify-center"
+               rounded-full inline-flex items-center justify-center -z-10"
       >
         <i class="pi pi-arrow-down"></i>
       </span>
     </div>
 
     <!-- Espacio para hacer scroll -->
-    <div class="h-[30rem]"></div>
+    <div class="h-[10rem]"></div>
 
     <!-- Tres tarjetas animadas al hacer scroll -->
     <div class="flex flex-wrap justify-center gap-8">
@@ -75,11 +75,9 @@ import Avatar from 'primevue/avatar';
 export default defineComponent({
   name: 'ScrollCards',
   directives: {
-    // Registramos la directiva para animar al hacer scroll
     animateonscroll: AnimateOnScroll
   },
   components: {
-    // Registramos el componente Avatar de PrimeVue
     Avatar
   }
 });

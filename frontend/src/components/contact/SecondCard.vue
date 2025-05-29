@@ -1,7 +1,7 @@
 <template>
   <Card
     class="absolute w-[30rem] overflow-hidden transition-all duration-300"
-    :class="{ 'h-auto': expanded, 'h-[50rem]': !expanded }"
+    :class="{ 'h-[37.7rem]': expanded, 'h-[50rem]': !expanded }"
   >
     <template #header>
       <img alt="user header" src="/src/assets/criptos.jpg" />
