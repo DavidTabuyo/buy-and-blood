@@ -29,6 +29,8 @@ const fetchInvPlans = () => {
         });
 }
 
+
+
 onMounted(() => {
     // Llamar a la función  fetch invPlans cuando el componente se monta
     fetchInvPlans();
