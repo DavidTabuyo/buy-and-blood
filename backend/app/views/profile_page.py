@@ -1,3 +1,4 @@
+from decimal import Decimal
 from app.models import Asset, Holding, Plan, PlanAsset, Transaction
 from django.db import transaction
 from rest_framework.response import Response
@@ -58,6 +59,12 @@ def holdings(request):
 @permission_classes([IsAuthenticated])
 def holding(request, asset_id): 
     holding = get_holding(request, asset_id)
+    print()
+    print()
+    print()
+    print(holding)
+    print()
+    print()
     if holding:
         return Response(holding)
     else:
@@ -69,9 +76,9 @@ def holding(request, asset_id):
 @permission_classes([IsAuthenticated])
 @transaction.atomic  # Esto asegura que todo el bloque se ejecute como una única transacción atómica
 def buyandsell_transaction(request, asset_id):
-    src_asset_id = 1
+
+    src_asset_id = 9
     dest_asset_id = int(asset_id)
-    
     asset = yf.Ticker(Asset.objects.get(id=dest_asset_id).symbol_yf)
     transaction_money = request.data.get('transaction_money')
     
@@ -84,6 +91,7 @@ def buyandsell_transaction(request, asset_id):
             'mean_price': current_dest_price,
             'amount': 0
         })
+
         
         src_money = holding_src.amount * holding_src.mean_price
         dest_money = holding_dest.amount * holding_dest.mean_price
@@ -104,11 +112,13 @@ def buyandsell_transaction(request, asset_id):
 
         # Actualizar las cantidades en la tabla de holdings
         holding_src.amount -= transaction_money / holding_src.mean_price
-        
-        new_dest_money = holding_dest.amount * holding_dest.mean_price + transaction_money
-        holding_dest.amount += transaction_money / current_dest_price
-        holding_dest.mean_price = holding_dest.amount / new_dest_money
 
+        new_dest_money = holding_dest.amount * holding_dest.mean_price + transaction_money
+        transaction_money = Decimal(str(transaction_money))
+        current_dest_price = Decimal(str(current_dest_price))
+        holding_dest.amount += transaction_money / current_dest_price
+
+        holding_dest.mean_price = holding_dest.amount / new_dest_money
         holding_src.save()
         holding_dest.save()
 

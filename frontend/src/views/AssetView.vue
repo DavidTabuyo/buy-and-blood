@@ -9,6 +9,7 @@
         <DolarValue :value="assetData.regularMarketPrice" class="text-3xl font-bold" />
         <PercentageChange :value="assetData.regularMarketChangePercent" class="text-xl" />
       </div>
+      <Toast />
 
       <div class="flex-1">
         <TradingViewChart class="h-full" :ticker="assetData.symbol" />
@@ -31,15 +32,25 @@
         </div>
       </div>
 
-      <DataTable :value="transactions" stripedRows emptyMessage="No hay transacciones disponibles">
-        <template #empty>
-          <div class="p-4 text-center text-gray-500">Todavía no ha realizado ninguna transacción</div>
-        </template>
-        <Column field="date" header="Fecha" />
-        <Column field="buyPrice" header="Precio de compra" />
-        <Column field="quantity" header="Cantidad" />
-        <Column field="total" header="Total" />
-      </DataTable>
+  <div class="max-h-80 max-w-full overflow-auto">
+    <DataTable
+      :value="transactions"
+      stripedRows
+      emptyMessage="No hay transacciones disponibles"
+      scrollable
+      scrollHeight="100%"      
+    >
+      <template #empty>
+        <div class="p-4 text-center text-gray-500">
+          Todavía no ha realizado ninguna transacción
+        </div>
+      </template>
+      <Column field="date"      header="Fecha"              />
+      <Column field="buyPrice"  header="Precio de compra"   />
+      <Column field="quantity"  header="Cantidad"           />
+      <Column field="total"     header="Total"              />
+    </DataTable>
+  </div>
 
       <!-- Formulario simple de compra / venta -->
       <div class="w-full flex flex-col gap-4 pb-8">
@@ -57,6 +68,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
@@ -76,11 +88,15 @@ import FloatLabel from 'primevue/floatlabel'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
 
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const ui = useUiStore()
+const toast = useToast();
 
 const ticker = route.params.ticker
 const assetData = ref(null)
@@ -124,28 +140,37 @@ async function loadTransactions() {
 }
 
 async function loadAssetUserData() {
-  const { data } = await axios.get(`user/holding/${ticker}/`)
-  percentageChange.value = data.percentage_change
-  changeValue.value = data.change_value
-  myTotal.value = data.total_value
-  console.log(data);
+  try {
+    const response = await axios.get(`user/holding/${ticker}/`);
+    const data = response.data;
 
+    percentageChange.value = data.percentage_change ?? 0;
+    changeValue.value = data.change_value ?? 0;
+    myTotal.value = data.total_value ?? 0;
+  } catch (error) {
+    percentageChange.value = 0;
+    changeValue.value = 0;
+    myTotal.value = 0;
+  }
 }
 
 const buy = () => {
-  console.log(typeof ticker, ticker);
-  axios.post(`user/transaction/2/`, {
+
+  axios.post(`user/transaction/${ticker}/`, {
     transaction_money: amount.value
   })
     .then(() => {
-      ui.showToast('Compra realizada con éxito', 'success')
+      toast.add({ severity: 'success', summary: 'Compra realizada', detail: 'La compra se ha realizado con éxito', life: 3000 });
+      //quitamos el saldo al usuario
+      if (amount.value != null){
+      auth.user_data-=amount.value;
+      }
       amount.value = null
       loadTransactions()
       loadAssetUserData()
     })
     .catch((error) => {
-      console.error('Error al realizar la compra:', error)
-      ui.showToast('Error al realizar la compra', 'error')
+      toast.add({ severity: 'danger', summary: 'Error', detail: 'No se ha podido completar la transacción', life: 3000 });
     })
 };
 
