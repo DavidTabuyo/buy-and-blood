@@ -10,8 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['GET'])
 def asset_detail(request, id):
 
-    asset = Asset.objects.get(id=id)
-    asset = yf.Ticker(asset.symbol_yf)  # Assuming 'ticker' is a field in your model
+    asset_obj = Asset.objects.get(id=id)
+    asset = yf.Ticker(asset_obj.symbol_yf)  # Assuming 'ticker' is a field in your model
 
 
     important_fields = [
@@ -30,6 +30,18 @@ def asset_detail(request, id):
     for k, v in filtered_info.items():
         print(f'{k}: {v}')
 
+    if asset_obj.type == 'stock':
+        # Get the historical data for the stock
+        hist = asset.history(period="1d", interval="1h")
+    elif asset_obj.type == 'crypto':
+        # Get the historical data for the cryptocurrency
+        hist = asset.history(period="2d", interval="1h").tail(24)
+    
+    start_price = hist['Close'].iloc[0]
+    end_price = hist['Close'].iloc[-1]
+    filtered_info["regularMarketChangePercent"] = (end_price - start_price) / start_price *100
+    
+    
     return Response(filtered_info)
 
 @api_view(['GET'])
@@ -77,7 +89,7 @@ def asset_mini_detail(request, id):
 
     # Return the response with the data obtained
     return Response({
-        'name': asset.symbol_yf,
+        'name': asset.name,
         'type': asset.type,
         'price': end_price,
         'percentage_change': percentage_change,

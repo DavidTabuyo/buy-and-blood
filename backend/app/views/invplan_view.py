@@ -60,7 +60,7 @@ def invplan_list(request):
 
 @api_view(['GET'])
 def best_plan(request):
-    best_plan = invplan_details_util(request, 0)
+    best_plan = invplan_details_util(request,1)
     max_rentability = 0
     
     for plan_id in invplan_list_util():
@@ -73,4 +73,9 @@ def best_plan(request):
             best_plan = response_data
             
     return JsonResponse(best_plan)
+
+
+
+
+
         

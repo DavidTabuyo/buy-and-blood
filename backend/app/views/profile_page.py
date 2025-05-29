@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import yfinance as yf
+from django.db.models import F
 
 def get_holding(request, asset_id):
     try:
@@ -55,7 +56,7 @@ def holdings(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def holding(request, asset_id):
+def holding(request, asset_id): 
     holding = get_holding(request, asset_id)
     if holding:
         return Response(holding)
@@ -132,3 +133,49 @@ def set_investing_plan(request, id):
     user.save()
 
     return Response({'message': 'Investing plan updated successfully'}, status=200)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+@transaction.atomic
+def add_balance(request, amount):
+    try:
+        f_amount = float(amount)
+    except (TypeError, ValueError):
+        return Response(
+            {"error": "Invalid amount."},
+            status=400
+        )
+
+    user = request.user
+    asset_id = 9
+
+    # Asegurarnos de que el asset 9 existe
+    try:
+        usd_asset = Asset.objects.get(pk=asset_id)
+    except Asset.DoesNotExist:
+        return Response(
+            {"error": f"Asset with id {asset_id} not found."},
+            status=404
+        )
+
+    # Obtener o crear el holding
+    holding, created = Holding.objects.get_or_create(
+        user=user,
+        asset=usd_asset,
+        defaults={
+            'mean_price': 1.0,
+            'amount': f_amount
+        }
+    )
+
+    if not created:
+        # Si ya existía, sumamos el nuevo saldo
+        holding.amount = F('amount') + f_amount
+        holding.save()
+        # refrescamos el valor real desde la base de datos
+        holding.refresh_from_db()
+
+    return Response({
+        "message": "Balance updated successfully.",
+        "new_amount": holding.amount
+    }, status=200)

@@ -6,14 +6,8 @@
       <div class="text-3xl text-gray-500">{{ assetData.longName }}</div>
 
       <div class="flex items-center gap-2 mt-2 mb-3">
-        <DolarValue
-          :value="assetData.regularMarketPrice"
-          class="text-3xl font-bold"
-        />
-        <PercentageChange
-          :value="assetData.regularMarketChangePercent"
-          class="text-xl"
-        />
+        <DolarValue :value="assetData.regularMarketPrice" class="text-3xl font-bold" />
+        <PercentageChange :value="assetData.regularMarketChangePercent" class="text-xl" />
       </div>
 
       <div class="flex-1">
@@ -22,18 +16,12 @@
     </div>
 
     <!-- Si devolvió error -->
-    <div
-      v-else-if="assetData?.error"
-      class="w-full text-center text-red-500 self-center"
-    >
+    <div v-else-if="assetData?.error" class="w-full text-center text-red-500 self-center">
       {{ assetData.error }}
     </div>
 
-    <!-- ---------------- Compra / Venta ---------------- -->
-    <div
-      v-if="assetData && !assetData.error"
-      class="w-1/3 flex flex-col justify-between items-center space-y-4 p-4 bg-white shadow-lg rounded-xl"
-    >
+    <div v-if="assetData && !assetData.error"
+      class="w-1/3 flex flex-col justify-between items-center space-y-4 p-4 bg-white shadow-lg rounded-xl">
       <div>
         <div class="text-center text-3xl mb-4 text-gray-500">Mi Total:</div>
         <DolarValue :value="myTotal" class="text-center text-4xl font-bold" />
@@ -43,112 +31,69 @@
         </div>
       </div>
 
-      <!-- Tabla de transacciones -->
-      <DataTable :value="transactions" stripedRows>
-        <Column field="date"         header="Fecha" />
-        <Column field="buyPrice"     header="Precio de compra" />
+      <DataTable :value="transactions" stripedRows emptyMessage="No hay transacciones disponibles">
+        <template #empty>
+          <div class="p-4 text-center text-gray-500">Todavía no ha realizado ninguna transacción</div>
+        </template>
+        <Column field="date" header="Fecha" />
+        <Column field="buyPrice" header="Precio de compra" />
         <Column field="quantity" header="Cantidad" />
-        <Column field="total"     header="Total" />
+        <Column field="total" header="Total" />
       </DataTable>
 
       <!-- Formulario simple de compra / venta -->
-      <div class="w-full flex flex-col items-center gap-4">
-        <ButtonGroup class="flex justify-center w-full">
-          <Button
-            label="Comprar"
-            class="flex-1"
-            :class="getButtonClass('buy')"
-            @click="selectOption('buy')"
-          />
-          <Button
-            label="Vender"
-            class="flex-1"
-            :class="getButtonClass('sell')"
-            @click="selectOption('sell')"
-          />
-        </ButtonGroup>
-
-        <div class="flex gap-2 items-center text-gray-500">
-          <span>Disponible:</span>
-          <DolarValue :value="availableCash" class="text-xl" />
-        </div>
+      <div class="w-full flex flex-col gap-4 pb-8">
 
         <FloatLabel variant="on" class="w-full">
-          <InputNumber
-            class="w-full text-center"
-            v-model="amount"
-            mode="currency"
-            currency="USD"
-            locale="en-US"
-          />
+          <InputNumber class="w-full text-center" v-model="amount" mode="currency" currency="USD" locale="en-US" />
           <label>Introduce cantidad…</label>
         </FloatLabel>
-      </div>
+        <div class="flex gap-2 mt-8">
+          <Button label="Comprar" @click="buy" class="flex-1 px-6 py-3 text-lg" severity="success" />
+          <Button label="Vender" @click="sell" class="flex-1 px-6 py-3 text-lg" :disabled="myTotal === 0" 
+            />
+        </div>
 
-      <Button class="w-full" :disabled="!amount || amount <= 0">
-        Confirmar
-      </Button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-/* -------------------------------------------------------------
- * imports
- * -----------------------------------------------------------*/
+
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import axios from '@/axios'          // instancia con interceptores
+import axios from '@/axios'
 import { useAuthStore } from '@/stores/auth'
-import { useUiStore }   from '@/stores/ui'
+import { useUiStore } from '@/stores/ui'
 
-import TradingViewChart  from '@/components/asset/TradingViewChart.vue'
-import PercentageChange  from '@/components/utils/PercentageChange.vue'
-import ChangeValue       from '@/components/utils/ChangeValue.vue'
-import DolarValue        from '@/components/utils/DolarValue.vue'
-import InputNumber       from 'primevue/inputnumber'
-import FloatLabel        from 'primevue/floatlabel'
-import Button            from 'primevue/button'
-import ButtonGroup       from 'primevue/buttongroup'
-import DataTable         from 'primevue/datatable'
-import Column            from 'primevue/column'
+import TradingViewChart from '@/components/asset/TradingViewChart.vue'
+import PercentageChange from '@/components/utils/PercentageChange.vue'
+import ChangeValue from '@/components/utils/ChangeValue.vue'
+import DolarValue from '@/components/utils/DolarValue.vue'
+import InputNumber from 'primevue/inputnumber'
+import FloatLabel from 'primevue/floatlabel'
+import Button from 'primevue/button'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 
-/* -------------------------------------------------------------
- * state
- * -----------------------------------------------------------*/
-const route  = useRoute()
+const route = useRoute()
 const router = useRouter()
-const auth   = useAuthStore()
-const ui     = useUiStore()
+const auth = useAuthStore()
+const ui = useUiStore()
 
-const ticker        = route.params.ticker
-const assetData     = ref(null)
-const transactions  = ref([])
-const amount        = ref(null)
+const ticker = route.params.ticker
+const assetData = ref(null)
+const transactions = ref([])
+const amount = ref(null)
 
-const percentageChange = ref(-0.3987)
-const changeValue      = ref(8234.34)
-const myTotal          = ref(123342.45)
-const availableCash    = ref(12)
+const percentageChange = ref(0)
+const changeValue = ref(0)
+const myTotal = ref(0)
 
 let intervalId = null
-const selectedOp = ref('buy')
 
-/* -------------------------------------------------------------
- * helpers
- * -----------------------------------------------------------*/
-function getButtonClass (op) {
-  return {
-    'p-button-primary' : selectedOp.value === op,
-    'p-button-outlined': selectedOp.value !== op
-  }
-}
-function selectOption (op) { selectedOp.value = op }
-
-/* -------------------------------------------------------------
- * API calls
- * -----------------------------------------------------------*/
-async function fetchAssetData () {
+async function fetchAssetData() {
   try {
     const { data } = await axios.get(`asset/${ticker}/`)
     assetData.value = data
@@ -157,7 +102,7 @@ async function fetchAssetData () {
     if (status === 401 || status === 403) {
       clearInterval(intervalId)
       auth.isLoggedIn = false
-      auth.user_data  = null
+      auth.user_data = null
       ui.openAuthDialog()
       router.replace({ path: '/', query: { sessionExpired: '1' } })
     } else {
@@ -167,23 +112,41 @@ async function fetchAssetData () {
   }
 }
 
-async function loadTransactions () {
+async function loadTransactions() {
   try {
     const { data } = await axios.get(`asset/transactions/${ticker}/`)
+    console.log()
     transactions.value = data
+    console.log(transactions.value);
   } catch (err) {
     console.error('Error al obtener transacciones:', err)
   }
 }
 
-/* -------------------------------------------------------------
- * lifecycle
- * -----------------------------------------------------------*/
+async function loadAssetUserData() {
+  const { data } = await axios.get(`user/holding/${ticker}/`)
+  percentageChange.value = data.percentage_change
+  changeValue.value = data.change_value
+  myTotal.value = data.total_value
+  console.log(data);
+
+}
+
+const buy = () => {
+
+};
+
+const sell = () => {
+
+};
+
+
 onMounted(async () => {
   await auth.checkSession()
   if (auth.isLoggedIn) {
     await fetchAssetData()
     await loadTransactions()
+    await loadAssetUserData()
     intervalId = setInterval(fetchAssetData, 5000)
   } else {
     ui.openAuthDialog()

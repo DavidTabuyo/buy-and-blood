@@ -101,7 +101,7 @@ def check_auth(request):
     
     
     try:
-        dolar_holding = Holding.objects.get(user_id=user.id, asset_id=1)    # asset_id=1 del dolar
+        dolar_holding = Holding.objects.get(user_id=user.id, asset_id=9)    # asset_id=9 del dolar
         balance = dolar_holding.amount * dolar_holding.mean_price
     except Exception as e:
         balance = 0

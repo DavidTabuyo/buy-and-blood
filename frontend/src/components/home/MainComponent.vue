@@ -23,9 +23,10 @@
       </div>
     </div>
 
-    <div class="flex justify-center grow bg-white shadow-lg rounded-xl p-2">
+    <div class="flex justify-center grow bg-white  shadow-lg rounded-xl p-2">
       <ScrollPanel style="width: 100%; height: calc(100vh - 250px)">
-        <div class="grid gap-4 justify-center pt-8 pb-8 px-4"
+        
+        <div class="grid gap-4 justify-center pt-8 pb-8 px-4 bg-red"
           style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); max-width: 1024px; margin: 0 auto;">
           <div v-for="asset in assets" :key="asset.pk"
             class="aspect-square bg-slate-200 shadow-lg rounded-xl cursor-pointer transform transition-transform duration-200 hover:scale-105"
@@ -35,6 +36,8 @@
         </div>
       </ScrollPanel>
     </div>
+
+    
   </div>
 </template>
 

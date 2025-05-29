@@ -7,3 +7,5 @@ frontend/node_modules
 sw2/
 venv
 backend/.coverage
+backend/assets.json
+backend/inv_plan.json
