@@ -22,8 +22,8 @@ def invplan_details_util(request, id=None):
         ticker = plan_asset.asset.symbol_yf  # Suponiendo que el modelo Asset tiene un campo 'ticker'
         data = yf.Ticker(ticker)
         hist = data.history(period="1y")
-        price_now = float(hist['Close'][-1])
-        price_year_ago = float(hist['Close'][0])
+        price_now = float(hist['Close'].iloc[-1])
+        price_year_ago = float(hist['Close'].iloc[0])
         
         # Calcular el rendimiento
         performance = (price_now - price_year_ago) / price_year_ago * 100
