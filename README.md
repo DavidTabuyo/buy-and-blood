@@ -1,15 +1,27 @@
 
 # 💸 Buy and Blood
 
-[![Ver Buy and Blood en producción](https://img.shields.io/badge/Visitar%20App-Live%20App-blue?style=for-the-badge&logo=rocket)](https://buy-and-blood.vercel.app/)
 
 Buy and Blood es una plataforma de inversión que permite a los usuarios comprar y vender activos financieros, gestionar carteras y acceder a planes de inversión personalizados, todo desde una interfaz clara, moderna y centrada en la experiencia del usuario.
 
-## 🎥 Demo
+## 📷 Demo
 
-Visualiza una demo del funcionamiento de la aplicación en este  
-[enlace al vídeo](https://drive.google.com/file/d/1EnDNhEj2gzBFQFa1uumXe3N9cWtdiv1C/view?usp=sharing)
+Algunas imágenes de la web en ejecución
 
+<p align="center">
+  <strong>Página principal</strong><br>
+  <img src="frontend/src/assets/homepage.png" alt="Página principal" width="700">
+</p>
+
+<p align="center">
+  <strong>Planes de inversión</strong><br>
+  <img src="frontend/src/assets/invplan.png" alt="Planes de inversión" width="700">
+</p>
+
+<p align="center">
+  <strong>Compra y venta</strong><br>
+  <img src="frontend/src/assets/buy-view.png" alt="Compra y venta" width="700">
+</p>
 ## 🚀 Funcionalidades principales
 
 - 🔐 **Autenticación con Google**: acceso rápido y seguro.
@@ -26,6 +38,16 @@ Visualiza una demo del funcionamiento de la aplicación en este
 - **Base de datos**: PostgreSQL
 - **CI/CD**: GitHub Actions
 - **Despliegue**: Render (backend) y GitHub Pages (frontend)
+
+<p align="center">
+  <strong>Tecnologías usadas en desarrollo</strong><br>
+  <img src="frontend/src/assets/dev-tech.png" alt="Tecnologías en desarrollo" width="700">
+</p>
+
+<p align="center">
+  <strong>Tecnologías usadas en producción</strong><br>
+  <img src="frontend/src/assets/prod-tech.png" alt="Tecnologías en producción" width="700">
+</p>
 
 ## 🧪 Tests
 
@@ -80,8 +102,4 @@ Durante el desarrollo hemos aprendido a:
 - Coordinar un equipo usando herramientas reales del sector
 - Trabajar con tecnologías modernas como Vue.js, Django y CI/CD en GitHub
 
-## 🔗 Enlaces útiles
-
-- 📁 [Repositorio GitHub](https://github.com/DavidTabuyo/buy-and-blood)
-- 📋 [Tablero Kanban GitHub Projects](https://github.com/users/DavidTabuyo/projects/4)
-- 📄 [Guión de la entrega](https://docs.google.com/document/d/1BrX1d-0r2X9T_0t28JS8yNtaTAlFFza-obDZPjZGOTQ/edit?tab=t.0)
+## Instrucciones de ejecución
