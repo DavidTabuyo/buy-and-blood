@@ -51,3 +51,5 @@ typing_extensions==4.13.1
 tzdata==2025.2
 urllib3==2.4.0
 yfinance==0.2.58
+gunicorn>=20.1.0
+whitenoise==6.4.0

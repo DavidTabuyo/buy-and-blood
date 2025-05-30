@@ -58,7 +58,7 @@ const emit = defineEmits(['reset-app'])
 const key = ref(0)
 
 function loginWithGoogle() {
-    window.location.href = 'http://localhost:8000/auth/google/login/'
+    window.location.href = 'https://buyandblood.onrender.com/auth/google/login/'
 }
 
 const items = ref([
