@@ -16,7 +16,7 @@
           class="absolute inset-0 flex items-center justify-center pointer-events-none"
         >
           <PercentageChange
-            :value="1.5"
+            :value="percentage_change"
             class="text-3xl font-bold"
           />
         </div>
@@ -52,6 +52,7 @@ const props = defineProps({
 const myChart = ref(null);
 const chartData = ref({});
 const chartOptions = ref({});
+const percentage_change = ref(0);
 
 
 function setChartData() {
@@ -82,27 +83,28 @@ function setChartOptions() {
     plugins: {
       legend: { display: false },
       datalabels: {
-        color: '#fff',
-        font: { family: 'Inter, sans-serif', size: 16, weight: '600' },
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: 10,
-        borderColor: '#ffffff',
-        borderWidth: 2,
-        padding: 8,
-        textStrokeColor: 'rgba(0,0,0,0.3)',
-        textStrokeWidth: 1,
-        align: 'center',
-        anchor: 'center',
-        formatter: (value, ctx) => {
-          const label = ctx.chart.data.labels[ctx.dataIndex].toUpperCase();
-          const total = ctx.chart.data.datasets[0].data.reduce(
-            (sum, v) => sum + v,
-            0
-          );
-          const pct = ((value / total) * 100).toFixed(1) + '%';
-          return `${label}\n${pct}`;
-        }
-      }
+  color: '#fff',
+  font: { family: 'Inter, sans-serif', size: 12, weight: '600' },
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  borderRadius: 10,
+  borderColor: '#ffffff',
+  borderWidth: 2,
+  padding: 8,
+  textStrokeColor: 'rgba(0,0,0,0.3)',
+  textStrokeWidth: 1,
+  align: 'center',
+  anchor: 'center',
+  formatter: (value, ctx) => {
+    const label = ctx.chart.data.labels[ctx.dataIndex].toUpperCase();
+    const total = ctx.chart.data.datasets[0].data.reduce(
+      (sum, v) => sum + v,
+      0
+    );
+    const pct = ((value / total) * 100).toFixed(1) + '%';
+    return `${label}\n${pct}`;
+  }
+}
+
     }
   };
 }
@@ -122,8 +124,9 @@ onMounted(() => {
 
 // Watchers para actualizar datos si cambian los props
 watch(
-  () => [props.labels, props.values],
+  () => [props.labels, props.values, props.percentage_change],
   () => {
+    percentage_change.value = props.percentage_change;
     chartData.value = setChartData();
     // Forzar actualización del chart
     if (myChart.value?.chart) {

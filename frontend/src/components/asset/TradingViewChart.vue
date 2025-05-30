@@ -29,7 +29,7 @@ onMounted(() => {
     {
       "symbols": [
         [
-          "${props.ticker}"
+          "${props.ticker}|12m"
         ]
       ],
       "chartOnly": true,
@@ -58,11 +58,11 @@ onMounted(() => {
       "lineWidth": 2,
       "lineType": 0,
       "dateRanges": [
+        "12m|1D",
         "1d|1",
         "1w|15",
         "1m|30",
         "3m|60",
-        "12m|1D",
         "60m|1W",
         "all|1M"
       ]

@@ -1,9 +1,11 @@
+from decimal import Decimal
 from app.models import Asset, Holding, Plan, PlanAsset, Transaction
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import yfinance as yf
+from django.db.models import F
 
 def get_holding(request, asset_id):
     try:
@@ -55,8 +57,14 @@ def holdings(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def holding(request, asset_id):
+def holding(request, asset_id): 
     holding = get_holding(request, asset_id)
+    print()
+    print()
+    print()
+    print(holding)
+    print()
+    print()
     if holding:
         return Response(holding)
     else:
@@ -67,26 +75,30 @@ def holding(request, asset_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @transaction.atomic  # Esto asegura que todo el bloque se ejecute como una única transacción atómica
-def buyandsell_transaction(request, id):
-    src_asset_id = 1
-    dest_asset_id = id
-    
-    asset = yf.Ticker(Asset.objects.get(id=id).symbol_yf)
-    price = asset.fast_info['last_price']
-    
-    # Calcular la cantidad de activo destino a comprar
-    amount = request.data.get('total_price') / price
+def buyandsell_transaction(request, asset_id):
 
-    if not all([src_asset_id, dest_asset_id, price, amount]):
-        return Response({"error": "Missing required parameters."}, status=400)
+    src_asset_id = 9
+    dest_asset_id = int(asset_id)
+    asset = yf.Ticker(Asset.objects.get(id=dest_asset_id).symbol_yf)
+    transaction_money = request.data.get('transaction_money')
+    
+    current_dest_price = asset.fast_info['last_price']
     
     try:
         # Verificar si el usuario tiene suficiente cantidad del activo fuente (src_asset_id)
         holding_src = Holding.objects.get(user=request.user, asset_id=src_asset_id)
-        holding_dest, created = Holding.objects.get_or_create(user=request.user, asset_id=dest_asset_id)
+        holding_dest, _ = Holding.objects.get_or_create(user=request.user, asset_id=dest_asset_id, defaults={
+            'mean_price': current_dest_price,
+            'amount': 0
+        })
+
+        
+        src_money = holding_src.amount * holding_src.mean_price
+        dest_money = holding_dest.amount * holding_dest.mean_price
+        
         
         # Asegurar que el usuario tiene suficientes activos en src_asset_id para la transacción
-        if holding_src.amount < request.data.get('total_price'):
+        if src_money - transaction_money < 0 and dest_money + transaction_money < 0:
             return Response({"error": "Insufficient funds for the transaction."}, status=400)
 
         # Crear la transacción
@@ -94,14 +106,19 @@ def buyandsell_transaction(request, id):
             user=request.user,
             src_asset_id=src_asset_id,
             dest_asset_id=dest_asset_id,
-            price=price,
-            amount=amount
+            price=current_dest_price,
+            amount=transaction_money / current_dest_price,
         )
 
         # Actualizar las cantidades en la tabla de holdings
-        holding_src.amount -= request.data.get('total_price')  # Restar el monto de dinero gastado
-        holding_dest.amount += amount  # Aumentar la cantidad del activo comprado
+        holding_src.amount -= transaction_money / holding_src.mean_price
 
+        new_dest_money = holding_dest.amount * holding_dest.mean_price + transaction_money
+        transaction_money = Decimal(str(transaction_money))
+        current_dest_price = Decimal(str(current_dest_price))
+        holding_dest.amount += transaction_money / current_dest_price
+
+        holding_dest.mean_price = holding_dest.amount / new_dest_money
         holding_src.save()
         holding_dest.save()
 
@@ -132,3 +149,50 @@ def set_investing_plan(request, id):
     user.save()
 
     return Response({'message': 'Investing plan updated successfully'}, status=200)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+@transaction.atomic
+def add_balance(request, amount):
+    try:
+        f_amount = float(amount)
+    except (TypeError, ValueError):
+        return Response(
+            {"error": "Invalid amount."},
+            status=400
+        )
+
+    user = request.user
+    asset_id = 9
+
+    # Asegurarnos de que el asset 9 existe
+    try:
+        usd_asset = Asset.objects.get(pk=asset_id)
+    except Asset.DoesNotExist:
+        return Response(
+            {"error": f"Asset with id {asset_id} not found."},
+            status=404
+        )
+
+    # Obtener o crear el holding
+    holding, created = Holding.objects.get_or_create(
+        user=user,
+        asset=usd_asset,
+        defaults={
+            'mean_price': 1.0,
+            'amount': f_amount
+        }
+    )
+
+    if not created:
+        # Si ya existía, sumamos el nuevo saldo
+        holding.amount = F('amount') + f_amount
+        holding.save()
+        # refrescamos el valor real desde la base de datos
+        holding.refresh_from_db()
+
+    return Response({
+        "message": "Balance updated successfully.",
+        "new_amount": holding.amount
+    }, status=200)
