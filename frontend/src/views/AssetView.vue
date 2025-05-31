@@ -1,6 +1,8 @@
 <!-- src/views/AssetView.vue -->
 <template>
+
   <div class="flex w-full gap-8">
+    <ConfirmDialog />
     <!-- ---------------- Datos del activo ---------------- -->
     <div v-if="assetData && !assetData.error" class="w-2/3 flex flex-col h-full">
       <div class="text-3xl text-gray-500">{{ assetData.longName }}</div>
@@ -32,47 +34,62 @@
         </div>
       </div>
 
-  <div class="max-h-80 max-w-full overflow-auto">
-    <DataTable
-      :value="transactions"
-      stripedRows
-      emptyMessage="No hay transacciones disponibles"
-      scrollable
-      scrollHeight="100%"      
-    >
-      <template #empty>
-        <div class="p-4 text-center text-gray-500">
-          Todavía no ha realizado ninguna transacción
-        </div>
-      </template>
-      <Column field="date"      header="Fecha"              />
-      <Column field="buyPrice"  header="Precio de compra"   />
-      <Column field="quantity"  header="Cantidad"           />
-      <Column field="total"     header="Total"              />
-    </DataTable>
-  </div>
+      <div class="max-h-80 max-w-full overflow-auto">
+        <DataTable :value="transactions" stripedRows emptyMessage="No hay transacciones disponibles" scrollable
+          scrollHeight="100%">
+          <template #empty>
+            <div class="p-4 text-center text-gray-500">
+              Todavía no ha realizado ninguna transacción
+            </div>
+          </template>
+
+          <!-- Columna Fecha con formato YYYY-MM-DD -->
+          <Column field="date" header="Fecha">
+            <template #body="{ data }">
+              {{ formatDate(data.date) }}
+            </template>
+          </Column>
+
+          <!-- Columna Precio de compra con 2 decimales -->
+          <Column field="buyPrice" header="Precio de compra">
+            <template #body="{ data }">
+              {{ formatNumber(data.buyPrice) }}
+            </template>
+          </Column>
+
+          <!-- Columna Cantidad con 2 decimales -->
+          <Column field="quantity" header="Cantidad">
+            <template #body="{ data }">
+              {{ formatNumber(data.quantity) }}
+            </template>
+          </Column>
+
+          <!-- Columna Total con 2 decimales -->
+          <Column field="total" header="Total">
+            <template #body="{ data }">
+              {{ formatNumber(data.total) }}
+            </template>
+          </Column>
+        </DataTable>
+      </div>
 
       <!-- Formulario simple de compra / venta -->
       <div class="w-full flex flex-col gap-4 pb-8">
-
         <FloatLabel variant="on" class="w-full">
-          <InputNumber class="w-full text-center" v-model="amount" mode="currency" currency="USD" locale="en-US" />
+          <InputNumber class="w-full text-center" ref="amountInput" v-model="amount" mode="currency" currency="USD"
+            locale="en-US" />
           <label>Introduce cantidad…</label>
         </FloatLabel>
         <div class="flex gap-2 mt-8">
-          <Button label="Comprar" @click="buy" class="flex-1 px-6 py-3 text-lg" severity="success" />
-          <Button label="Vender" @click="sell" class="flex-1 px-6 py-3 text-lg" :disabled="myTotal === 0" 
-            />
+          <Button label="Comprar" @click="confirmBuy" class="flex-1 px-6 py-3 text-lg" severity="success" />
+          <Button label="Vender" @click="confirmSell" class="flex-1 px-6 py-3 text-lg" :disabled="myTotal === 0" />
         </div>
-
       </div>
     </div>
   </div>
-
 </template>
 
-<script setup>
-
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from '@/axios'
@@ -88,35 +105,37 @@ import FloatLabel from 'primevue/floatlabel'
 import Button from 'primevue/button'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import Toast from 'primevue/toast';
-import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast'
+import { useToast } from 'primevue/usetoast'
+import ConfirmDialog from 'primevue/confirmdialog'
+import { useConfirm } from 'primevue/useconfirm'
 
-
+const confirm = useConfirm()
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const ui = useUiStore()
-const toast = useToast();
-
+const toast = useToast()
+const amountInput = ref<InstanceType<typeof InputNumber> | null>(null)
 const ticker = route.params.ticker
-const assetData = ref(null)
-const transactions = ref([])
-const amount = ref(null)
+const assetData = ref<any>(null)
+const transactions = ref<any[]>([])
+const amount = ref<number | null>(null)
 
-const percentageChange = ref(0)
-const changeValue = ref(0)
-const myTotal = ref(0)
+const percentageChange = ref<number>(0)
+const changeValue = ref<number>(0)
+const myTotal = ref<number>(0)
 
-let intervalId = null
+let intervalId: ReturnType<typeof setInterval> | null = null
 
 async function fetchAssetData() {
   try {
     const { data } = await axios.get(`asset/${ticker}/`)
     assetData.value = data
-  } catch (error) {
+  } catch (error: any) {
     const status = error.response?.status
     if (status === 401 || status === 403) {
-      clearInterval(intervalId)
+      if (intervalId) clearInterval(intervalId)
       auth.isLoggedIn = false
       auth.user_data = null
       ui.openAuthDialog()
@@ -131,9 +150,7 @@ async function fetchAssetData() {
 async function loadTransactions() {
   try {
     const { data } = await axios.get(`asset/transactions/${ticker}/`)
-    console.log()
     transactions.value = data
-    console.log(transactions.value);
   } catch (err) {
     console.error('Error al obtener transacciones:', err)
   }
@@ -141,43 +158,77 @@ async function loadTransactions() {
 
 async function loadAssetUserData() {
   try {
-    const response = await axios.get(`user/holding/${ticker}/`);
-    const data = response.data;
+    const response = await axios.get(`user/holding/${ticker}/`)
+    const data = response.data
 
-    percentageChange.value = data.percentage_change ?? 0;
-    changeValue.value = data.change_value ?? 0;
-    myTotal.value = data.total_value ?? 0;
+    percentageChange.value = data.percentage_change ?? 0
+    changeValue.value = data.change_value ?? 0
+    myTotal.value = data.total_value ?? 0
   } catch (error) {
-    percentageChange.value = 0;
-    changeValue.value = 0;
-    myTotal.value = 0;
+    percentageChange.value = 0
+    changeValue.value = 0
+    myTotal.value = 0
   }
 }
 
 const buy = () => {
-
-  axios.post(`user/transaction/${ticker}/`, {
-    transaction_money: amount.value
-  })
+  axios
+    .post(`user/transaction/${ticker}/`, {
+      transaction_money: amount.value
+    })
     .then(() => {
-      toast.add({ severity: 'success', summary: 'Compra realizada', detail: 'La compra se ha realizado con éxito', life: 3000 });
-      //quitamos el saldo al usuario
-      if (amount.value != null){
-      auth.user_data-=amount.value;
+      toast.add({
+        severity: 'success',
+        summary: 'Compra realizada',
+        detail: 'La compra se ha realizado con éxito',
+        life: 3000
+      })
+      if (amount.value != null) {
+        auth.user_data.balance -= amount.value
       }
-      amount.value = null
+      amount.value = 0
       loadTransactions()
       loadAssetUserData()
     })
     .catch((error) => {
-      toast.add({ severity: 'danger', summary: 'Error', detail: 'No se ha podido completar la transacción', life: 3000 });
+      toast.add({
+        severity: 'warn',
+        summary: 'Error',
+        detail: 'No se ha podido completar la transacción',
+        life: 3000
+      })
     })
-};
+}
 
 const sell = () => {
+  axios
+    .post(`user/transaction/${ticker}/`, {
+      transaction_money: amount.value != null ? -amount.value : null
+    })
+    .then(() => {
+      toast.add({
+        severity: 'success',
+        summary: 'Venta realizada',
+        detail: 'La venta se ha realizado con éxito',
+        life: 3000
+      })
+      if (amount.value != null) {
+        auth.user_data.balance += amount.value
+      }
+      amount.value = 0
 
-};
-
+      loadTransactions()
+      loadAssetUserData()
+    })
+    .catch(() => {
+      toast.add({
+        severity: 'warn',
+        summary: 'Error',
+        detail: 'No se ha podido completar la transacción',
+        life: 3000
+      })
+    })
+}
 
 onMounted(async () => {
   await auth.checkSession()
@@ -195,4 +246,92 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   if (intervalId) clearInterval(intervalId)
 })
+
+/**
+ * Devuelve la fecha en formato "YYYY-MM-DD". 
+ * Si el valor es nulo o undefined, devuelve "-".
+ */
+function formatDate(value: string | null | undefined): string {
+  if (!value) return '-'
+  return value.substring(0, 10)
+}
+
+/**
+ * Devuelve un número con 2 decimales. 
+ * Si el valor es nulo o no es un número, devuelve "-".
+ */
+function formatNumber(value: number | string | null | undefined): string {
+  if (value == null || value === '' || isNaN(Number(value))) {
+    return '-'
+  }
+  return Number(value).toFixed(2)
+}
+
+// Nuevas funciones añadidas al <script setup>:
+
+function confirmBuy() {
+  if (amount.value == null || isNaN(amount.value) || amount.value <= 0) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Cantidad no válida',
+      detail: 'Introduce una cantidad mayor que 0',
+
+      life: 3000
+    })
+    return
+  }
+  if (amount.value > auth.user_data.balance) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Cantidad no válida',
+      detail: 'No tienes saldo suficiente para realizar la transaccion',
+
+      life: 3000
+    })
+    return
+  }
+
+  confirm.require({
+    message: `¿Estás seguro de que quieres COMPRAR $${formatNumber(amount.value)}?`,
+    header: 'Confirmar compra',
+    icon: 'pi pi-exclamation-triangle',
+
+    accept: () => {
+      buy()
+    }
+  })
+}
+
+function confirmSell() {
+  if (amount.value == null || isNaN(amount.value) || amount.value <= 0) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Cantidad no válida',
+      detail: 'Introduce una cantidad mayor que 0',
+      life: 3000
+    })
+    return
+  }
+  
+  if (amount.value > myTotal.value) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Cantidad no válida',
+      detail: 'No tienes saldo suficiente para realizar la transaccion',
+
+      life: 3000
+    })
+    return
+  }
+
+  confirm.require({
+    message: `¿Estás seguro de que quieres VENDER $${formatNumber(amount.value)}?`,
+    header: 'Confirmar venta',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      sell()
+    }
+  })
+}
+
 </script>

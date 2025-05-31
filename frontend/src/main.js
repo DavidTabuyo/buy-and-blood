@@ -12,6 +12,12 @@ import piniaPersist from 'pinia-plugin-persistedstate'
 import 'primeicons/primeicons.css';      
 import Toast from 'primevue/toast';
 import 'primeicons/primeicons.css';
+import ConfirmationService from 'primevue/confirmationservice'
+import ConfirmDialog from 'primevue/confirmdialog'
+import '@/axios'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import ToastService from 'primevue/toastservice';
 
 const pinia = createPinia()
 const app = createApp(App);
@@ -19,14 +25,12 @@ pinia.use(piniaPersist)
 app.use(pinia)
 app.use(router);
 app.use(ToastService);
+app.use(ConfirmationService)
+
 app.component('Toast', Toast);
+app.component('ConfirmDialog', ConfirmDialog)
 
 app.directive('animateonscroll', AnimateOnScroll);
-import '@/axios'
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import ToastService from 'primevue/toastservice';
-
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 
