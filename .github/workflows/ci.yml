@@ -1,35 +1,42 @@
-name: Backend Tests🚀
+name: CI/CD Pipeline 🚀
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 on:
-  push:
-    branches:
-      - develop  # Ejecutar en la rama de develop
   pull_request:
     branches:
-      - main  # Ejecutar en pull requests hacia la rama principal
+      - main
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
-  test:
+  # -------------------------------------------------------
+  # En el primer job siempre ejecutamos los tests
+  # -------------------------------------------------------
+  backend-tests:
     runs-on: ubuntu-latest  # Usar un entorno Ubuntu para ejecutar los tests
 
     steps:
-      
-      #  Paso 1: Checkout del código
+      # Paso 1: Checkout del código
       - name: Checkout code 👨‍💻
         uses: actions/checkout@v3
 
-      #  Paso 2: Configuración de Python
+      # Paso 2: Configuración de Python
       - name: Set up Python 3.10 🐍
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      #  Paso 3: Instalar dependencias
+      # Paso 3: Instalar dependencias
       - name: Install dependencies 📦
         run: |
-          
           python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt  # Asegúrate de que en requirements.txt estén todos los paquetes necesarios
+          pip install -r backend/requirements.txt
 
       # Paso 4: Cargar las variables de entorno desde GitHub Secrets
       - name: Set up environment variables 📝
@@ -41,13 +48,56 @@ jobs:
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> $GITHUB_ENV
           echo "DJANGO_SETTINGS_MODULE=app.settings" >> $GITHUB_ENV
 
-      #  Paso 5: Realizar las migraciones de Django
+      # Paso 5: Realizar las migraciones de Django
       - name: Run migrations 🛠️
         run: |
-          python backend/manage.py migrate --noinput  # Aplica las migraciones de la base de datos
+          python backend/manage.py migrate --noinput
 
       # Paso 6: Ejecutar los tests con pytest
       - name: Run tests with pytest 🧑‍🔬
         run: |
-          cd backend/
-          pytest --maxfail=1 --disable-warnings --tb=short  # Ejecuta los tests de Django con pytest
+          cd backend
+          pytest --maxfail=1 --disable-warnings --tb=short
+
+  # -------------------------------------------------------
+  # Hacemos el deploy en GitHub Pages si pasaron los tests
+  # -------------------------------------------------------
+  deploy-frontend:
+    name: 🌐 Deploy Frontend to GitHub Pages
+    needs: backend-tests
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    # Solo correr este job si la rama es main
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Build Vue app
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Enable GitHub Pages
+        uses: actions/configure-pages@v4                
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v3        
+        with:
+          path: frontend/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4                 
+
+      - name: Show deployed URL
+        run: echo "✅ Site published at ${{ steps.deployment.outputs.page_url }}"
