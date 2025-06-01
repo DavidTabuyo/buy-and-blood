@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import axios from '../axios.js';
+import axios from '@/axios'; 
 
 defineProps({
   msg: String,

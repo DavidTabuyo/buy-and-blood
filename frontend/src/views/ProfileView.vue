@@ -67,7 +67,7 @@ import DolarValue from '@/components/utils/DolarValue.vue';
 import ChangeValue from '@/components/utils/ChangeValue.vue';
 import PercentageChange from '@/components/utils/PercentageChange.vue';
 import HoldingChart from '@/components/profile/HoldingChart.vue';
-import axios from '../axios.js';
+import axios from '@/axios'; ;
 
 const tableHoldings = ref(null);
 const pieHoldings = ref(null);
