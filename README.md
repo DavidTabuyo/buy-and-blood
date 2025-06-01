@@ -102,4 +102,52 @@ Durante el desarrollo hemos aprendido a:
 - Coordinar un equipo usando herramientas reales del sector
 - Trabajar con tecnologías modernas como Vue.js, Django y CI/CD en GitHub
 
-## Instrucciones de ejecución
+## 🚀 Instrucciones de ejecución
+
+### 1. Configuración del archivo `.env`
+
+Crea un archivo `.env` en la carpeta del backend (o en la raíz del proyecto si lo prefieres) con las siguientes variables (reemplaza cada valor por el apropiado para tu entorno):
+
+```
+DATABASE_URL="postgresql://<usuario>:<contraseña>@<host>/<nombre_base_de_datos>?sslmode=require"
+GOOGLE_CLIENT_ID=<tu_google_client_id>
+GOOGLE_CLIENT_SECRET=<tu_google_client_secret>
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback/
+DJANGO_SECRET_KEY=<tu_django_secret_key>
+FRONTEND_SERVER=http://localhost:5173
+DJANGO_SETTINGS_MODULE=app.settings_dev
+```
+
+> ⚠️ Asegúrate de no dejar espacios alrededor del signo igual (`=`) y de encerrar entre comillas los valores que contengan caracteres especiales.
+
+---
+
+### 2. Ejecutar el frontend
+
+Abre una terminal y navega a la carpeta del frontend. Luego, ejecuta:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Esto iniciará el servidor de desarrollo de Vite en `http://localhost:5173`.
+
+---
+
+### 3. Ejecutar el backend
+
+Abre otra terminal y navega a la carpeta del backend. Asegúrate de tener instalado Python 3 y pip. Después, ejecuta:
+
+```bash
+cd backend
+pip install -r requirements.txt
+python3 manage.py runserver
+```
+
+Con esto, el servidor de Django se iniciará en `http://localhost:8000`.
+
+---
+
+✅ Una vez ambos servidores estén en marcha, podrás acceder a la aplicación desde tu navegador.
