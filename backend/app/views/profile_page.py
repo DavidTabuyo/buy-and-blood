@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import yfinance as yf
 from django.db.models import F
+from decimal import Decimal, InvalidOperation
 
 def get_holding(request, asset_id):
     try:
@@ -16,7 +17,7 @@ def get_holding(request, asset_id):
     asset_name = holding.asset.name
     mean_price = float(holding.mean_price)
     amount = float(holding.amount)
-    total_value = amount* mean_price
+    initial_value = amount* mean_price
     
     # Obtener el precio actual del activo usando yfinance
     yf_asset = yf.Ticker(holding.asset.symbol_yf)
@@ -27,7 +28,9 @@ def get_holding(request, asset_id):
         
     # Calcular el cambio en valor y porcentaje
     change_value = (current_price - mean_price) * amount
-    percentage_change = (change_value / total_value) * 100
+    percentage_change = (change_value / initial_value) * 100
+    
+    total_value = amount * current_price
     
     return {
         'asset_id': asset_id,
@@ -59,13 +62,13 @@ def holdings(request):
 @permission_classes([IsAuthenticated])
 def holding(request, asset_id): 
     holding = get_holding(request, asset_id)
-    print()
-    print()
-    print()
-    print(holding)
-    print()
-    print()
     if holding:
+        print()
+        print()
+        print()
+        print(holding)
+        print()
+        print()
         return Response(holding)
     else:
         return Response({'error': 'Holding not found'}, status=404)
@@ -76,60 +79,91 @@ def holding(request, asset_id):
 @permission_classes([IsAuthenticated])
 @transaction.atomic  # Esto asegura que todo el bloque se ejecute como una única transacción atómica
 def buyandsell_transaction(request, asset_id):
-
     src_asset_id = 9
     dest_asset_id = int(asset_id)
     asset = yf.Ticker(Asset.objects.get(id=dest_asset_id).symbol_yf)
-    transaction_money = request.data.get('transaction_money')
     
-    current_dest_price = asset.fast_info['last_price']
+    # Obtenemos el valor bruto (string o numérico) y lo convertimos a Decimal
+    transaction_money_raw = request.data.get('transaction_money')
+    try:
+        transaction_money = Decimal(str(transaction_money_raw))
+    except (InvalidOperation, TypeError):
+        return Response({"error": "Valor de 'transaction_money' inválido."}, status=400)
+    
+    # Obtenemos el precio como float y lo convertimos a Decimal
+    try:
+        current_dest_price = Decimal(str(asset.fast_info['last_price']))
+    except (InvalidOperation, KeyError, TypeError):
+        return Response({"error": "No se pudo obtener el precio actual del activo."}, status=400)
     
     try:
         # Verificar si el usuario tiene suficiente cantidad del activo fuente (src_asset_id)
         holding_src = Holding.objects.get(user=request.user, asset_id=src_asset_id)
-        holding_dest, _ = Holding.objects.get_or_create(user=request.user, asset_id=dest_asset_id, defaults={
-            'mean_price': current_dest_price,
-            'amount': 0
-        })
+        holding_dest, _ = Holding.objects.get_or_create(
+            user=request.user,
+            asset_id=dest_asset_id,
+            defaults={
+                'mean_price': current_dest_price,
+                'amount': Decimal('0')
+            }
+        )
 
-        
+        # Calculamos el dinero total en cada holding (amount * mean_price), que ya son Decimals
         src_money = holding_src.amount * holding_src.mean_price
         dest_money = holding_dest.amount * holding_dest.mean_price
-        
-        
-        # Asegurar que el usuario tiene suficientes activos en src_asset_id para la transacción
-        if src_money - transaction_money < 0 and dest_money + transaction_money < 0:
-            return Response({"error": "Insufficient funds for the transaction."}, status=400)
 
-        # Crear la transacción
+        # Asegurar que el usuario tiene suficientes fondos para la transacción
+        # Aquí se asume que: para vender src_asset, transaction_money no pueda exceder src_money
+        # y para comprar dest_asset, transaction_money no pueda hacer que dest_money sea negativo.
+        if transaction_money > src_money and transaction_money > -dest_money:
+            return Response({"error": "Fondos insuficientes para la transacción."}, status=400)
+
+        # Calculamos la cantidad de unidades a transferir (transaction_money / precio actual).
+        # Ambos son Decimal, así que la división es precisa.
+        amount_units = transaction_money / current_dest_price
+
+        # Creamos la transacción
         transaction = Transaction.objects.create(
             user=request.user,
             src_asset_id=src_asset_id,
             dest_asset_id=dest_asset_id,
             price=current_dest_price,
-            amount=transaction_money / current_dest_price,
+            amount=amount_units,
         )
 
         # Actualizar las cantidades en la tabla de holdings
-        holding_src.amount -= transaction_money / holding_src.mean_price
+        # Reducimos el holding origen: restamos las unidades equivalentes a 'transaction_money'
+        holding_src.amount = holding_src.amount - (transaction_money / holding_src.mean_price)
 
-        new_dest_money = holding_dest.amount * holding_dest.mean_price + transaction_money
-        transaction_money = Decimal(str(transaction_money))
-        current_dest_price = Decimal(str(current_dest_price))
-        holding_dest.amount += transaction_money / current_dest_price
+        # Calculamos el nuevo dinero total en dest antes de actualizar amount
+        new_dest_money = (holding_dest.amount * holding_dest.mean_price) + transaction_money
+        # Actualizamos el amount de dest añadiendo las nuevas unidades
+        holding_dest.amount = holding_dest.amount + amount_units
+        
+        # Actualizamos mean_price en dest como: (nuevo dinero total) / (nuevas unidades totales)
+        # Siempre verificamos que holding_dest.amount != 0 para evitar división por cero.
+        if holding_dest.amount > 0:
+            holding_dest.mean_price = new_dest_money / holding_dest.amount
+        else:
+            holding_dest.mean_price = Decimal('0')
 
-        holding_dest.mean_price = holding_dest.amount / new_dest_money
         holding_src.save()
         holding_dest.save()
 
-        return Response({"message": "Transaction created and holdings updated successfully.", "transaction_id": transaction.id}, status=201)
-    
+        return Response(
+            {
+                "message": "Transacción creada y holdings actualizados correctamente.",
+                "transaction_id": transaction.id
+            },
+            status=201
+        )
+
     except Holding.DoesNotExist:
-        return Response({"error": "Holding not found for user."}, status=404)
+        return Response({"error": "Holding no encontrado para el usuario."}, status=404)
     except Exception as e:
-        # Si ocurre cualquier otro error, la transacción atómica hará un rollback de todos los cambios
+        # Si ocurre cualquier otro error, la transacción atómica hará rollback
         return Response({"error": str(e)}, status=400)
-    
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
