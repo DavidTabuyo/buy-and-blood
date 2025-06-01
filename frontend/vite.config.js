@@ -8,6 +8,9 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
+  // Base public path when served and built (adjust for GitHub Pages)
+  base: '/buy-and-blood/',
+
   plugins: [vue()],
   resolve: {
     alias: {
