@@ -1,5 +1,5 @@
 <template>
-  <div class="card flex flex-col items-center overflow-hidden">
+  <div class="card flex flex-col items-center overflow-hidden pb-8">
     <!-- Header con texto y flecha -->
     <div class="flex flex-col items-center gap-2">
       <span class="text-xl font-medium">Scroll Down</span>
@@ -28,7 +28,7 @@
         />
         <span class="text-2xl font-medium">David Tabuyo</span>
         <span class="text-muted-color text-center">
-          FullStack Developer especializado en fronted & Software Architect
+          FullStack Developer especializado en frontend &amp; Software Architect
         </span>
       </div>
 
@@ -44,7 +44,7 @@
         />
         <span class="text-2xl font-medium">Darío Martín</span>
         <span class="text-muted-color text-center">
-          Database Modeler especializado en backend
+          FullStack Developer especializado en backend &amp; Database Modeler
         </span>
       </div>
 
@@ -60,7 +60,7 @@
         />
         <span class="text-2xl font-medium">Daniel Gregori</span>
         <span class="text-muted-color text-center">
-          Project Mannager & QA
+          Project Mannager &amp; QA
         </span>
       </div>
     </div>
