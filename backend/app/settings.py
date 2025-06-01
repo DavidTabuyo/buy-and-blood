@@ -12,8 +12,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-# Lee los hosts permitidos de una env var separada por comas,
-# o por defecto localhost y tu backend en Render
 allowed = os.getenv("ALLOWED_HOSTS", "")
 if allowed:
     ALLOWED_HOSTS = allowed.split(",")
@@ -26,7 +24,6 @@ else:
 # -----------------------------
 # Frontend (para CORS/CSRF)
 # -----------------------------
-# Tu GitHub Pages: ajusta a tu user/repo
 FRONTEND_SERVER = os.getenv(
     "FRONTEND_SERVER"
 )
@@ -131,8 +128,9 @@ GOOGLE_REDIRECT_URI  = os.getenv(
     "http://localhost:8000/auth/google/callback/"
 )
 
-SESSION_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE   = not DEBUG
+CSRF_COOKIE_SAMESITE    = "None"
 CSRF_COOKIE_SECURE      = not DEBUG
 
 # -----------------------------

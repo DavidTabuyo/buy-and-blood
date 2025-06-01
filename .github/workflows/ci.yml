@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
   # -------------------------------------------------------
@@ -65,9 +66,11 @@ jobs:
     name: 🌐 Deploy Frontend to GitHub Pages
     needs: backend-tests
     runs-on: ubuntu-latest
-    # Añadimos el entorno "github-pages" que usa actions/deploy-pages
     environment:
       name: github-pages
+
+    # Solo correr este job si la rama es main
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout repository
@@ -95,5 +98,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4                 
+
       - name: Show deployed URL
         run: echo "✅ Site published at ${{ steps.deployment.outputs.page_url }}"
