@@ -16,7 +16,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory('/buy-and-blood/'),
+  history: createWebHistory(''),
   routes
 })
 

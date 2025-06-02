@@ -9,7 +9,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   // Base public path when served and built (adjust for GitHub Pages)
-  base: '/buy-and-blood/',
+  base: '',
 
   plugins: [vue()],
   resolve: {

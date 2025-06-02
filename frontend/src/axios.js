@@ -3,7 +3,7 @@ import router from '@/router'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 
-axios.defaults.baseURL = 'https://buyandblood.onrender.com/api/'
+axios.defaults.baseURL = 'http://localhost:8000/api/'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 axios.defaults.withCredentials = true  // para enviar cookies de sesión y CSRF
 
