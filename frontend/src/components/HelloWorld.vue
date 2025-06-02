@@ -17,6 +17,7 @@ const zzzz = () => {
 };
 
 const count = ref(0);
+//prueba
 </script>
 
 <template>
@@ -52,3 +53,5 @@ const count = ref(0);
   color: #888;
 }
 </style>
+
+
