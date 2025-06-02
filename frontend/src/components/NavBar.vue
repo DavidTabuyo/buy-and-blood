@@ -89,7 +89,7 @@ const showDialog = ref(false);
 const amount = ref(0);
 
 function loginWithGoogle() {
-    window.location.href = 'https://buyandblood.onrender.com/auth/google/login/'
+    window.location.href = 'http://localhost:8000/auth/google/login/'
 }
 
 const items = ref([
